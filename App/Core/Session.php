@@ -18,13 +18,13 @@ class Session
     private $isStarted = false;
 
     /**
-     * @param int $maxLifeTime
+     * @param int $maxLifeTime in minutes
      * @return bool
      */
     public function __construct($maxLifeTime = 60)
     {
         if (! $this->isStarted) {
-            session_set_cookie_params($maxLifeTime);
+            session_set_cookie_params($maxLifeTime * 60);
             session_start();
 
             return $this->isStarted = true;
@@ -127,12 +127,8 @@ class Session
         return false;
     }
 
-    public function destroy($key = null)
+    public function destroy()
     {
-        if ($key !== null) {
-            return self::unset($key);
-        }
-
         if (self::$isStarted) {
             session_unset();
             session_destroy();
