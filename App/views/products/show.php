@@ -49,30 +49,12 @@
                             <img class="product__details__pic__item--large"
                                  src="<?= $product->getAssetImage() ?>" alt="">
                         </div>
-<!--                        <div class="product__details__pic__slider owl-carousel">-->
-<!--                            <img data-imgbigurl="img/product/details/product-details-2.jpg"-->
-<!--                                 src="img/product/details/thumb-1.jpg" alt="">-->
-<!--                            <img data-imgbigurl="img/product/details/product-details-3.jpg"-->
-<!--                                 src="img/product/details/thumb-2.jpg" alt="">-->
-<!--                            <img data-imgbigurl="img/product/details/product-details-5.jpg"-->
-<!--                                 src="img/product/details/thumb-3.jpg" alt="">-->
-<!--                            <img data-imgbigurl="img/product/details/product-details-4.jpg"-->
-<!--                                 src="img/product/details/thumb-4.jpg" alt="">-->
-<!--                        </div>-->
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <form action="<?= route('cart') ?>" method="POST">
                     <div class="product__details__text">
                         <h3><?= $product->title ?></h3>
-<!--                        <div class="product__details__rating">-->
-<!--                            <i class="fa fa-star"></i>-->
-<!--                            <i class="fa fa-star"></i>-->
-<!--                            <i class="fa fa-star"></i>-->
-<!--                            <i class="fa fa-star"></i>-->
-<!--                            <i class="fa fa-star-half-o"></i>-->
-<!--                            <span>(18 reviews)</span>-->
-<!--                        </div>-->
                         <div class="product__details__price"><?= $product->formattedPrice() ?></div>
                         <p><?= $product->short_description ?></p>
                         <div class="product__details__quantity">
@@ -84,8 +66,7 @@
                         </div>
                         <input type="hidden" name="id" value="<?= $product->id ?>">
                         <input type="hidden" name="slug" value="<?= $product->slug ?>">
-                        <input type="submit" class="primary-btn" style="border-style: none" value="ADD TO CART"></input>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <input type="submit" class="primary-btn" style="border-style: none" value="ADD TO CART">
                         <ul>
                             <li><b>Category</b> <span><?=  $product->category_name ?></span></li>
                             <li><b>Developer</b> <a href="<?= $product->developer_website ?>" target="_new"><span><?= $product->developer_name ?></span></a></li>
@@ -93,7 +74,6 @@
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow" target="_new"><i class="fa fa-retweet"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
                                 </div>
                             </li>
                         </ul>

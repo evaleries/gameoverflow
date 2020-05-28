@@ -22,21 +22,7 @@
     <!-- Hero Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="<?= asset('img/breadcrumb.png') ?>">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>GameOverflow</h2>
-                        <div class="breadcrumb__option">
-                            <a href="<?= base_url() ?>">Home</a>
-                            <span>Products</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <?php importView('sections.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Products' => '/products']]) ?>
     <!-- Breadcrumb Section End -->
 
     <!-- Product Section Begin -->
@@ -59,15 +45,6 @@
                 <div class="col-lg-9 col-md-7">
                     <div class="filter__item">
                         <div class="row">
-                            <!-- <div class="col-lg-4 col-md-5">
-                                <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select>
-                                </div>
-                            </div> -->
                             <?php if(isset($products->data)): ?>
                             <div class="col-lg-12">
                                 <div class="filter__found">
@@ -75,12 +52,6 @@
                                 </div>
                             </div>
                             <?php endif; ?>
-                            <!-- <div class="col-lg-4 col-md-3">
-                                <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                     <div class="row">
@@ -89,9 +60,8 @@
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="<?= $product->getAssetImage() ?>">
                                     <ul class="product__item__pic__hover">
-                                        <!-- <li><a href="#"><i class="fa fa-heart"></i></a></li> -->
-                                        <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="<?= route('products/' . $product->slug) ?>"><i class="fa fa-shopping-cart"></i></a></li>
+\                                        <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a href="<?= route('products/' . $product->slug) ?>"><i class="fa fa-search"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
