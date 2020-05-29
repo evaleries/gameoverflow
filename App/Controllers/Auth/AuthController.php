@@ -22,6 +22,7 @@ class AuthController
             Route::back();
         }
 
+        session()->set('__logout_token', base64_encode(md5($user->email . time())));
         session()->set('__auth', $user);
         if ($user->isAdmin()) {
             Route::redirect('dashboard');
@@ -34,15 +35,15 @@ class AuthController
     {
         $request->validate(['name' => 'required|name', 'email' => 'required|email', 'password' => 'required']);
 
-        $sameEmail = User::find(['email' => $request->email]);
+        $sameEmail = User::find(['%email%' => $request->email]);
         if (count($sameEmail) > 0) {
             session()->set('error', 'Email sudah digunakan!');
             Route::back();
         }
 
         $user = (new User)->create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name' => __e($request->name),
+            'email' => strtolower($request->email),
             'password' => md5($request->password)
         ]);
 
@@ -53,6 +54,18 @@ class AuthController
 
         session()->set('success', 'Pendaftaran berhasil! Silahkan login dengan email dan password baru anda');
         Route::redirect('auth/login');
+    }
+
+    public function logout(Request $request)
+    {
+        $request->validate(['logout_token' => 'required']);
+        $logoutTokenSession = session()->get('__logout_token');
+        if ($logoutTokenSession == $request->get('logout_token', 'INVALID')) {
+            session()->unset('__auth');
+            session()->unset('__logout_token');
+        }
+
+        Route::back();
     }
 
     public function login()

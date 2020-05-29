@@ -25,10 +25,7 @@ Route::get('/auth/login', [App\Controllers\Auth\AuthController::class, 'login'],
 Route::get('/auth/register', [App\Controllers\Auth\AuthController::class, 'register'], 'redirectIfLoggedIn');
 Route::post('/auth/authenticate', [App\Controllers\Auth\AuthController::class, 'authenticate'], 'redirectIfLoggedIn');
 Route::post('/auth/registration', [App\Controllers\Auth\AuthController::class, 'registration'], 'redirectIfLoggedIn');
-Route::get('/auth/logout', function () {
-    session()->unset('__auth');
-    Route::back();
-});
+Route::post('/auth/logout', [App\Controllers\Auth\AuthController::class, 'logout'], 'requireLogin');
 
 Route::get('/products', [App\Controllers\Front\ProductController::class, 'index']);
 Route::get('/products/search', [App\Controllers\Front\ProductController::class, 'search']);

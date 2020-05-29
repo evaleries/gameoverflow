@@ -48,34 +48,32 @@
 
                                 <div class="form-group">
                                     <label for="name">Nama</label>
-                                    <input id="name" type="text" class="form-control" name="name" tabindex="1" required autofocus value="<?= old('name') ?>">
-                                    <?php if (session()->has('validation_error', 'name')): ?>
+                                    <input id="name" type="text" class="form-control" placeholder="Nama" name="name" tabindex="1" required autofocus value="<?= old('name') ?>">
                                         <div class="invalid-feedback">
-                                            <?= session()->flash('validation_error', 'name') ?>
+                                        <?= session()->flash('validation_error', 'name', 'Masukkan nama yang valid!') ?>
                                         </div>
-                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus value="<?= old('email') ?>">
-                                    <?php if (session()->has('validation_error', 'email')): ?>
+                                    <input id="email" type="email" class="form-control" placeholder="Email" name="email" tabindex="1" required autofocus value="<?= old('email') ?>">
                                         <div class="invalid-feedback">
-                                            <?= session()->flash('validation_error', 'email') ?>
+                                        <?php if (session()->has('validation_error', 'email')): ?>
+                                            <?= session()->flash('validation_error', 'email', 'Masukkan email yang valid!') ?>
+                                        <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="d-block">
                                         <label for="password" class="control-label">Password</label>
                                     </div>
-                                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                                    <?php if (session()->has('validation_error', 'password')): ?>
+                                    <input id="password" type="password" placeholder="*******" class="form-control" name="password" tabindex="2" required>
                                         <div class="invalid-feedback">
-                                            <?= session()->flash('validation_error', 'password') ?>
+                                        <?php if (session()->has('validation_error', 'password')): ?>
+                                            <?= session()->flash('validation_error', 'password', 'Password tidak valid') ?>
+                                        <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
                                 </div>
 
                                 <div class="form-group">

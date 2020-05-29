@@ -13,13 +13,9 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__right">
                         <div class="header__top__right__language">
-                            <img src="<?= asset('img/language.png') ?>" alt="">
-                            <div>English</div>
-                            <span class="arrow_carrot-down"></span>
-                            <ul>
-                                <li><a href="#">Indonesia</a></li>
-                                <li><a href="#">English</a></li>
-                            </ul>
+                            <?php if (isAuthenticated()): ?>
+                            <form action="auth/logout" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Logout</button></form>
+                            <?php endif; ?>
                         </div>
                         <div class="header__top__right__auth">
                             <?php if (isAuthenticated()): ?>
@@ -46,14 +42,6 @@
                         <li class="<?= request()->is('/') ? 'active' : '' ?>"><a href="<?= base_url() ?>">Home</a></li>
                         <li class="<?= request()->is('/products') ? 'active' : '' ?>"><a href="<?= route('products') ?>">Products</a></li>
                         <li class="<?= request()->is('/cart') ? 'active' : '' ?>"><a href="<?= route('cart') ?>">Carts</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
                     </ul>
                 </nav>
             </div>
