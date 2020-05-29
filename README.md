@@ -3,13 +3,20 @@
 </p>
 
 # GameOverflow
-Project Pemrograman Berbasis Website - Tanpa Library/Composer.
+MVC e-commerce, Project Pemrograman Berbasis Website - Tanpa Library/Composer.
 
 ## Ketentuan Project
 - __Dilarang memakai library/composer__.
+- __Manajemen stok barang: 25 pts__
+    - Prosedur Penambahan barang baru
+    - Prosedur Update barang
+    - Prosedur Hapus stok barang
+- __Mekanisme penjualan barang secara online: 25 pts__
+    - Prosedur keranjang belanja
+    - Invoice & nota
+    - Rekap harian / bulanan / tahunan
 - __UI UX: 25 pts__
-- __Fitur Keamanan: 25 pts__
-- __Manage Invoices & Order__
+- __Design DB, Keamanan, Auth, etc: 25 pts__
 
 ## Yang perlu dipelajari
 Adapun materi dan refrensi yang didapatkan untuk membangun project ini:
