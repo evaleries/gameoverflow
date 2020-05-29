@@ -49,6 +49,7 @@ class DB
             ]);
         } catch (\PDOException $e) {
             $this->error = $e->getMessage();
+            throw new \Exception($e);
         } finally {
             if ($query !== null) $this->prepare($query);
         }
