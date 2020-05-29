@@ -1,1 +1,0 @@
-<h1>Hello {{name}}, testing view by {{ name }} - Email <a href="mailto:{{mail}}">me</a></h1>

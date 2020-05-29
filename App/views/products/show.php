@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<?php importView('sections.head', ['pageTitle' => $product->title, 'pageMeta' => ['description' => $product->short_description]]); ?>
+<?php importView('sections.front.head', ['pageTitle' => $product->title, 'pageMeta' => ['description' => $product->short_description]]); ?>
 
 <body>
     <!-- Page Preloder -->
@@ -10,14 +10,14 @@
     </div>
 
     <!-- Humberger Begin -->
-    <?php importVIew('sections.humberger') ?>
+    <?php importVIew('sections.front.humberger') ?>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <?php importView('sections.header'); ?>
+    <?php importView('sections.front.header'); ?>
     <!-- Header Section End -->
 
-    <?php importView('sections.hero', ['heroClass' => 'hero-normal']); ?>
+    <?php importView('sections.front.hero', ['heroClass' => 'hero-normal']); ?>
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="<?= $product->getAssetImage() ?>">
@@ -180,11 +180,11 @@
     <!-- Related Product Section End -->
 
     <!-- Footer Section Begin -->
-    <?php importView('sections.footer') ?>
+    <?php importView('sections.front.footer') ?>
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <?php importView('sections.front-js') ?>
+    <?php importView('sections.front.js') ?>
 
 
 </body>

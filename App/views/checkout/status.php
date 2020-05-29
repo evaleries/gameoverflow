@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<?php importView('sections.head', ['pageTitle' => 'Order ' . $status ? 'Berhasil' : 'Gagal']) ?>
+<?php importView('sections.front.head', ['pageTitle' => 'Order ' . $status ? 'Berhasil' : 'Gagal']) ?>
 
 <body>
     <!-- Page Preloder -->
@@ -10,19 +10,19 @@
     </div>
     
     <!-- Humberger Begin -->
-    <?php importView('sections.humberger') ?>
+    <?php importView('sections.front.humberger') ?>
     <!-- Humberger End -->
     
     <!-- Header Section Begin -->
-    <?php importView('sections.header') ?>
+    <?php importView('sections.front.header') ?>
     <!-- Header Section End -->
     
     <!-- Hero Section Begin -->
-    <?php importView('sections.hero', ['heroClass' => 'hero-normal']) ?>
+    <?php importView('sections.front.hero', ['heroClass' => 'hero-normal']) ?>
     <!-- Hero Section End -->
     
     <!-- Breadcrumb Section Begin -->
-    <?php importView('sections.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Order Status' => '#']]) ?>
+    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Order Status' => '#']]) ?>
     <!-- Breadcrumb Section End -->
     
     <!-- Checkout Section Begin -->
@@ -45,11 +45,11 @@
     <!-- Checkout Section End -->
     
     <!-- Footer Section Begin -->
-    <?php importView('sections.footer') ?>
+    <?php importView('sections.front.footer') ?>
     <!-- Footer Section End -->
     
     <!-- Js Plugins -->
-    <?php importView('sections.front-js') ?>
+    <?php importView('sections.front.js') ?>
 
 
 </body>

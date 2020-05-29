@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<?php importView('sections.head'); ?>
+<?php importView('sections.front.head'); ?>
 
 <body>
     <!-- Page Preloder -->
@@ -10,19 +10,19 @@
     </div>
 
     <!-- Humberger Begin -->
-    <?php importView('sections.humberger'); ?>
+    <?php importView('sections.front.humberger'); ?>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <?php importView('sections.header'); ?>
+    <?php importView('sections.front.header'); ?>
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <?php importView('sections.hero'); ?>
+    <?php importView('sections.front.hero'); ?>
     <!-- Hero Section End -->
 
     <!-- Categories Section Begin -->
-    <?php importView('sections.categories-slider'); ?>
+    <?php importView('sections.front.categories-slider'); ?>
     <!-- Categories Section End -->
 
     <!-- Latest Section Begin -->
@@ -67,11 +67,11 @@
 
 
     <!-- Footer Section Begin -->
-    <?php importView('sections.footer'); ?>
+    <?php importView('sections.front.footer'); ?>
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <?php importView('sections.front-js'); ?>
+    <?php importView('sections.front.js'); ?>
 
 
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<?php importView('sections.head', ['pageTitle' => 'Shopping Cart']) ?>
+<?php importView('sections.front.head', ['pageTitle' => 'Shopping Cart']) ?>
 
 <body>
     <!-- Page Preloder -->
@@ -10,19 +10,19 @@
     </div>
 
     <!-- Humberger Begin -->
-    <?php importView('sections.humberger') ?>
+    <?php importView('sections.front.humberger') ?>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <?php importView('sections.header') ?>
+    <?php importView('sections.front.header') ?>
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <?php importView('sections.hero', ['heroClass' => 'hero-normal']) ?>
+    <?php importView('sections.front.hero', ['heroClass' => 'hero-normal']) ?>
     <!-- Hero Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <?php importView('sections.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Cart' => '/cart']]) ?>
+    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Cart' => '/cart']]) ?>
     <!-- Breadcrumb Section End -->
 
     <!-- Shoping Cart Section Begin -->
@@ -98,11 +98,11 @@
     <!-- Shoping Cart Section End -->
 
     <!-- Footer Section Begin -->
-    <?php importView('sections.footer') ?>
+    <?php importView('sections.front.footer') ?>
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <?php importView('sections.front-js') ?>
+    <?php importView('sections.front.js') ?>
 
     <script>
         $(document).ready(function () {
