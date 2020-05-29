@@ -47,8 +47,9 @@ class BaseModel implements CrudContracts
     public function __construct()
     {
         if (! self::$db instanceof DB) {
-            self::$db = new DB();
+            self::$db = service(\App\Core\DB::class);
         }
+
     }
 
     public static function PDO() {
@@ -130,18 +131,19 @@ class BaseModel implements CrudContracts
         $fillable = self::propAccessible($class, 'fillable');
         $attributes = self::propAccessible($class, 'attributes');
         $primaryColumn = self::methodAccessible($class, 'getKey')->invoke($instance);
+        $validAttributes = self::prepareFillable($fillable->getValue($instance), $object);
 
         // fill attributes & set primary key
-        $attributes->setValue($instance, self::prepareFillable($fillable->getValue($instance), $object));
+        $attributes->setValue($instance, $validAttributes);
         self::methodAccessible($class, 'setPrimaryKey')->invoke($instance, $object[$primaryColumn]);
 
         // fill foreign attributes
         if ($class->hasProperty('foreignAttributes')) {
-            $registeredAttributes = $attributes->getValue($instance);
             $foreignAttributes = self::propAccessible($class, 'foreignAttributes');
+            $attributeKeys = array_keys($validAttributes);
             $tempForeign = [];
             foreach ($object as $key => $val) {
-                if (! in_array($key, $registeredAttributes)) {
+                if (! in_array($key, $attributeKeys)) {
                     $tempForeign[$key] = $val;
                 }
             }
@@ -538,11 +540,17 @@ class BaseModel implements CrudContracts
 
     public function __get($name)
     {
-        if ($this->__isset($name)) {
-            if ($this->callGetters($this, $name)) return null;
+        $getter = $this->getFunctionName($name, 'get');
+        if ($this->__isset($name) && !in_array($name, $this->dates)) {
+            if (method_exists($this, $getter)) return $this->callMethod($this, $method);
+            
             return $this->attributes[$name];
         } elseif (isset($this->foreignAttributes[$name])) {
             return $this->foreignAttributes[$name];
+        } elseif (in_array($name, $this->dates) && isset($this->attributes[$name])) {
+            if (method_exists($this, $getter)) return $this->callMethod($this, $method);
+
+            return $this->getDate($this->attributes[$name]);
         } elseif ($name == $this->getKey() && $this->getPrimaryKey() !== null) {
             return $this->getPrimaryKey();
         }
@@ -597,10 +605,6 @@ class BaseModel implements CrudContracts
     {
         if (self::$db instanceof \PDO && method_exists(self::$db, $name)) {
             return call_user_func_array([self::$db, $name], $arguments);
-        }
-
-        if (isset($this->dates[$name]) && !method_exists($this, 'get' . ucwords(str_replace('_', '', $name)))) {
-            return $this->getDate($this->attributes['date'], $arguments);
         }
 
         $getter = $this->getFunctionName($name, 'get');
