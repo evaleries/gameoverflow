@@ -1,4 +1,6 @@
-![GameOverflow](https://raw.githubusercontent.com/evaleries/gameoverflow/master/public/assets/img/logo.png)
+<p align="center">
+<img src="https://raw.githubusercontent.com/evaleries/gameoverflow/master/public/assets/img/logo.png" alt="GameOverflow">
+</p>
 
 # GameOverflow
 Project Pemrograman Berbasis Website - Tanpa Library/Composer.
