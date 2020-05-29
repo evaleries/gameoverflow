@@ -60,7 +60,7 @@ class Request
                 }
             }
 
-            return $this->requestData[$param];
+            return $this->get($param, null);
         }
     }
 
