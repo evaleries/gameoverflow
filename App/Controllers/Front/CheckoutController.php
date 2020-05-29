@@ -41,7 +41,7 @@ class CheckoutController extends Controller
             $order = (new Order)->create([
                 'user_id' => auth()->id,
                 'description' => $request->get('description'),
-                'status' => 0
+                'status' => Order::PROCESSING
             ]);
 
             $carts = session()->get('__cart', ['data' => []]);
@@ -79,17 +79,21 @@ class CheckoutController extends Controller
                 // $productCode->update();
             }
 
-            (new Payment)->create([
-                'order_id' => $order->id,
-                'amount' => $amount,
-                'bank_name' => $request->bank_name,
-                'bank_number' => $request->bank_number
-            ]);
+            // (new Payment)->create([
+            //     'order_id' => $order->id,
+            //     'amount' => $amount,
+            //     'bank_name' => $request->bank_name,
+            //     'bank_number' => $request->bank_number
+            // ]);
 
+            $due_date = new \DateTime('now');
+            $due_date->add(\DateInterval::createFromDateString('1 week'));
             (new Invoice)->create([
                 'user_id' => auth()->id,
                 'order_id' => $order->id,
-                'no' => generateInvoiceNo()
+                'no' => generateInvoiceNo(),
+                'title' => 'Invoice untuk Order #'. $order->id,
+                'due_date' => $due_date->format('Y-m-d H:i:s')
             ]);
 
             Order::PDO()->commit();
@@ -100,13 +104,16 @@ class CheckoutController extends Controller
             return Route::redirect('/checkout/failed');
         }
 
+        session()->set('checkout_order_id', $order->id);
+
         return Route::redirect('/checkout/success');
     }
 
     public function success()
     {
         $this->isCheckoutHasStartedOrRedirect();
-        view('checkout.status', ['status' => true, 'message' => 'Pesanan Berhasil! Invoice akan dikirim ke email anda'])->output();
+        
+        view('checkout.status', ['status' => true, 'message' => 'Pesanan berhasil! Order #'. session()->flash('checkout_order_id') .' <br/> Invoice akan dikirim ke email anda '])->output();
         session()->unset('__cart');
         session()->unset('checkout_started');
     }
