@@ -80,9 +80,10 @@ class Session
      * Mengambil session dan di return, lalu di hapus.
      * @param $key
      * @param null $secondKey
+     * @param mixed|null $defaultValue
      * @return mixed|null
      */
-    public function flash($key, $secondKey = null)
+    public function flash($key, $secondKey = null, $defaultValue = null)
     {
         if ($secondKey !== null && isset($_SESSION[$key][$secondKey])) {
             $val = $_SESSION[$key][$secondKey];
@@ -96,7 +97,7 @@ class Session
             return $val;
         }
 
-        return null;
+        return $defaultValue;
     }
 
     /**

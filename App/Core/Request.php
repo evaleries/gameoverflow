@@ -55,7 +55,7 @@ class Request
                     $this->__set($param, null);
                     $this->errors[$param] = [
                         'field' => $param,
-                        'message' => $param . ' is required a valid email!'
+                        'message' => $param . ' is required'
                     ];
                 }
             }
