@@ -21,6 +21,9 @@ Route::get('/admin', function () {
     echo 'hello admin '. auth()->name;
 }, 'requireAdmin');
 
+Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');
+Route::get('/customer/invoice', [App\Controllers\Customer\DashboardController::class, 'invoice'], 'requireLogin');
+
 Route::get('/auth/login', [App\Controllers\Auth\AuthController::class, 'login'], 'redirectIfLoggedIn');
 Route::get('/auth/register', [App\Controllers\Auth\AuthController::class, 'register'], 'redirectIfLoggedIn');
 Route::post('/auth/authenticate', [App\Controllers\Auth\AuthController::class, 'authenticate'], 'redirectIfLoggedIn');

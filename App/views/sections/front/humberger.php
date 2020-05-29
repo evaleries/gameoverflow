@@ -21,7 +21,7 @@
         </div> -->
         <div class="header__top__right__auth">
         <?php if (isAuthenticated()): ?>
-            <a href="<?= route(auth()->isAdmin() ? 'admin' : 'user') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
+            <a href="<?= route(auth()->isAdmin() ? 'admin' : 'customer') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
         <?php else: ?>
             <a href="<?= route('auth/login') ?>"><i class="fa fa-user"></i> Login</a>
         <?php endif; ?>
