@@ -12,9 +12,12 @@
                 <div class="d-sm-none d-lg-inline-block">Hi, <?= auth()->name ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="#" class="dropdown-item has-icon text-danger">
+                <a href="#" onclick="document.getElementById('logoutForm').submit();" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
+                <form class="d-none" id="logoutForm" method="POST" action="<?= route('auth/logout') ?>">
+                    <input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>">
+                </form>
             </div>
         </li>
     </ul>

@@ -63,6 +63,7 @@ class AuthController
         if ($logoutTokenSession == $request->get('logout_token', 'INVALID')) {
             session()->unset('__auth');
             session()->unset('__logout_token');
+            session()->set('success', 'Logout berhasil!');
         }
 
         Route::back();
