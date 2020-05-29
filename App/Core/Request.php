@@ -28,11 +28,6 @@ class Request
             }
         }
 
-        if (!empty($errors)) {
-            session()->set('errors', $this->errors);
-            return false;
-        }
-
         return true;
     }
 
@@ -51,7 +46,7 @@ class Request
                     ];
                 }
             } elseif ($rule == 'required') {
-                if (! $this->__isset($param) && !empty(trim($this->__get($param)))) {
+                if (! $this->__isset($param)) {
                     $this->__set($param, null);
                     $this->errors[$param] = [
                         'field' => $param,
