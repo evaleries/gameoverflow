@@ -3018,9 +3018,9 @@ ol {
 		opacity: 1;
 		left: 0;
 	}
-	.humberger__menu__logo {
+	/* .humberger__menu__logo {
 		margin-bottom: 30px;
-	}
+	} */
 	.humberger__menu__logo a {
 		display: inline-block;
 	}
