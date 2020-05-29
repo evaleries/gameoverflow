@@ -64,4 +64,8 @@ $services->put('session', function () {
     return new \App\Core\Session(120);
 }, \App\Core\Session::class);
 
+$services->put('database', function () {
+    return new \App\Core\DB();
+}, \App\Core\DB::class);
+
 \App\Core\Route::run($services);
