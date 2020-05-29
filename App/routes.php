@@ -12,6 +12,11 @@ Route::post('/cart', [App\Controllers\Front\CartController::class, 'add']);
 Route::post('/cart/delete', [App\Controllers\Front\CartController::class, 'delete']);
 Route::post('/cart/update', [App\Controllers\Front\CartController::class, 'update']);
 
+Route::get('/checkout', [App\Controllers\Front\CheckoutController::class, 'index'], 'requireLogin');
+Route::post('/checkout/process', [App\Controllers\Front\CheckoutController::class, 'process'], 'requireLogin');
+Route::get('/checkout/success', [App\Controllers\Front\CheckoutController::class, 'success'], 'requireLogin');
+Route::get('/checkout/failed', [App\Controllers\Front\CheckoutController::class, 'failed'], 'requireLogin');
+
 Route::get('/admin', function () {
     echo 'hello admin '. auth()->name;
 }, 'requireAdmin');
