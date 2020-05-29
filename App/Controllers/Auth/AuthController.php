@@ -25,7 +25,7 @@ class AuthController
         session()->set('__logout_token', base64_encode(md5($user->email . time())));
         session()->set('__auth', $user);
         if ($user->isAdmin()) {
-            Route::redirect('dashboard');
+            Route::redirect('admin');
         }
 
         Route::redirect('/');

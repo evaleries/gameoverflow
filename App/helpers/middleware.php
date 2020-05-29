@@ -5,7 +5,7 @@ function isAuthenticated() {
 }
 
 function requireLogin($to = null) {
-    return ! isAuthenticated() ? \App\Core\Route::redirect('auth/login') : null;
+    return ! isAuthenticated() ? \App\Core\Route::redirect('auth/login') : true;
 }
 
 function redirectIfLoggedIn() {
