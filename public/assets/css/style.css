@@ -685,12 +685,12 @@ ol {
 	border: none;
 	height: 48px;
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #212529;
 	padding-left: 20px;
 }
 
 .hero__search__form form input::placeholder {
-	color: #b2b2b2;
+	color: #212529;
 }
 
 .hero__search__form form button {
@@ -1374,7 +1374,7 @@ ol {
 
 .product__discount__item__text span {
 	font-size: 14px;
-	color: #b2b2b2;
+	color: #212529;
 	display: block;
 	margin-bottom: 4px;
 }
@@ -1412,7 +1412,7 @@ ol {
 .product__discount__slider.owl-carousel .owl-dots button {
 	height: 12px;
 	width: 12px;
-	border: 1px solid #b2b2b2;
+	border: 1px solid #212529;
 	border-radius: 50%;
 	margin-right: 12px;
 }
@@ -1498,7 +1498,7 @@ ol {
 
 .filter__found h6 {
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #212529;
 }
 
 .filter__found h6 span {
@@ -1514,7 +1514,7 @@ ol {
 
 .filter__option span {
 	font-size: 24px;
-	color: #b2b2b2;
+	color: #212529;
 	margin-right: 10px;
 	cursor: pointer;
 	-webkit-transition: all, 0.3s;
@@ -1635,9 +1635,9 @@ ol {
 	display: inline-block;
 	width: 30px;
 	height: 30px;
-	border: 1px solid #b2b2b2;
+	border: 1px solid #212529;
 	font-size: 14px;
-	color: #b2b2b2;
+	color: #212529;
 	font-weight: 700;
 	line-height: 28px;
 	text-align: center;
@@ -1952,7 +1952,7 @@ ol {
 
 .shoping__cart__table table tbody tr td.shoping__cart__item__close span {
 	font-size: 24px;
-	color: #b2b2b2;
+	color: #212529;
 	cursor: pointer;
 }
 
@@ -2007,14 +2007,14 @@ ol {
 	height: 46px;
 	border: 1px solid #cccccc;
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #212529;
 	text-align: center;
 	display: inline-block;
 	margin-right: 15px;
 }
 
 .shoping__discount form input::placeholder {
-	color: #b2b2b2;
+	color: #212529;
 }
 
 .shoping__discount form button {
@@ -2108,7 +2108,7 @@ ol {
 }
 
 .checkout__form p {
-	column-rule: #b2b2b2;
+	column-rule: #212529;
 }
 
 .checkout__input {
@@ -2130,7 +2130,7 @@ ol {
 	border: 1px solid #ebebeb;
 	padding-left: 20px;
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #212529;
 	border-radius: 4px;
 }
 
@@ -2139,7 +2139,7 @@ ol {
 }
 
 .checkout__input input::placeholder {
-	color: #b2b2b2;
+	color: #212529;
 }
 
 .checkout__input__checkbox {
@@ -2297,7 +2297,7 @@ ol {
 
 .blog__item__text ul li {
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #212529;
 	list-style: none;
 	display: inline-block;
 	margin-right: 15px;
@@ -2327,7 +2327,7 @@ ol {
 	color: #1c1c1c;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	border: 1px solid #b2b2b2;
+	border: 1px solid #212529;
 	padding: 14px 20px 12px;
 	border-radius: 25px;
 }
