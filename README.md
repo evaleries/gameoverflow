@@ -28,6 +28,8 @@ Adapun materi dan refrensi yang didapatkan untuk membangun project ini:
 List yang sudah diimplementasi:
 - Pipeline request ke 1 file php
 - Routing (Url rewrite)
+- Service Container
+- Dependency Injection 
 - Session (Session handling)
 - Request (Incoming request handler)
 - Database (Menggunakan PDO)
