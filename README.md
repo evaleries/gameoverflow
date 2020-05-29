@@ -22,6 +22,7 @@ Adapun materi dan refrensi yang didapatkan untuk membangun project ini:
 - [PHP Session](https://stackoverflow.com/questions/16398392/php-session-in-class)
 - [(The only proper) PDO tutorial](https://phpdelusions.net/pdo)
 - [Passing a variable from one php include file to another: global vs. not](https://stackoverflow.com/questions/4675932/passing-a-variable-from-one-php-include-file-to-another-global-vs-not)
+- [PHP Magic Methods](https://www.tutorialdocs.com/article/16-php-magic-methods.html)
 
 ## Implementasi
 List yang sudah diimplementasi:
