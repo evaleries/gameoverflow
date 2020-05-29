@@ -143,3 +143,7 @@ function auth() {
 function old($key, $default = null) {
     return request()->getOldRequest($key, $default);
 }
+
+function generateInvoiceNo($prefix = 'I') {
+    return $prefix . '-' . strtoupper(substr(uniqid($prefix . time()), 0, 9));
+}
