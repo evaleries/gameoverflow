@@ -61,7 +61,7 @@ $services->put('request', function () {
 }, \App\Core\Request::class);
 
 $services->put('session', function () {
-    return new \App\Core\Session(60);
+    return new \App\Core\Session(120);
 }, \App\Core\Session::class);
 
 \App\Core\Route::run($services);
