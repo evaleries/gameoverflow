@@ -43,7 +43,8 @@ Milestone yang perlu dicapai
 - [X] Listing Products
 - [X] Cart Session
 - [X] Authentication
-- [ ] User - Dashboard
+- [X] User - Dashboard
+- [X] User - View Invoices
 - [ ] User - View Orders
 - [ ] Admin - Dashboard
 - [ ] Admin - Manage Invoice
