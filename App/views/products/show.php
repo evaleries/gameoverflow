@@ -60,7 +60,7 @@
                         <div class="product__details__quantity">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="number" name="quantity" minimum="1" value="1">
+                                    <input type="number" name="quantity" min="1" max="<?= $stock ?>" value="1">
                                 </div>
                             </div>
                         </div>
@@ -68,6 +68,7 @@
                         <input type="hidden" name="slug" value="<?= $product->slug ?>">
                         <input type="submit" class="primary-btn" style="border-style: none" value="ADD TO CART">
                         <ul>
+                            <li><b>Stock</b> <span><?= $stock ?></span></li>
                             <li><b>Category</b> <span><?=  $product->category_name ?></span></li>
                             <li><b>Developer</b> <a href="<?= $product->developer_website ?>" target="_new"><span><?= $product->developer_name ?></span></a></li>
                             <li><b>Release Date</b> <span><?= $product->getReleasedAt() ?></span></li>

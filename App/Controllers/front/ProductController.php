@@ -4,10 +4,11 @@
 namespace App\Controllers\Front;
 
 
-use App\Controllers\Controller;
+use PDO;
 use App\Core\Request;
 use App\Models\Product;
-use PDO;
+use App\Models\ProductCode;
+use App\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -50,6 +51,10 @@ class ProductController extends Controller
         WHERE p.slug = :slug
         ORDER BY p.created_at DESC";
         $product = Product::morphRaw($query, compact('slug'), PDO::FETCH_ASSOC);
-        view('products.show', compact('product'))->output();
+        
+        ProductCode::raw("SELECT * FROM product_codes WHERE product_id = :product AND user_id IS NULL AND status = 0", ['product' => $product->id]);
+        $stock = ProductCode::DB()->count();
+
+        view('products.show', compact('product', 'stock'))->output();
     }
 }
