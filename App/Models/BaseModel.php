@@ -51,6 +51,14 @@ class BaseModel implements CrudContracts
         }
     }
 
+    public static function PDO() {
+        return self::$db->PDO();
+    }
+
+    public static function DB() {
+        return self::$db;
+    }
+
     /**
      * @return int
      */
@@ -368,12 +376,11 @@ class BaseModel implements CrudContracts
             implode(', ', self::transformParam($prepareFillable))
         );
 
-        $result = [];
         try {
-            $result = self::$db->query($query)->execute($data);
+            self::$db->query($query)->execute($data);
             $this->setPrimaryKey(self::$db->PDO()->lastInsertId());
         } catch (\PDOException $e) {
-            if ($e->getCode() == 23000) {
+            if ($e->getCode() == 1062) {
                 return false;
             } else {
                 throw $e;
@@ -382,7 +389,7 @@ class BaseModel implements CrudContracts
 
         $this->attributes = array_replace($this->attributes, $data);
 
-        return (self::$db->PDO()->lastInsertId() !== false);
+        return (self::$db->PDO()->lastInsertId() !== false) ? $this : false;
     }
 
     /**
@@ -416,22 +423,21 @@ class BaseModel implements CrudContracts
             $this->getPrimaryKey()
         );
 
+
         $result = [];
         try {
-            $result = self::$db->query($query)->execute($data)->first(PDO::FETCH_ASSOC);
+            $result = self::$db->query($query)->execute($data);
         } catch (\PDOException $e) {
-            if ($e->getCode() == 23000) {
+            if ($e->getCode() == 1062) {
                 return false;
             } else {
                 throw $e;
             }
         }
 
-        $instance = $this;
-        if (self::$db->rowCount() !== false && $result !== false)
-            $instance = self::morph($result);
+        $this->attributes = array_replace($this->attributes, $data);
 
-        return (! empty($data)) ? self::$db->rowCount() : $instance;
+        return $this;
     }
 
     /**
@@ -537,6 +543,8 @@ class BaseModel implements CrudContracts
             return $this->attributes[$name];
         } elseif (isset($this->foreignAttributes[$name])) {
             return $this->foreignAttributes[$name];
+        } elseif ($name == $this->getKey() && $this->getPrimaryKey() !== null) {
+            return $this->getPrimaryKey();
         }
 
         return null;
