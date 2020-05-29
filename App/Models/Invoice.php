@@ -12,7 +12,6 @@ class Invoice extends Model
     protected $foreignAttributes = [];
 
     protected $fillable = [
-        'user_id',
         'order_id',
         'title',
         'no',
@@ -22,5 +21,13 @@ class Invoice extends Model
         'updated_at'
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'due_date'
+    ];
+
     protected $table = 'invoices';
+
+
 }

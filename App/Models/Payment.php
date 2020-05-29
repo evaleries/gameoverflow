@@ -7,6 +7,10 @@ use App\Models\BaseModel as Model;
 
 class Payment extends Model
 {
+
+    public const PENDING = 0;
+    public const CONFIRMED = 1;
+
     protected $attributes = [];
 
     protected $foreignAttributes = [];
@@ -16,6 +20,7 @@ class Payment extends Model
         'amount',
         'bank_name',
         'bank_number',
+        'status',
         'created_at',
         'updated_at'
     ];

@@ -7,7 +7,7 @@ use App\Models\BaseModel as Model;
 
 class Order extends Model
 {
-    public const AWAITING_PAYMENT = 0;
+    public const PENDING = 0;
     public const PROCESSING = 1;
     public const COMPLETED = 2;
     public const CANCELLED = 3;

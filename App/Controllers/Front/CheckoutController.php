@@ -79,17 +79,17 @@ class CheckoutController extends Controller
                 // $productCode->update();
             }
 
-            // (new Payment)->create([
-            //     'order_id' => $order->id,
-            //     'amount' => $amount,
-            //     'bank_name' => $request->bank_name,
-            //     'bank_number' => $request->bank_number
-            // ]);
+            (new Payment)->create([
+                'order_id' => $order->id,
+                'amount' => $amount,
+                'bank_name' => __e($request->bank_name),
+                'bank_number' => __e($request->bank_number),
+                'status' => Payment::PENDING,
+            ]);
 
             $due_date = new \DateTime('now');
             $due_date->add(\DateInterval::createFromDateString('1 week'));
             (new Invoice)->create([
-                'user_id' => auth()->id,
                 'order_id' => $order->id,
                 'no' => generateInvoiceNo(),
                 'title' => 'Invoice untuk Order #'. $order->id,
@@ -113,7 +113,7 @@ class CheckoutController extends Controller
     {
         $this->isCheckoutHasStartedOrRedirect();
         
-        view('checkout.status', ['status' => true, 'message' => 'Pesanan berhasil! Order #'. session()->flash('checkout_order_id') .' <br/> Invoice akan dikirim ke email anda '])->output();
+        view('checkout.status', ['status' => true, 'message' => 'Pesanan berhasil! Order #'. session()->flash('checkout_order_id') .' <br/> Invoice dapat dilihat pada dashboard'])->output();
         session()->unset('__cart');
         session()->unset('checkout_started');
     }
