@@ -60,7 +60,7 @@
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="<?= $product->getAssetImage() ?>">
                                     <ul class="product__item__pic__hover">
-\                                        <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
+                                        <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
                                         <li><a href="<?= route('products/' . $product->slug) ?>"><i class="fa fa-search"></i></a></li>
                                     </ul>
                                 </div>
