@@ -37,6 +37,10 @@ function now($format = 'Y-m-d H:i:s') {
     return (new DateTime('now'))->format($format);
 }
 
+function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y') {
+    return (DateTime::createFromFormat($format, $dateString))->format($outputFormat);
+}
+
 function view($path, $data = []) {
     return View::make($path, $data);
 }
@@ -144,6 +148,6 @@ function old($key, $default = null) {
     return request()->getOldRequest($key, $default);
 }
 
-function generateInvoiceNo($prefix = 'I') {
-    return $prefix . '-' . strtoupper(substr(uniqid($prefix . time()), 0, 9));
+function generateInvoiceNo($prefix = 'GO') {
+    return $prefix . '-' . strtoupper(substr(uniqid(time()), 0, 9));
 }
