@@ -63,6 +63,7 @@ class Route {
      * @param null $message
      */
     public static function error($code = 400, $message = null) {
+        http_response_code($code);
         if (View::isExist('errors.' . $code)) {
             view('errors.' . $code, compact('code', 'message'))->output();
         } else {
@@ -90,10 +91,13 @@ class Route {
      */
     public static function is($route)
     {
-        $current = explode('/', self::$currentRoute);
-        return ($route == $current) ? true : (startsWith($route, '/')
-            ? strtolower(explode('/', $route)[1]) == strtolower($current[1])
-            : $route == $current[1]);
+        if ($route == self::$currentRoute) {
+            return true;
+        } elseif (endsWith($route, '*')) {
+            return startsWith(self::$currentRoute, str_replace('*', '', $route));
+        }
+
+        return false;
     }
 
     /**

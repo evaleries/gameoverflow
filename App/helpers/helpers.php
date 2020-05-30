@@ -81,6 +81,21 @@ function startsWith($string, $startString) {
 }
 
 /**
+ * @param $haystack
+ * @param $needle
+ * @return bool
+ * @see https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+ */
+function endsWith($haystack, $needle) {
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}
+
+/**
  * Get base url
  * @return string
  */
