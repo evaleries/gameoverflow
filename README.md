@@ -41,7 +41,7 @@ List yang sudah diimplementasi:
 - Request (Incoming request handler)
 - Database (Menggunakan PDO)
 - Helpers
-- Simle Closure Middleware (Fungsi pada routing yang akan dieksekusi sebelum meng-_invoke_ controller/closure)
+- Simple Closure Middleware (Fungsi pada routing yang akan dieksekusi sebelum meng-_invoke_ controller/closure)
 - View Templating (Memanfaatkan fungsi _include_, _extract_, serta RegEx)
 
 ## TODO
@@ -52,8 +52,8 @@ Milestone yang perlu dicapai
 - [X] Authentication
 - [X] User - Dashboard
 - [X] User - View Invoices
-- [ ] User - View Orders
-- [ ] Admin - Dashboard
+- [X] User - Redeem Games
+- [X] Admin - Dashboard
 - [ ] Admin - Manage Invoice
 - [ ] Admin - Manage Products
 - [ ] Admin - Manage Orders
