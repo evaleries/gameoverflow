@@ -30,7 +30,7 @@
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="<?= request()->is('/') ? 'active' : '' ?>"><a href="<?= base_url() ?>">Home</a></li>
-            <li class="<?= request()->is('/products') ? 'active' : '' ?>"><a href="<?= route('products') ?>">Products</a></li>
+            <li class="<?= request()->is('/products*') ? 'active' : '' ?>"><a href="<?= route('products') ?>">Products</a></li>
             <li class="<?= request()->is('/cart') ? 'active' : '' ?>"><a href="<?= route('cart') ?>">Carts</a></li>
         </ul>
     </nav>
@@ -40,7 +40,7 @@
             <li><i class="fa fa-envelope"></i> hello@gameoverflow.test</li>
             <li>Official game store</li>
             <?php if (isAuthenticated()): ?>
-            <li><form action="auth/logout" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Logout</button></form></li>
+            <li><form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Logout</button></form></li>
             <?php endif; ?>
         </ul>
     </div>

@@ -14,7 +14,7 @@
                     <div class="header__top__right">
                         <div class="header__top__right__language">
                             <?php if (isAuthenticated()): ?>
-                            <form action="auth/logout" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Logout</button></form>
+                            <form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Logout</button></form>
                             <?php endif; ?>
                         </div>
                         <div class="header__top__right__auth">
@@ -40,7 +40,7 @@
                 <nav class="header__menu">
                     <ul>
                         <li class="<?= request()->is('/') ? 'active' : '' ?>"><a href="<?= base_url() ?>">Home</a></li>
-                        <li class="<?= request()->is('/products') ? 'active' : '' ?>"><a href="<?= route('products') ?>">Products</a></li>
+                        <li class="<?= request()->is('/products*') ? 'active' : '' ?>"><a href="<?= route('products') ?>">Products</a></li>
                         <li class="<?= request()->is('/cart') ? 'active' : '' ?>"><a href="<?= route('cart') ?>">Carts</a></li>
                     </ul>
                 </nav>
