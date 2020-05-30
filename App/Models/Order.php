@@ -30,4 +30,48 @@ class Order extends Model
         'created_at',
         'updated_at'
     ];
+
+
+    public function getStatusString()
+    {
+        switch ($this->attributes['status']) {
+            case Order::PENDING:
+                return 'Pending';
+            break;
+
+            case Order::PROCESSING:
+                return 'Processing';
+            break;
+
+            case Order::COMPLETED:
+                return 'Completed';
+            break;
+
+            case Order::CANCELLED:
+                return 'Cancelled';
+            break;
+        }
+    }
+
+    public function determineStatusClass()
+    {
+        switch ($this->attributes['status']) {
+            case Order::PENDING:
+                return 'warning';
+            break;
+
+            case Order::PROCESSING:
+                return 'primary';
+            break;
+
+            case Order::COMPLETED:
+                return 'success';
+            break;
+
+            case Order::CANCELLED:
+                return 'danger';
+            break;
+        }
+    }
+
 }

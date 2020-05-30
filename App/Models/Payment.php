@@ -32,4 +32,10 @@ class Payment extends Model
 
     protected $table = 'payments';
 
+
+    public function getUpdatedAtFormat($format = 'j F Y')
+    {
+        return (new \DateTime($this->attributes['updated_at']))->format($format);
+    }
+
 }
