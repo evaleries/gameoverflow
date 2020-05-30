@@ -17,12 +17,13 @@ Route::post('/checkout/process', [App\Controllers\Front\CheckoutController::clas
 Route::get('/checkout/success', [App\Controllers\Front\CheckoutController::class, 'success'], 'requireLogin');
 Route::get('/checkout/failed', [App\Controllers\Front\CheckoutController::class, 'failed'], 'requireLogin');
 
-Route::get('/admin', function () {
-    echo 'hello admin '. auth()->name;
-}, 'requireAdmin');
+Route::get('/admin', [App\Controllers\Admin\DashboardController::class, 'index'], 'requireAdmin');
+Route::get('/admin/products', [App\Controllers\Admin\DashboardController::class, 'products'], 'requireAdmin');
+Route::get('/admin/products/create', [App\Controllers\Admin\ProductController::class, 'create'], 'requireAdmin');
 
 Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');
 Route::get('/customer/invoice', [App\Controllers\Customer\DashboardController::class, 'invoice'], 'requireLogin');
+Route::post('/customer/redeem', [App\Controllers\Customer\DashboardController::class, 'redeemProduct'], 'requireLogin');
 
 Route::get('/auth/login', [App\Controllers\Auth\AuthController::class, 'login'], 'redirectIfLoggedIn');
 Route::get('/auth/register', [App\Controllers\Auth\AuthController::class, 'register'], 'redirectIfLoggedIn');

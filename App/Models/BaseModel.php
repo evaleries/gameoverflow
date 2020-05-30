@@ -298,7 +298,15 @@ class BaseModel implements CrudContracts
     {
         $class = self::reflect();
         $instance = $class->newInstance();
-        $result = self::$db->query(sprintf("SELECT * FROM %s LIMIT %d, %d", self::resolveProp($class, $instance, 'table'), intval($offset), intval($limit)))->all(PDO::FETCH_ASSOC);
+
+        $table = self::resolveProp($class, $instance, 'table');
+        if ($limit == -1) {
+            $query = sprintf("SELECT * FROM %s", $table);
+        } else {
+            $query = sprintf("SELECT * FROM %s LIMIT %d, %d", $table, intval($offset), intval($limit));
+        }
+        
+        $result = self::$db->query($query)->all(PDO::FETCH_ASSOC);
         if (! $result) {
             return [];
         }
