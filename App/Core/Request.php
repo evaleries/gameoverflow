@@ -46,11 +46,11 @@ class Request
                     ];
                 }
             } elseif ($rule == 'required') {
-                if (! $this->__isset($param)) {
+                if (! $this->__isset($param) || empty(trim($this->requestData[$param]))) {
                     $this->__set($param, null);
                     $this->errors[$param] = [
                         'field' => $param,
-                        'message' => $param . ' is required'
+                        'message' => $param . ' is required.'
                     ];
                 }
             }
@@ -127,7 +127,10 @@ class Request
 
     public function __destruct()
     {
-        session()->set('validation_errors', $this->errors);
+        if ($this->isError()) {
+            session()->set('validation_errors', $this->errors);
+        }
+
         session()->set('__old_request', $this->requestData);
     }
 }
