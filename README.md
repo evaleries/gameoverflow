@@ -5,6 +5,9 @@
 # GameOverflow
 MVC e-commerce, Project Pemrograman Berbasis Website - Tanpa Library/Composer.
 
+## Live Demo
+GameOverflow dapat dilihat melalui demo [go.reach.my.id](http://go.reach.my.id)
+
 ## Ketentuan Project
 - __Dilarang memakai library/composer__.
 - __Manajemen stok barang: 25 pts__
@@ -55,7 +58,7 @@ Milestone yang perlu dicapai
 - [X] User - Redeem Games
 - [X] Admin - Dashboard
 - [ ] Admin - Manage Invoice
-- [ ] Admin - Manage Products
+- [X] Admin - Manage Products
 - [ ] Admin - Manage Orders
 - [ ] Admin - Manage Users
 
