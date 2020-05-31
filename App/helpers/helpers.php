@@ -166,3 +166,23 @@ function old($key, $default = null) {
 function generateInvoiceNo($prefix = 'GO') {
     return $prefix . '-' . strtoupper(substr(uniqid(time()), 0, 9));
 }
+
+/**
+ * @param string|null $template
+ * @see https://forums.phpfreaks.com/topic/120028-solved-how-to-generate-a-product-serial-number/
+ */
+function generateActivationCode($template = null) {
+    $template   = 'XX99-XX99-99XX-99XX';
+    $k = strlen($template);
+    $sernum = '';
+    for ($i=0; $i<$k; $i++)
+    {
+        switch($template[$i])
+        {
+            case 'X': $sernum .= chr(rand(65,90)); break;
+            case '9': $sernum .= rand(0,9); break;
+            case '-': $sernum .= '-';  break; 
+        }
+    }
+    return $sernum;
+}

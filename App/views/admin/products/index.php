@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php importView('sections.dashboard.head', ['pageTitle' => 'Create Product']) ?>
+<?php importView('sections.dashboard.head', [
+  'pageTitle' => 'Products',
+  'css' => [
+    'modules/datatables/datatables.min.css',
+    'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css'
+  ]
+  ]) 
+?>
 
 <body>
   <div id="app">
@@ -24,38 +31,25 @@
 
           <div class="row">
             <div class="col-lg-12">
+            <?php session()->has('success') ? importView('sections.dashboard.alert', ['status' => 'success', 'message' => session()->flash('success')]) : '' ?>
               <div class="card card-info">
                 <div class="card-header">
                   <h4>Products</h4>
-                  <div class="card-header-action">
-                    <a href="<?= route('admin/orders') ?>" class="btn btn-info"><i class="fas fa-search-plus"></i> Show All</a>
-                  </div>
                 </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive table-invoice">
-                    <table class="table table-striped">
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Invoice ID</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th>Due Date</th>
-                        <th>Order Date</th>
-                        <th>Action</th>
-                      </tr>
-                      <?php if(isset($recentOrders)): foreach($recentOrders as $order): ?>
-                      <tr>
-                        <td>#<?= $order->id ?></a></td>
-                        <td><?= $order->no ?></a></td>
-                        <td><?= $order->name ?></td>
-                        <td><div class="badge badge-<?= $order->determineStatusClass() ?>"><?= $order->getStatusString() ?></div></td>
-                        <td><?= dt($order->due_date, 'Y-m-d H:i:s', 'j F Y') ?></td>
-                        <td><?= $order->created_at ?></td>
-                        <td>
-                          <a href="<?= route('admin/invoice', ['no' => $order->no]) ?>" class="btn btn-primary">Detail</a>
-                        </td>
-                      </tr>
-                      <?php endforeach; endif; ?>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-striped" id="table-products">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Title</th>
+                          <th>Price</th>
+                          <th>Category</th>
+                          <th>Developer</th>
+                          <th>Release Date</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
                     </table>
                   </div>
                 </div>
@@ -70,7 +64,41 @@
     </div>
   </div>
 
-  <?php importView('sections.dashboard.js') ?>
+  <?php importView('sections.dashboard.js', [
+    'js' => [
+      'modules/datatables/datatables.min.js',
+      'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js'
+    ]
+  ]) ?>
+
+  <script>
+  $(document).ready(function () {
+    $('#table-products').DataTable({
+      dom: 'Bfrtip',
+      ajax: '<?= route('admin/products/api') ?>',
+      ordering: false,
+      columns: [
+        { data: "id" },
+        { data: "title" },
+        {
+          data: "price",
+          render: function (val, type, row) {
+            return val == 0 ? 'Gratis' : 'Rp ' + val + ',-'
+          }
+        },
+        { data: "category" },
+        { data: "developer" },
+        { data: "released_at" },
+        { 
+          data: "slug",
+          render: function (val, type, row) {
+            return `<a href="<?= route('admin/products/') ?>${val}/edit" class="btn btn-info"><i class="fas fa-pencil"></i> Edit</a>`
+          }
+        }
+      ]
+    });
+  });
+  </script>
 
 </body>
 </html>
