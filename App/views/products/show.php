@@ -66,9 +66,11 @@
                         </div>
                         <input type="hidden" name="id" value="<?= $product->id ?>">
                         <input type="hidden" name="slug" value="<?= $product->slug ?>">
+                        <?php if ($stock > 1): ?>
                         <input type="submit" class="primary-btn" style="border-style: none" value="ADD TO CART">
+                        <?php endif; ?>
                         <ul>
-                            <li><b>Stock</b> <span><?= $stock ?></span></li>
+                            <li><b>Stock</b> <span><?= $stock > 0 ? $stock : '<b>Out of Stock</b>' ?></span></li>
                             <li><b>Category</b> <span><?=  $product->category_name ?></span></li>
                             <li><b>Developer</b> <a href="<?= $product->developer_website ?>" target="_new"><span><?= $product->developer_name ?></span></a></li>
                             <li><b>Release Date</b> <span><?= $product->getReleasedAt() ?></span></li>

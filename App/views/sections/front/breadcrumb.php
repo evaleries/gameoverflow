@@ -4,7 +4,7 @@
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
                     <?php if (isset($breadcrumbs)): ?>
-                    <h2><?= $currentPage = array_keys($breadcrumbs)[count($breadcrumbs) - 1] ?></h2>
+                    <h2><?= $currentPage = array_key_last($breadcrumbs) ?></h2>
                     <div class="breadcrumb__option">
                         <?php array_pop($breadcrumbs); foreach ($breadcrumbs as $title => $url): ?>
                             <a href="<?= startsWith($url, 'http') ? $url : route($url) ?>"><?= $title ?></a>

@@ -53,7 +53,7 @@
                                 <form method="POST" action="<?= route('auth/authenticate') ?>" class="needs-validation" novalidate="">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus value="<?= old('email') ?>">
+                                        <input id="email" type="email" class="form-control" name="email" tabindex="1" placeholder="Email" required autofocus value="<?= old('email') ?>">
                                         <div class="invalid-feedback">
                                             <?= session()->flash('validation_error', 'email', 'Masukkan email yang valid!') ?>
                                         </div>
@@ -63,7 +63,7 @@
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
                                         </div>
-                                        <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                                        <input id="password" type="password" class="form-control" name="password" placeholder="password" tabindex="2" required>
                                             <div class="invalid-feedback">
                                                 <?= session()->flash('validation_error', 'password', 'Masukkan password yang valid!') ?>
                                             </div>
