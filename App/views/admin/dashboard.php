@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Total Order</h4>
+                    <h4>Total Pesanan</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($totalOrders) ? $totalOrders : 0 ?>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Proses Order</h4>
+                    <h4>Proses Pesanan</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($orderProcessing) ? $orderProcessing : 0 ?>
@@ -120,7 +120,7 @@
                         <th>Pengguna</th>
                         <th>Status</th>
                         <th>Batas Tanggal</th>
-                        <th>Tanggal Order</th>
+                        <th>Tanggal Pesanan</th>
                         <th>Aksi</th>
                       </tr>
                       <?php if(isset($recentOrders)): foreach($recentOrders as $order): ?>

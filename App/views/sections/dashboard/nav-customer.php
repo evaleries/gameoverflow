@@ -9,7 +9,7 @@
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="<?= asset('img/logo.png') ?>" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Hi, <?= auth()->name ?></div>
+                <div class="d-sm-none d-lg-inline-block">Halo, <?= auth()->name ?></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="#" onclick="document.getElementById('logoutForm').submit();" class="dropdown-item has-icon text-danger">

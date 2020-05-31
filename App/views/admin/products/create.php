@@ -31,12 +31,7 @@
           </div>
 
           <div class="section-body">
-<<<<<<< HEAD
             <h2 class="section-title">Buat Postingan Baru</h2>
-=======
-            <h2 class="section-title">Create New Product</h2>
->>>>>>> 5237699162497000defd2a6275bc37c12b401512
-
             <div class="row">
               <div class="col-12">
                 <?php importView('sections.dashboard.validation-alert'); ?>
