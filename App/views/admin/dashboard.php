@@ -162,7 +162,7 @@
         label: 'Sales',
         data: [<?= implode(', ', array_map(function($data) { return "'". $data->sales ."'"; }, $sales)) ?>],
         borderWidth: 2,
-        backgroundColor: 'rgba(63,82,227,.8)',
+        backgroundColor: 'rgba(63,82,227,.7)',
         borderWidth: 0,
         borderColor: 'transparent',
         pointBorderWidth: 0,
@@ -174,13 +174,13 @@
         label: 'Incomes',
         data: [<?= implode(', ', array_map(function($data) { return $data->income; }, $incomes)) ?>],
         borderWidth: 2,
-        backgroundColor: 'rgba(254,86,83,.7)',
+        backgroundColor: 'rgb(99, 237, 122, .7)',
         borderWidth: 0,
         borderColor: 'transparent',
         pointBorderWidth: 0 ,
         pointRadius: 3.5,
         pointBackgroundColor: 'transparent',
-        pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+        pointHoverBackgroundColor: 'rgb(99, 237, 122, .8)',
       }]
     },
     options: {
@@ -220,10 +220,10 @@
     loop: true,
     responsive: {
       0: {
-        items: 1
+        items: 3
       },
       768: {
-        items: 1
+        items: 2
       },
       1200: {
         items: 2

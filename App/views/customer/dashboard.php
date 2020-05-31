@@ -88,7 +88,7 @@
                   <h4>My Games</h4>
                 </div>
                 <div class="card-body p-0">
-                  <div class="table-responsive table-invoice">
+                  <div class="table-responsive">
                     <table class="table table-striped">
                       <tr>
                         <th>Order ID</th>
@@ -107,7 +107,7 @@
                           <?php if ($game->status == 0): ?>
                             <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Redeem</a>
                           <?php else: ?>
-                            <a href="#" class="btn btn-success" disabled>Redeemed</a>
+                            <a href="#" class="btn disabled btn-outline-success">Redeemed</a>
                           <?php endif; ?>
                         </td>
                       </tr>
@@ -144,7 +144,7 @@
         if (data.activation_code != undefined) {
           tdActivationCode.text(data.activation_code);
         }
-        btnRedeem.prop('disabled', true);
+        btnRedeem.removeClass().addClass('btn disabled btn-outline-success').text('Redeemed');
 
       }).fail(function (error) {
         iziToast.error({
