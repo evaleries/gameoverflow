@@ -152,7 +152,7 @@
         <h1>404</h1>
         <h2>Error - {{code}} Not found</h2>
         <pre>{{ message }}</pre>
-        <a href="javascript:history.back()">go back</a>
+        <a href="javascript:history.back()">Kembali</a>
         <p>GameOverFlow</p>
     </div>
 </div>
