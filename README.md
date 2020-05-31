@@ -5,6 +5,9 @@
 # GameOverflow
 MVC e-commerce, Project Pemrograman Berbasis Website - Tanpa Library/Composer.
 
+## Live Demo
+GameOverflow dapat dilihat melalui demo [go.reach.my.id](http://go.reach.my.id)
+
 ## Ketentuan Project
 - __Dilarang memakai library/composer__.
 - __Manajemen stok barang: 25 pts__
@@ -55,14 +58,14 @@ Milestone yang perlu dicapai
 - [X] User - Redeem Games
 - [X] Admin - Dashboard
 - [ ] Admin - Manage Invoice
-- [ ] Admin - Manage Products
+- [X] [WIP] Admin - Manage Products
 - [ ] Admin - Manage Orders
 - [ ] Admin - Manage Users
 
 ## Flow
 Alur / Life-cycle dari Request -> Response
 1. Pipeline semua request ke public/index.php
-2. Register Services ke ServiceContainer. (Yang sudah di register: Request & Session)
+2. Register Services ke ServiceContainer. (Yang sudah di register: Request, Session, & DB)
 3. __ROUTING__: Regex url dengan routing yang sudah terdapat di routes.php
 4. __ROUTING__: Cari Parameter dengan tipe Class untuk di inject dengan Service yang tersedia di ServiceContainer.
 5. __ROUTING__: Invoke method pada controller / Closure dengan reflection class (jika controller, agar parent::__construct() dieksekusi) dan dengan call_user_func (jika closure)

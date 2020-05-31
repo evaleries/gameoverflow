@@ -94,7 +94,7 @@ class ProductController extends Controller
         $developers = Developer::all(-1);
         $categories = Category::all(-1);
 
-        return view('admin.products.edit', compact('product', 'productCodes', 'developers', 'categories'))->output();
+        return view('admin.products.edit', compact('product', 'developers', 'categories'))->output();
     }
 
     public function update(Request $request)
