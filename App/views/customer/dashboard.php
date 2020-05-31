@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>My Games</h4>
+                    <h4>Game Saya</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($totalGameOwned) ? $totalGameOwned : 0 ?>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Total Game in Store</h4>
+                    <h4>Total Game di Toko</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($totalProductInStore) ? $totalProductInStore : 0 ?>
@@ -50,18 +50,18 @@
             <div class="col-lg-12">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h4>Orders</h4>
+                  <h4>Pesanan</h4>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive table-invoice">
                     <table class="table table-striped">
                       <tr>
-                        <th>Order ID</th>
-                        <th>Invoice ID</th>
-                        <th>Title</th>
+                        <th>ID Pesanan</th>
+                        <th>Tagihan ID</th>
+                        <th>Judul</th>
                         <th>Status</th>
-                        <th>Due Date</th>
-                        <th>Action</th>
+                        <th>Batas Tanggal</th>
+                        <th>Aksi</th>
                       </tr>
                       <?php if(isset($orders)): foreach($orders as $order): ?>
                       <tr>
@@ -85,17 +85,17 @@
             <div class="col-lg-12">
               <div class="card card-success">
                 <div class="card-header">
-                  <h4>My Games</h4>
+                  <h4>Game Saya</h4>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <tr>
-                        <th>Order ID</th>
+                        <th>ID Pesanan</th>
                         <th>Game</th>
-                        <th>Activation Code</th>
-                        <th>Purchase Date</th>
-                        <th>Action</th>
+                        <th>Kode Aktivasi</th>
+                        <th>Tanggal Pembelian</th>
+                        <th>Aksi</th>
                       </tr>
                       <?php if(isset($myGames)): foreach($myGames as $game): ?>
                       <tr>
@@ -105,9 +105,9 @@
                         <td><?= dt($game->bought_date, 'Y-m-d H:i:s', 'j F Y') ?></td>
                         <td>
                           <?php if ($game->status == 0): ?>
-                            <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Redeem</a>
+                            <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Bayar</a>
                           <?php else: ?>
-                            <a href="#" class="btn disabled btn-outline-success">Redeemed</a>
+                            <a href="#" class="btn disabled btn-outline-success">Lunas</a>
                           <?php endif; ?>
                         </td>
                       </tr>

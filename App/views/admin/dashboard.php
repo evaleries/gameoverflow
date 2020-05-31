@@ -115,7 +115,7 @@
                   <div class="table-responsive table-invoice">
                     <table class="table table-striped">
                       <tr>
-                        <th>ID Order</th>
+                        <th>ID Pesanan</th>
                         <th>ID Tagihan</th>
                         <th>Pengguna</th>
                         <th>Status</th>
