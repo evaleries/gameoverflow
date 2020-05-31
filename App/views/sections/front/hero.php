@@ -19,8 +19,8 @@
                 <div class="hero__search">
                     <div class="hero__search__form">
                         <form action="<?= route('products/search') ?>">
-                            <input type="text" name="q" autocomplete="off" placeholder="Search products ..." value="<?= request()->is('/products/search') && request()->q ? request()->q : '' ?>">
-                            <button type="submit" class="site-btn">SEARCH</button>
+                            <input type="text" name="q" autocomplete="off" placeholder="Cari Produk ..." value="<?= request()->is('/products/search') && request()->q ? request()->q : '' ?>">
+                            <button type="submit" class="site-btn">Cari</button>
                         </form>
                     </div>
                     <div class="hero__search__phone">
@@ -38,7 +38,7 @@
                     <div class="hero__text">
                         <span>GameOverflow</span>
                         <h2 class="text-white">Official <br />Game store</h2>
-                        <a href="<?= route('products') ?>" class="primary-btn">SHOP NOW</a>
+                        <a href="<?= route('products') ?>" class="primary-btn">Beli Sekarang</a>
                     </div>
                 </div>
                 <?php endif; ?>
