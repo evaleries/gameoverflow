@@ -13,7 +13,7 @@
                             <li><a href="<?= route('products', ['category' => $category->slug]) ?>"><?= $category->name ?></a></li>
                         <?php endforeach; ?>
                     </ul>
-                </div>
+                </div>                                              
             </div>
             <div class="col-lg-9">
                 <div class="hero__search">

@@ -22,7 +22,7 @@
     <!-- Hero Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Cart' => '/cart']]) ?>
+    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Keranjang' => '/cart']]) ?>
     <!-- Breadcrumb Section End -->
 
     <!-- Shoping Cart Section Begin -->
@@ -35,9 +35,9 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="shoping__product">Products</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
+                                <th class="shoping__product">Produk</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
                                 <th>Total</th>
                                 <th></th>
                             </tr>
@@ -76,19 +76,19 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="<?= route('products') ?>" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="javascript:none;" id="btnUpdate" class="primary-btn cart-btn cart-btn-right">Update Cart</a>
+                        <a href="<?= route('products') ?>" class="primary-btn cart-btn">Lanjut Belanja</a>
+                        <a href="javascript:none;" id="btnUpdate" class="primary-btn cart-btn cart-btn-right">Ubah Keranjang</a>
                     </div>
                 </div>
                 <div class="col-lg-6"></div>
                 <div class="col-lg-6 d-float pull-right">
                     <div class="shoping__checkout">
-                        <h5>Cart Total</h5>
+                        <h5>Total Keranjang</h5>
                         <ul>
                             <li>Total <span><?= isset($carts['formattedTotalPrice']) ? $carts['formattedTotalPrice'] : '0' ?></span></li>
                         </ul>
                         <?php if (isset($carts['data']) && count($carts['data']) > 0): ?>
-                        <a href="<?= route('checkout') ?>" class="primary-btn <?= empty($carts['data']) ? 'disabled' : '' ?>">PROCEED TO CHECKOUT</a>
+                        <a href="<?= route('checkout') ?>" class="primary-btn <?= empty($carts['data']) ? 'disabled' : '' ?>">Lanjutkan Ke Pembayaran</a>
                         <?php endif; ?>
                     </div>
                 </div>

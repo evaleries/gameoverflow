@@ -22,7 +22,7 @@
     <!-- Hero Section End -->
 
     <!-- Breadcrumb Section Begin -->
-    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Products' => '/products']]) ?>
+    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Produk' => '/products']]) ?>
     <!-- Breadcrumb Section End -->
 
     <!-- Product Section Begin -->
@@ -48,7 +48,7 @@
                             <?php if(isset($products->data)): ?>
                             <div class="col-lg-12">
                                 <div class="filter__found">
-                                    <h6><span><?= count($products->data) ?></span> Products found</h6>
+                                    <h6><span><?= count($products->data) ?></span> Produk Ditemukan</h6>
                                 </div>
                             </div>
                             <?php endif; ?>

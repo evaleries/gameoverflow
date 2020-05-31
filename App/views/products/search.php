@@ -48,7 +48,7 @@
                             <?php if(isset($products->data)): ?>
                             <div class="col-lg-12">
                                 <div class="filter__found">
-                                    <h6><span><?= count($products->data) ?></span> Products found</h6>
+                                    <h6><span><?= count($products->data) ?></span> Produk Ditemukan</h6>
                                 </div>
                             </div>
                             <?php endif; ?>
