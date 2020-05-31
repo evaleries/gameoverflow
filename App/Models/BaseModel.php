@@ -52,10 +52,16 @@ class BaseModel implements CrudContracts
 
     }
 
+    /**
+     * @return \PDO
+     */
     public static function PDO() {
         return self::$db->PDO();
     }
 
+    /**
+     * @return \DB
+     */
     public static function DB() {
         return self::$db;
     }
@@ -550,13 +556,13 @@ class BaseModel implements CrudContracts
     {
         $getter = $this->getFunctionName($name, 'get');
         if ($this->__isset($name) && !in_array($name, $this->dates)) {
-            if (method_exists($this, $getter)) return $this->callMethod($this, $method);
+            if (method_exists($this, $getter)) return $this->callMethod($this, $getter);
             
             return $this->attributes[$name];
         } elseif (isset($this->foreignAttributes[$name])) {
             return $this->foreignAttributes[$name];
         } elseif (in_array($name, $this->dates) && isset($this->attributes[$name])) {
-            if (method_exists($this, $getter)) return $this->callMethod($this, $method);
+            if (method_exists($this, $getter)) return $this->callMethod($this, $getter);
 
             return $this->getDate($this->attributes[$name]);
         } elseif ($name == $this->getKey() && $this->getPrimaryKey() !== null) {
