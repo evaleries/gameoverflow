@@ -71,3 +71,6 @@ Alur / Life-cycle dari Request -> Response
 5. __ROUTING__: Invoke method pada controller / Closure dengan reflection class (jika controller, agar parent::__construct() dieksekusi) dan dengan call_user_func (jika closure)
 6. __Controller__: Mengeksekusi isi method.
 7. __Exception__: Menghandle apabila terjadi exception ketika proses eksekusi pada controller
+
+## Credits
+Thanks to Colorlib & Stisla.
