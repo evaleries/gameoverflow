@@ -65,9 +65,12 @@ Milestone yang perlu dicapai
 ## Flow
 Alur / Life-cycle dari Request -> Response
 1. Pipeline semua request ke public/index.php
-2. Register Services ke ServiceContainer. (Yang sudah di register: Request & Session)
+2. Register Services ke ServiceContainer. (Yang sudah di register: Request, Session, & DB)
 3. __ROUTING__: Regex url dengan routing yang sudah terdapat di routes.php
 4. __ROUTING__: Cari Parameter dengan tipe Class untuk di inject dengan Service yang tersedia di ServiceContainer.
 5. __ROUTING__: Invoke method pada controller / Closure dengan reflection class (jika controller, agar parent::__construct() dieksekusi) dan dengan call_user_func (jika closure)
 6. __Controller__: Mengeksekusi isi method.
 7. __Exception__: Menghandle apabila terjadi exception ketika proses eksekusi pada controller
+
+## Credits
+Thanks to Colorlib & Stisla.
