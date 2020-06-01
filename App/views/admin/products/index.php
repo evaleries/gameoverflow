@@ -34,7 +34,7 @@
             <?php session()->has('success') ? importView('sections.dashboard.alert', ['status' => 'success', 'message' => session()->flash('success')]) : '' ?>
               <div class="card card-info">
                 <div class="card-header">
-                  <h4>Products</h4>
+                  <h4>Produk</h4>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
@@ -42,12 +42,12 @@
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Title</th>
-                          <th>Price</th>
-                          <th>Category</th>
+                          <th>Judul</th>
+                          <th>Harga</th>
+                          <th>Kategori</th>
                           <th>Developer</th>
-                          <th>Release Date</th>
-                          <th>Action</th>
+                          <th>Tanggal Rilis</th>
+                          <th>Aksi</th>
                         </tr>
                       </thead>
                     </table>

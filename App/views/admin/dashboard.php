@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Total Orders</h4>
+                    <h4>Total Pesanan</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($totalOrders) ? $totalOrders : 0 ?>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Processing Orders</h4>
+                    <h4>Proses Pesanan</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($orderProcessing) ? $orderProcessing : 0 ?>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Payments Pending Confirmation</h4>
+                    <h4>Antrian Konfirmasi Pembayaran</h4>
                   </div>
                   <div class="card-body">
                     <?= isset($paymentsPending) ? $paymentsPending : 0 ?>
@@ -65,7 +65,7 @@
             <div class="col-lg-8">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h4>Incomes vs Sales (2020)</h4>
+                  <h4>Pendapatan dan Penjualan (2020)</h4>
                 </div>
                 <div class="card-body">
                   <canvas id="incomeChart" height="100"></canvas>
@@ -75,7 +75,7 @@
             <div class="col-lg-4">
               <div class="card card-primary">
                 <div class="card-header">
-                  <h4>Best 5 Products by Sales</h4>
+                  <h4>5 penjualan produk terbaik</h4>
                 </div>
                 <div class="card-body">
                   <div class="owl-carousel owl-theme" id="products-carousel">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="product-details">
                           <div class="product-name"><?= $product->title ?></div>
-                          <div class="text-muted text-small"><?= $product->sales ?> sales</div>
+                          <div class="text-muted text-small"><?= $product->sales ?> Penjualan</div>
                           <div class="product-cta">
                             <a href="<?= route('products/'. $product->slug) ?>" class="btn btn-primary">Detail</a>
                           </div>
@@ -106,22 +106,22 @@
             <div class="col-lg-12">
               <div class="card card-info">
                 <div class="card-header">
-                  <h4>Recent Orders</h4>
+                  <h4>Order Terbaru</h4>
                   <div class="card-header-action">
-                    <a href="<?= route('admin/orders') ?>" class="btn btn-info"><i class="fas fa-search-plus"></i> Show All</a>
+                    <a href="<?= route('admin/orders') ?>" class="btn btn-info"><i class="fas fa-search-plus"></i> Lihat Semua</a>
                   </div>
                 </div>
                 <div class="card-body p-0">
                   <div class="table-responsive table-invoice">
                     <table class="table table-striped">
                       <tr>
-                        <th>Order ID</th>
-                        <th>Invoice ID</th>
-                        <th>User</th>
+                        <th>ID Pesanan</th>
+                        <th>ID Tagihan</th>
+                        <th>Pengguna</th>
                         <th>Status</th>
-                        <th>Due Date</th>
-                        <th>Order Date</th>
-                        <th>Action</th>
+                        <th>Batas Tanggal</th>
+                        <th>Tanggal Pesanan</th>
+                        <th>Aksi</th>
                       </tr>
                       <?php if(isset($recentOrders)): foreach($recentOrders as $order): ?>
                       <tr>
@@ -159,7 +159,7 @@
     data: {
       labels: [<?= implode(', ', array_map(function($data) { return "'". $data->month ."'"; }, $incomes)) ?>],
       datasets: [{
-        label: 'Sales',
+        label: 'Penjualan',
         data: [<?= implode(', ', array_map(function($data) { return "'". $data->sales ."'"; }, $sales)) ?>],
         borderWidth: 2,
         backgroundColor: 'rgba(63,82,227,.7)',
@@ -171,7 +171,7 @@
         pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
       },
       {
-        label: 'Incomes',
+        label: 'Pendapatan',
         data: [<?= implode(', ', array_map(function($data) { return $data->income; }, $incomes)) ?>],
         borderWidth: 2,
         backgroundColor: 'rgb(99, 237, 122, .7)',
