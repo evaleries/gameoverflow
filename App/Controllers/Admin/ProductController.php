@@ -209,7 +209,7 @@ class ProductController extends Controller
             return json(['message' => 'Error!'], 422);
         }
 
-        $activation_codes = explode("\r\n", $request->data);
+        $activation_codes = explode("\n", $request->data);
         foreach ($activation_codes as $code) {
             (new ProductCode)->create([
                 'product_id' => $product_id,
