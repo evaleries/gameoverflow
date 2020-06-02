@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         $totalOrders = Order::rawFirst("SELECT count(*) as total FROM orders")->total;
         $orderProcessing = Order::rawFirst("SELECT count(*) as total FROM orders WHERE status = :status", ['status' => Order::PROCESSING])->total;
-        $paymentsPending = Payment::rawFirst("SELECT count(*) as total FROM payments WHERE status = :status", ['status' => Payment::PENDING])->total;
+        $paymentsPending = Payment::rawFirst("SELECT count(*) as total FROM payments p JOIN orders o ON p.order_id = o.id WHERE p.status = :status AND o.status <> :order_status", ['status' => Payment::PENDING, 'order_status' => Order::CANCELLED])->total;
         $recentOrders = Order::morphManyRaw("SELECT o.*, u.name, i.no, i.due_date FROM orders o JOIN invoices i ON i.order_id = o.id JOIN users u ON o.user_id = u.id ORDER BY o.created_at desc LIMIT 5");
         
         $incomes = Payment::raw('SELECT DATE_FORMAT(created_at, "%d/%m") as month, SUM(amount) as income FROM `payments` WHERE status = :status AND YEAR(created_at) = YEAR(CURRENT_DATE) GROUP BY created_at', ['status' => Payment::CONFIRMED]);
