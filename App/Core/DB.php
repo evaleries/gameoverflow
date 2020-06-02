@@ -12,7 +12,7 @@ class DB
     private static $host = '127.0.0.1';
     private static $user = 'root';
     private static $pass = '';
-    private static $database = 'gameoverflow';
+    private static $database = 'dbgame';
 
     private $attributes = [];
 

@@ -22,7 +22,7 @@
     <!-- Hero Section End -->
     
     <!-- Breadcrumb Section Begin -->
-    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Order Status' => '#']]) ?>
+    <?php importView('sections.front.breadcrumb', ['breadcrumbs' => ['Home' => '/', 'Status Pesanan' => '#']]) ?>
     <!-- Breadcrumb Section End -->
     
     <!-- Checkout Section Begin -->
@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-title text-center pt-4">Order Status</div>
+                        <div class="card-title text-center pt-4">Status Pesanan</div>
                         <div class="card-body">
                             <div class="alert <?= $status ? 'alert-success' : 'alert-danger' ?>">
                                 <p><?= $message ?></p>

@@ -7,8 +7,8 @@ if (session()->has('validation_errors')) {
     ]);
 } elseif (session()->has('error')) {
     importView('sections.dashboard.alert', [
-        'status' => 'danger',
-        'message' => session()-flash('error')
+        'status' => 'danger', 
+        'message' => session()->flash('error')
     ]);
 }
 ?>

@@ -27,6 +27,9 @@ Route::get('/admin/products/api', [App\Controllers\Admin\ProductController::clas
 Route::get('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/edit', [App\Controllers\Admin\ProductController::class, 'edit'], 'requireAdmin');
 Route::post('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/update', [App\Controllers\Admin\ProductController::class, 'update'], 'requireAdmin');
 Route::get('/admin/products/(\d+)/stocks', [App\Controllers\Admin\ProductController::class, 'stocks'], 'requireAdmin');
+Route::post('/admin/products/stocks/(\d+)/update', [App\Controllers\Admin\ProductController::class, 'updateStocks'], 'requireAdmin');
+Route::post('/admin/products/stocks/delete', [App\Controllers\Admin\ProductController::class, 'deleteStocks'], 'requireAdmin');
+Route::post('/admin/products/(\d+)/stocks/create', [App\Controllers\Admin\ProductController::class, 'createStocks', 'requireAdmin']);
 Route::post('/admin/products/store', [App\Controllers\Admin\ProductController::class, 'store'], 'requireAdmin');
 
 Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');

@@ -58,7 +58,7 @@ Milestone yang perlu dicapai
 - [X] User - Redeem Games
 - [X] Admin - Dashboard
 - [ ] Admin - Manage Invoice
-- [X] [WIP] Admin - Manage Products
+- [X] Admin - Manage Products
 - [ ] Admin - Manage Orders
 - [ ] Admin - Manage Users
 

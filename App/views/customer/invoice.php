@@ -15,10 +15,10 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Invoice</h1>
+            <h1>Tagihan</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="<?= route('customer') ?>">Dashboard</a></div>
-              <div class="breadcrumb-item">Invoice #<?= $invoice->no ?></div>
+              <div class="breadcrumb-item">Tagihan #<?= $invoice->no ?></div>
             </div>
           </div>
 
@@ -28,20 +28,20 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="invoice-title">
-                      <h2>Invoice #<?= $invoice->no ?></h2>
-                      <div class="invoice-number">Order #<?= $invoice->order_id ?></div>
+                      <h2>Tagihan #<?= $invoice->no ?></h2>
+                      <div class="invoice-number">Pesanan #<?= $invoice->order_id ?></div>
                     </div>
                     <hr>
                     <div class="row">
                       <div class="col-md-6">
                         <address>
-                          <strong>Billed To:</strong><br>
+                          <strong>Ditagih ke:</strong><br>
                             <?= auth()->name ?><br>
                         </address>
                       </div>
                       <div class="col-md-6 text-md-right">
                         <address>
-                          <strong>Due Date:</strong><br>
+                          <strong>Batas Tanggal:</strong><br>
                           <?= $invoice->due_date ?>
                         </address>
                       </div>
@@ -49,14 +49,14 @@
                     <div class="row">
                       <div class="col-md-6">
                         <address>
-                          <strong>Payment Method:</strong><br>
+                          <strong>Metode Pembayaran:</strong><br>
                           <?= $invoice->bank_name ?> | No. <?= $invoice->bank_number ?><br>
                           A/N. <?= auth()->name ?>
                         </address>
                       </div>
                       <div class="col-md-6 text-md-right">
                         <address>
-                          <strong>Order Date:</strong><br>
+                          <strong>Tanggal Pesanan:</strong><br>
                           <?= dt($invoice->order_date, 'Y-m-d H:i:s', 'j F Y') ?><br><br>
                         </address>
                       </div>
@@ -66,15 +66,15 @@
                 
                 <div class="row mt-4">
                   <div class="col-md-12">
-                    <div class="section-title">Order Summary</div>
+                    <div class="section-title">Ringkasan Pesanan</div>
                     <div class="table-responsive">
                       <table class="table table-striped table-hover table-md">
                         <tr>
                           <th data-width="40"></th>
-                          <th>Item</th>
-                          <th class="text-center">Price</th>
-                          <th class="text-center">Quantity</th>
-                          <th class="text-right">Totals</th>
+                          <th>Barang</th>
+                          <th class="text-center">Harga</th>
+                          <th class="text-center">Jumlah</th>
+                          <th class="text-right">Total</th>
                         </tr>
                         <?php $total = 0; $i = 1; foreach($orderItems as $item): ?>
                         <tr>

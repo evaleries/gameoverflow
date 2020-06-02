@@ -28,7 +28,7 @@
                         <h2><?= $product->title ?></h2>
                         <div class="breadcrumb__option">
                             <a href="<?= base_url() ?>">Home</a>
-                            <a href="<?= route('products') ?>">Products</a>
+                            <a href="<?= route('products') ?>">Produk</a>
                             <a href="<?= route('products', ['category' => $product->category_slug]) ?>"><?= $product->category_name ?></a>
                             <span><?= $product->title ?></span>
                         </div>
@@ -67,14 +67,14 @@
                         <input type="hidden" name="id" value="<?= $product->id ?>">
                         <input type="hidden" name="slug" value="<?= $product->slug ?>">
                         <?php if ($stock > 1): ?>
-                        <input type="submit" class="primary-btn" style="border-style: none" value="ADD TO CART">
+                        <input type="submit" class="primary-btn" style="border-style: none" value="Tambahkan ke keranjang">
                         <?php endif; ?>
                         <ul>
-                            <li><b>Stock</b> <span><?= $stock > 0 ? $stock : '<b>Out of Stock</b>' ?></span></li>
-                            <li><b>Category</b> <span><?=  $product->category_name ?></span></li>
+                            <li><b>Stok</b> <span><?= $stock > 0 ? $stock : '<b>Out of Stock</b>' ?></span></li>
+                            <li><b>Kategori</b> <span><?=  $product->category_name ?></span></li>
                             <li><b>Developer</b> <a href="<?= $product->developer_website ?>" target="_new"><span><?= $product->developer_name ?></span></a></li>
-                            <li><b>Release Date</b> <span><?= $product->getReleasedAt() ?></span></li>
-                            <li><b>Share on</b>
+                            <li><b>Tanggal Rilis</b> <span><?= $product->getReleasedAt() ?></span></li>
+                            <li><b>Bagikan</b>
                                 <div class="share">
                                     <a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow" target="_new"><i class="fa fa-retweet"></i></a>
                                 </div>
@@ -88,13 +88,13 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#description" role="tab"
-                                   aria-selected="true">Description</a>
+                                   aria-selected="true">Deskripsi</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="description" role="tabpanel">
                                 <div class="product__details__tab__desc">
-                                    <h6>Products Infomation</h6>
+                                    <h6>Informasi Produk</h6>
                                     <p><?= nl2br($product->description) ?></p>
                                 </div>
                             </div>
