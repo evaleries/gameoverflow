@@ -16,7 +16,7 @@
             <li class="dropdown <?= request()->is('/admin/products*') ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-boxes"></i> <span>Produk</span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="<?= route('admin/products') ?>" class="nav-link">produk</a></li>
+                    <li><a href="<?= route('admin/products') ?>" class="nav-link">Daftar Produk</a></li>
                     <li><a href="<?= route('admin/products/create') ?>" class="nav-link">Buat Produk</a></li>
                 </ul>
             </li>

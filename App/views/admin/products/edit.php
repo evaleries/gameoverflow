@@ -33,7 +33,7 @@
           </div>
 
           <div class="section-body">
-            <h2 class="section-title">Ubah Produk</h2>
+            <h2 class="section-title">Edit Produk</h2>
 
             <div class="row">
               <div class="col-12">
@@ -41,8 +41,11 @@
                 <div class="card card-primary">
                   <div class="card-header">
                     <h4>Informasi Produk</h4>
+                    <div class="card-header-action">
+                      <a data-collapse="#info-product" class="btn btn-icon btn-info" href="#"><i class="fas fa-minus"></i></a>
+                    </div>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body collapse show" id="info-product">
                     <form action="<?= route('admin/products/'. $product->slug .'/update') ?>" method="POST">
                       <input type="hidden" name="product_id" value="<?= $product->id ?>">
                       <div class="form-group row mb-4">
@@ -128,6 +131,9 @@
                 <div class="card card-info">
                   <div class="card-header">
                     <h4>Stok Produk</h4>
+                    <div class="card-header-action">
+                      <button id="btn-add-stock" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Stok</button>
+                    </div>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -138,6 +144,7 @@
                             <td>Kode Aktivasi</td>
                             <td>Dibuat Pada</td>
                             <td>Dirubah Pada</td>
+                            <td>Aksi</td>
                           </tr>
                         </thead>
                       </table>
@@ -148,6 +155,20 @@
             </div>
           </div>
         </section>
+        <form class="modal-part" id="modal-edit-activation">
+          <input type="hidden" name="id">
+          <div class="form-group">
+            <label>Kode Aktivasi</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="fas fa-key"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" placeholder="kode aktivasi" name="activation_code">
+            </div>
+          </div>
+        </form>
       </div>
 
     
@@ -163,6 +184,7 @@
     'modules/cleave-js/dist/cleave.min.js',
     'modules/datatables/datatables.min.js',
     'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
+    'https://cdn.jsdelivr.net/npm/sweetalert2@9'
   ]]) ?>
 
   <script>
@@ -183,7 +205,7 @@
       numeralThousandsGroupStyle: 'thousand'
     });
 
-    $('#table-stocks').DataTable({
+    const tableStock = $('#table-stocks').DataTable({
       ajax: '<?= route('admin/products/'. $product->id .'/stocks') ?>',
       ordering: false,
       columns: [
@@ -191,9 +213,109 @@
         { data: "activation_code" },
         { data: "created_at" },
         { data: "updated_at" }
+      ],
+      columnDefs: [
+        {
+          targets: 4,
+          visible: true,
+          defaultContent: '<button class="btn btn-md btn-warning btn-edit-stock"><i class="fa fa-edit"></i> Edit</button> <button class="btn btn-md btn-danger btn-delete-stock"><i class="fas fa-trash"></i> Delete</button>'
+        }
       ]
     });
 
+    function deleteProductCode(element) {
+      let data = tableStock.row( $(element).parents('tr') ).data();
+      $.post(`<?= route('admin/products/stocks/') ?>${data.id}/delete`, {id: data.id}, function () {
+        Swal.fire('Sukses', 'Kode produk berhasil dihapus!', 'success');
+        tableStock.ajax.reload();
+      }).fail(function (err) {
+        Swal.fire('Gagal!', 'Kode produk gagal dihapus!');
+      });
+    }
+
+    $('#btn-add-stock').on('click', function (e) {
+      Swal.fire({
+        title: 'Tambah Stock',
+        input: 'textarea',
+        showCancelButton: true,
+        allowOutsideCick: () => !Swal.isLoading(),
+        confirmButtonText: '<i class="fa fa-plus"></i> Tambah',
+        preConfirm: (val) => {
+          return $.post(`<?= route('admin/products/'. $product->id .'/stocks/create') ?>`, {data: val}, function () {
+            return true;
+          }).fail(function (err) {
+            Swal.fire('Gagal!', 'Gagal menambahkan data', 'error');
+          })
+        }
+      }).then((result) => {
+        if (result.value) {
+          tableStock.ajax.reload();
+          Swal.fire('Sukses', 'Data berhasil ditambahkan!', 'succes');
+        }
+      });
+    });
+
+    $('#table-stocks tbody').on('click', '.btn-delete-stock', function (e) {
+      e.preventDefault();
+      let data = tableStock.row( $(this).parents('tr') ).data();
+      Swal.fire({
+        title: 'Konfirmasi',
+        text: "Apakah anda yakin menghapus kode produk ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Hapus',
+        preConfirm: () => {
+          return $.post(`<?= route('admin/products/stocks/delete') ?>`, {id: data.id}, function() {
+            return true;
+          }).fail(function (err) {
+            Swal.fire('Gagal!', 'Gagal menghapus kode aktivasi produk', 'error');
+            return false;
+          })
+        }
+      }).then((result) => {
+        if (result.value) {
+          tableStock.ajax.reload();
+          Swal.fire(
+            'Sukses!',
+            'Kode aktivasi produk berhasil dihapus',
+            'success'
+          )
+        }
+      })
+    })
+
+    $('#table-stocks tbody').on('click', '.btn-edit-stock', function (e) {
+      e.preventDefault();
+      let data = tableStock.row( $(this).parents('tr') ).data();
+
+      Swal.fire({
+        title: 'Edit Produk',
+        input: 'text',
+        inputValue: data.activation_code,
+        showCancelButton: true,
+        inputPlaceholder: 'Kode aktivasi',
+        allowOutsideClick: () => !Swal.isLoading(),
+        confirmButtonText: '<i class="fa fa-save"></i> Simpan',
+        preConfirm: (activation_code) => {
+          if (activation_code == data.activation_code) return;
+
+          return $.post(`<?= route('admin/products/stocks/') ?>${data.id}/update`, {activation_code}, function () {
+            return true;
+          }).fail(function (err) {
+            Swal.showValidationMessage(
+              `Request failed: ${error}`
+            );
+          })
+        }
+      }).then((result) => {
+        if (result.value) {
+          Swal.fire('Sukses', 'Sukses merubah kode!', 'success');
+          tableStock.ajax.reload();
+        }
+      });
+    });
   });
   </script>
 

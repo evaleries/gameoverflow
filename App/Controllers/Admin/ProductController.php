@@ -155,11 +155,72 @@ class ProductController extends Controller
             Route::error(400, 'Bad Request!');
         }
 
-        $productCodes = ProductCode::raw('SELECT * FROM product_codes WHERE product_id = :product AND status = :status AND user_id IS NULL', ['product' => $productId, 'status' => ProductCode::AVAILABLE], \PDO::FETCH_ASSOC);
+        $productCodes = ProductCode::raw('SELECT * FROM product_codes WHERE product_id = :product AND status = :status AND user_id IS NULL ORDER BY created_at DESC', ['product' => $productId, 'status' => ProductCode::AVAILABLE], \PDO::FETCH_ASSOC);
 
         return json([
             'data' => $productCodes
         ]);
+    }
+
+    public function updateStocks($productCodeId, Request $request)
+    {
+        if (! $request->ajax()) {
+            Route::error(400, 'Bad Request');
+        }
+        $request->validate(['activation_code' => 'required']);
+
+        if ($request->isError()) {
+            return json(['message' => 'Activation code is required'], 422);
+        }
+
+        $productCode = ProductCode::firstOrFail(['id' => $productCodeId]);
+        $productCode->update([
+            'activation_code' => $request->activation_code
+        ]);
+        
+        return json(['message' => 'Success'], 200);
+    }
+
+    public function deleteStocks(Request $request)
+    {
+        if (! $request->ajax()) {
+            Route::error(400, 'Bad Request');
+        }
+        $request->validate(['id' => 'required|int']);
+
+        if ($request->isError()) {
+            return json(['message' => 'Error!'], 422);
+        }
+
+        $productCode = ProductCode::firstOrFail(['id' => $request->id]);
+        $productCode->delete();
+
+        return json([], 204);
+    }
+
+    public function createStocks($product_id, Request $request)
+    {
+        if (! $request->ajax()) {
+            Route::error(400, 'Bad Request');
+        }
+        $request->validate(['data' => 'required']);
+        
+        if ($request->isError()) {
+            return json(['message' => 'Error!'], 422);
+        }
+
+        $activation_codes = explode("\r\n", $request->data);
+        foreach ($activation_codes as $code) {
+            (new ProductCode)->create([
+                'product_id' => $product_id,
+                'activation_code' => trim($code),
+                'user_id' => NULL,
+                'status' => ProductCode::AVAILABLE
+            ]);
+        }
+
+        return json(['message' => 'OK'], 201);
+
     }
 
     public function api(Request $request)
