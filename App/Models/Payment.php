@@ -33,9 +33,19 @@ class Payment extends Model
     protected $table = 'payments';
 
 
+    public function getPaymentStatus()
+    {
+        return ($this->attributes['status'] == Payment::CONFIRMED) ? 'Terkonfirmasi' : 'Belum Terkonfirmasi';
+    }
+
     public function getUpdatedAtFormat($format = 'j F Y')
     {
         return (new \DateTime($this->attributes['updated_at']))->format($format);
+    }
+
+    public function formattedAmount()
+    {
+        return ($this->attributes['amount'] > 0) ? "Rp. " . number_format($this->attributes['amount'], 0, ".", ",") . ",-" : '0';
     }
 
 }
