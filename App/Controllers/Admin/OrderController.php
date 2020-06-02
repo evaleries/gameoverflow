@@ -105,9 +105,9 @@ class OrderController extends Controller
             $order = Order::firstOrFail(['id' => $request->id]);
 
             if ($order->status == Order::COMPLETED) {
-                throw new \Exception("Tidak dapat mengkonfirmasi pesanan yang telah selesai.");
+                throw new \Exception("Tidak dapat membatalkan pesanan yang telah selesai.");
             } elseif ($order->status == Order::CANCELLED) {
-                throw new \Exception("Tidak dapat mengkonfirmasi pesanan yang telah dibatalkan.");
+                throw new \Exception("Tidak dapat membatalkan pesanan yang telah dibatalkan.");
             }
 
             $order->update([
