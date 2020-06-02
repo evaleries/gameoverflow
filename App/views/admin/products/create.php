@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php importView('sections.dashboard.head', ['css' => [
-  'modules/summernote/summernote-bs4.css',
-  'modules/jquery-selectric/selectric.css',
-  'modules/bootstrap-daterangepicker/daterangepicker.css',
+<?php importView('sections.dashboard.head', [
+  'pageTitle' => 'Create Product',
+  'css' => [
+    'modules/summernote/summernote-bs4.css',
+    'modules/jquery-selectric/selectric.css',
+    'modules/bootstrap-daterangepicker/daterangepicker.css',
 ]]) ?>
 
 <body>
