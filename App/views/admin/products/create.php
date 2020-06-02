@@ -22,11 +22,11 @@
             <div class="section-header-back">
               <a href="<?= route('admin/products') ?>" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Buat Product Baru</h1>
+            <h1>Buat Produk Baru</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="<?= route('admin') ?>">Dashboard</a></div>
               <div class="breadcrumb-item"><a href="<?= route('admin/products') ?>">Produk</a></div>
-              <div class="breadcrumb-item">Buat Product Baru</div>
+              <div class="breadcrumb-item">Buat Produk Baru</div>
             </div>
           </div>
 
@@ -109,9 +109,9 @@
                         </div>
                       </div>
                       <div class="form-group row mb-4">
-                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Activation Codes</label>
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Activation Codes (stok)</label>
                         <div class="col-sm-12 col-md-7">
-                          <textarea class="form-control" style="min-height: 150px" name="game_codes" required><?php for($i = 0; $i <= 10; $i++) echo generateActivationCode() . PHP_EOL; ?></textarea>
+                          <textarea class="form-control" style="min-height: 150px" name="game_codes" required><?php for($i = 0; $i < 10; $i++) echo generateActivationCode() . PHP_EOL; ?></textarea>
                         </div>
                       </div>
                       <div class="form-group row mb-4">
