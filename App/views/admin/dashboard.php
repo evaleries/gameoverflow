@@ -100,8 +100,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="row">
-          </div> -->
           <div class="row">
             <div class="col-lg-12">
               <div class="card card-info">
@@ -119,7 +117,7 @@
                         <th>ID Tagihan</th>
                         <th>Pengguna</th>
                         <th>Status</th>
-                        <th>Batas Tanggal</th>
+                        <th>Jatuh Tempo</th>
                         <th>Tanggal Pesanan</th>
                         <th>Aksi</th>
                       </tr>
@@ -132,7 +130,7 @@
                         <td><?= dt($order->due_date, 'Y-m-d H:i:s', 'j F Y') ?></td>
                         <td><?= $order->created_at ?></td>
                         <td>
-                          <a href="<?= route('admin/invoice', ['no' => $order->no]) ?>" class="btn btn-primary">Detail</a>
+                          <a href="<?= route('admin/orders/detail/'. $order->id) ?>" class="btn btn-primary">Detail</a>
                         </td>
                       </tr>
                       <?php endforeach; endif; ?>
