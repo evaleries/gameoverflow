@@ -32,6 +32,12 @@ Route::post('/admin/products/stocks/delete', [App\Controllers\Admin\ProductContr
 Route::post('/admin/products/(\d+)/stocks/create', [App\Controllers\Admin\ProductController::class, 'createStocks', 'requireAdmin']);
 Route::post('/admin/products/store', [App\Controllers\Admin\ProductController::class, 'store'], 'requireAdmin');
 
+Route::get('/admin/orders', [App\Controllers\Admin\OrderController::class, 'index'], 'requireAdmin');
+Route::get('/admin/orders/api', [App\Controllers\Admin\OrderController::class, 'api'], 'requireAdmin');
+Route::get('/admin/orders/detail/(\d+)', [App\Controllers\Admin\OrderController::class, 'show'], 'requireAdmin');
+Route::post('/admin/orders/(\d+)/confirm', [App\Controllers\Admin\OrderController::class, 'confirm'], 'requireAdmin');
+Route::post('/admin/orders/(\d+)/cancel', [App\Controllers\Admin\OrderController::class, 'cancel'], 'requireAdmin');
+
 Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');
 Route::get('/customer/invoice', [App\Controllers\Customer\DashboardController::class, 'invoice'], 'requireLogin');
 Route::post('/customer/redeem', [App\Controllers\Customer\DashboardController::class, 'redeemProduct'], 'requireLogin');

@@ -34,7 +34,17 @@ class Order extends Model
 
     public function getStatusString()
     {
-        switch ($this->attributes['status']) {
+        return self::statusString($this->attributes['status']);
+    }
+
+    public function determineStatusClass()
+    {
+        return self::statusClass($this->attributes['status']);
+    }
+
+    public static function statusString($status)
+    {
+        switch ($status) {
             case Order::PENDING:
                 return 'Pending';
             break;
@@ -53,9 +63,9 @@ class Order extends Model
         }
     }
 
-    public function determineStatusClass()
+    public static function statusClass($status)
     {
-        switch ($this->attributes['status']) {
+        switch ($status) {
             case Order::PENDING:
                 return 'warning';
             break;

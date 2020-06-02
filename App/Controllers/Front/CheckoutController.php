@@ -40,7 +40,7 @@ class CheckoutController extends Controller
 
             $order = (new Order)->create([
                 'user_id' => auth()->id,
-                'description' => $request->get('description'),
+                'description' => __e($request->get('description')),
                 'status' => Order::PROCESSING
             ]);
 
@@ -71,12 +71,6 @@ class CheckoutController extends Controller
                     'quantity' => $cart->quantity,
                     'price' => $cart->price
                 ]);
-
-                // Redeem Process, harusnya nunggu confirm admin
-                // $productCode = ProductCode::firstOrFail(['product_id' => $productId, 'status' => ProductCode::AVAILABLE]);
-                // $productCode->user_id = auth()->id;
-                // $productCode->status = ProductCode::REDEEMED;
-                // $productCode->update();
             }
 
             (new Payment)->create([

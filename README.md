@@ -57,9 +57,8 @@ Milestone yang perlu dicapai
 - [X] User - View Invoices
 - [X] User - Redeem Games
 - [X] Admin - Dashboard
-- [ ] Admin - Manage Invoice
 - [X] Admin - Manage Products
-- [ ] Admin - Manage Orders
+- [X] Admin - Manage Orders
 - [ ] Admin - Manage Users
 
 ## Flow
