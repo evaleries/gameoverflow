@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index() 
     {
         $orders = Order::morphManyRaw("SELECT o.*, i.no, i.due_date, i.title, p.status as payment_status FROM orders o JOIN invoices i ON o.id = i.order_id JOIN payments p ON p.order_id = o.id WHERE o.user_id = :user ORDER BY o.created_at DESC", ['user' => auth()->id]);
-        $myGames = ProductCode::raw("SELECT pc.*, p.title, o.id as order_id, o.created_at as bought_date FROM `product_codes` pc JOIN orders o ON pc.user_id = o.user_id JOIN products p ON pc.product_id = p.id WHERE pc.user_id = :user AND o.status = :status ORDER BY o.created_at DESC", ['user' => auth()->id, 'status' => Order::COMPLETED]);
+        $myGames = ProductCode::raw('SELECT pc.*, p.title, p.id as product_id FROM product_codes pc JOIN products p ON pc.product_id = p.id WHERE pc.user_id = :user ORDER BY pc.updated_at DESC', ['user' => auth()->id]);
         $totalGameOwned = Product::rawFirst("SELECT count(*) as total FROM product_codes WHERE user_id = :user", ['user' => auth()->id])->total;
         $totalProductInStore = Product::rawFirst("SELECT count(*) as total FROM products")->total;   
 

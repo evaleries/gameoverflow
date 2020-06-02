@@ -28,8 +28,8 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="invoice-title">
-                      <h2>Tagihan #<?= $invoice->no ?></h2>
-                      <div class="invoice-number">Pesanan #<?= $invoice->order_id ?></div>
+                      <h2>Pesanan #<?= $invoice->order_idid ?></h2>
+                      <div class="invoice-number">Tagihan #<?= $invoice->no ?></div>
                     </div>
                     <hr>
                     <div class="row">
@@ -41,7 +41,7 @@
                       </div>
                       <div class="col-md-6 text-md-right">
                         <address>
-                          <strong>Batas Tanggal:</strong><br>
+                          <strong>Jatuh Tempo:</strong><br>
                           <?= $invoice->due_date ?>
                         </address>
                       </div>

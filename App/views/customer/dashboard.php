@@ -68,7 +68,7 @@
                         <td>#<?= $order->id ?></a></td>
                         <td><?= $order->no ?></a></td>
                         <td class="font-weight-600"><?= $order->title ?></td>
-                        <td><div class="badge badge-<?= $order->payment_status == 1 ? 'primary' : 'warning' ?>"><?= $order->payment_status == 1 ? 'Confirmed' : 'Pending' ?></div></td>
+                        <td><div class="badge badge-<?= \App\Models\Order::statusClass($order->status) ?>"><?= \App\Models\Order::statusString($order->status) ?></div></td>
                         <td><?= $order->due_date ?></td>
                         <td>
                           <a href="<?= route('customer/invoice', ['no' => $order->no]) ?>" class="btn btn-primary">Detail</a>
@@ -91,23 +91,21 @@
                   <div class="table-responsive">
                     <table class="table table-striped">
                       <tr>
-                        <th>ID Pesanan</th>
+                        <th>ID Game</th>
                         <th>Game</th>
                         <th>Kode Aktivasi</th>
-                        <th>Tanggal Pembelian</th>
                         <th>Aksi</th>
                       </tr>
                       <?php if(isset($myGames)): foreach($myGames as $game): ?>
                       <tr>
-                        <td>#<?= $game->order_id ?></a></td>
+                        <td>#<?= $game->product_id ?></a></td>
                         <td class="font-weight-600"><?= $game->title ?></td>
                         <td class="activation-code"><?= ($game->status == 1) ? $game->activation_code : str_repeat('****', 4) ?></a></td>
-                        <td><?= dt($game->bought_date, 'Y-m-d H:i:s', 'j F Y') ?></td>
                         <td>
                           <?php if ($game->status == 0): ?>
-                            <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Bayar</a>
+                            <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Redeem</a>
                           <?php else: ?>
-                            <a href="#" class="btn disabled btn-outline-success">Lunas</a>
+                            <a href="#" class="btn disabled btn-outline-success">Selesai</a>
                           <?php endif; ?>
                         </td>
                       </tr>
