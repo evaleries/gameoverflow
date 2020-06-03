@@ -42,15 +42,24 @@ class Request
                 if (! filter_var($param, FILTER_VALIDATE_EMAIL)) {
                     $this->errors[$param] = [
                         'field' => $param,
-                        'message' => $param . ' is required a valid email!'
+                        'message' => $param . ' harus email yang valid!'
                     ];
                 }
+            } elseif ($rule == 'numeric') {
+                if (! is_numeric($this->get($param, null))) {
+                    $this->__set($param, null);
+                    $this->errors[$param] = [
+                        'field' => $param,
+                        'message' => $param . ' harus angka'
+                    ];
+                }
+
             } elseif ($rule == 'required') {
                 if (! $this->__isset($param) || empty(trim($this->requestData[$param]))) {
                     $this->__set($param, null);
                     $this->errors[$param] = [
                         'field' => $param,
-                        'message' => $param . ' is required.'
+                        'message' => $param . ' dibutuhkan!'
                     ];
                 }
             }
