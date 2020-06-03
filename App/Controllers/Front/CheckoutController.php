@@ -33,7 +33,7 @@ class CheckoutController extends Controller
     {
         session()->set('checkout_started', true);
         $this->hasItemsOnCartOrRedirect();
-        $request->validate(['name' => 'required', 'bank_name' => 'required', 'bank_number' => 'required', 'description' => 'string']);
+        $request->validate(['name' => 'required', 'bank_name' => 'required', 'bank_number' => 'required|numeric', 'description' => 'string']);
 
         if ($request->isError()) {
             return Route::back();
