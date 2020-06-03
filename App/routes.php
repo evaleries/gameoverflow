@@ -37,6 +37,8 @@ Route::get('/admin/orders/api', [App\Controllers\Admin\OrderController::class, '
 Route::get('/admin/orders/detail/(\d+)', [App\Controllers\Admin\OrderController::class, 'show'], 'requireAdmin');
 Route::post('/admin/orders/(\d+)/confirm', [App\Controllers\Admin\OrderController::class, 'confirm'], 'requireAdmin');
 Route::post('/admin/orders/(\d+)/cancel', [App\Controllers\Admin\OrderController::class, 'cancel'], 'requireAdmin');
+Route::get('/admin/orders/recap', [App\Controllers\Admin\OrderController::class, 'recap'], 'requireAdmin');
+Route::post('/admin/orders/recap/data', [App\Controllers\Admin\OrderController::class, 'recapData'], 'requireAdmin');
 
 Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');
 Route::get('/customer/invoice', [App\Controllers\Customer\DashboardController::class, 'invoice'], 'requireLogin');
