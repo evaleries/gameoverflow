@@ -33,7 +33,11 @@ class CheckoutController extends Controller
     {
         session()->set('checkout_started', true);
         $this->hasItemsOnCartOrRedirect();
-        $request->validate(['name' => 'required', 'bank_name' => 'required', 'bank_number', 'description' => 'string']);
+        $request->validate(['name' => 'required', 'bank_name' => 'required', 'bank_number' => 'required', 'description' => 'string']);
+
+        if ($request->isError()) {
+            return Route::back();
+        }
 
         try {
             Order::PDO()->beginTransaction();
@@ -59,8 +63,9 @@ class CheckoutController extends Controller
                 $totalProductInDatabase = ProductCode::rawFirst("SELECT count(*) as total FROM product_codes WHERE product_id = :product_id AND status = :status AND user_id IS NULL", ['product_id' => $productId, 'status' => ProductCode::AVAILABLE]);
 
                 if (isset($totalProductInDatabase->total)) $totalProductInDatabase = $totalProductInDatabase->total;
+                else $totalProductInDatabase = 0;
 
-                if ($cart->quantity > $totalProductInDatabase) {
+                if ($totalProductInDatabase < $cart->quantity) {
                     throw new \Exception("Produk {$cart->title} melebihi stok yang tersedia. Silahkan menghubungi kami");
                 }
 
