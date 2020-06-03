@@ -57,15 +57,17 @@ class OrderController extends Controller
             $orderItems = OrderItem::find(['order_id' => $order->id]);
     
             foreach ($orderItems as $item) {
-                $productCode = ProductCode::morphRaw('SELECT * FROM product_codes WHERE user_id IS NULL AND status = :status AND product_id = :product_id', ['status' => ProductCode::AVAILABLE, 'product_id' => $item->product_id]);
-                
-                if (empty($productCode)) {
-                    throw new \Exception("Stok produk dengan id {$item->product_id} tidak mencukupi. Silahkan menambah stock");
+                for ($i = 0; $i < $item->quantity; $i++) {
+                    $productCode = ProductCode::morphRaw('SELECT * FROM product_codes WHERE user_id IS NULL AND status = :status AND product_id = :product_id', ['status' => ProductCode::AVAILABLE, 'product_id' => $item->product_id]);
+                    
+                    if (empty($productCode)) {
+                        throw new \Exception("Stok produk dengan id {$item->product_id} tidak mencukupi. Silahkan menambah stock");
+                    }
+    
+                    $productCode->update([
+                        'user_id' => $order->user_id
+                    ]);
                 }
-
-                $productCode->update([
-                    'user_id' => $order->user_id
-                ]);
             }
 
             $payment = Payment::firstOrFail(['order_id' => $order->id]);
