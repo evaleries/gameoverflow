@@ -119,10 +119,10 @@
       startDate: moment().subtract(29, 'days'),
       endDate  : moment()
     }, function (start, end) {
-      tableRecap.ajax.reload();
       $('.btn-datefilter span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
       $('input[name=start_date]').val(start.format('YYYY-MM-DD'));
       $('input[name=end_date]').val(end.format('YYYY-MM-DD'));
+      tableRecap.ajax.reload();
     });
   });
   </script>

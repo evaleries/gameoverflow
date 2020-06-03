@@ -141,12 +141,12 @@ class OrderController extends Controller
             : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
 
         } elseif (strtotime($startDate) !== false && strtotime($endDate) !== false) {
-            $start = date_create()->setTimestamp(strtotime($startDate));
-            $end = date_create()->setTimestamp(strtotime($endDate));
+            $startDate = date_create()->setTimestamp(strtotime($startDate));
+            $endDate = date_create()->setTimestamp(strtotime($endDate));
 
-            $betweenDate = $start > $endDate
-            ? [$end->format($dateFormat), $start->format($dateFormat)]
-            : [$start->format($dateFormat), $end->format($dateFormat)];
+            $betweenDate = $startDate > $endDate
+            ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
+            : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
 
         } else {
             return json(['message' => 'Bad Request!'], 400);
@@ -167,9 +167,8 @@ class OrderController extends Controller
             array_push($query, 'GROUP BY YEAR(o.created_at)');
         }
 
-        $query = implode(' ', $query);
-        $data = Order::raw($query, $betweenDate);
-        return json(compact('data', 'query'), 200);
+        $data = Order::raw(implode(' ', $query), $betweenDate);
+        return json(compact('data'), 200);
     }
 
     public function api(Request $request)
