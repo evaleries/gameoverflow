@@ -267,8 +267,8 @@ class BaseModel implements CrudContracts
         try {
             $result = self::rawFirst($query, $data, $resultType);
             if (! $result) {
-                // return [];
-               throw new Exception("Resource not found", 404);
+                return [];
+            //    throw new Exception("Resource not found", 404);
             }
 
             return self::morph($result);

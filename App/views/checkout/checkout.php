@@ -33,6 +33,8 @@
                 <form action="<?= route('checkout/process') ?>" method="POST">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
+                            <?php importView('sections.dashboard.validation-alert') ?>
+                            <p><strong>Transfer ke nomor rekening berikut: BCA 2494829310 a/n GameOverflow</strong></p>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
