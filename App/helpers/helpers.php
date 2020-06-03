@@ -37,6 +37,10 @@ function now($format = 'Y-m-d H:i:s') {
     return (new DateTime('now'))->format($format);
 }
 
+function lastMonth($format = 'Y-m-d H:i:s') {
+    return (new DateTime('-1 month'))->format($format);
+}
+
 function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y') {
     return (DateTime::createFromFormat($format, $dateString))->format($outputFormat);
 }

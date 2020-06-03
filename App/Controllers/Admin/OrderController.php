@@ -4,8 +4,8 @@ namespace App\Controllers\Admin;
 
 
 use App\Core\Route;
-use App\Models\User;
 use App\Core\Request;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Invoice;
 use App\Models\Payment;
@@ -105,9 +105,9 @@ class OrderController extends Controller
             $order = Order::firstOrFail(['id' => $request->id]);
 
             if ($order->status == Order::COMPLETED) {
-                throw new \Exception("Tidak dapat mengkonfirmasi pesanan yang telah selesai.");
+                throw new \Exception("Tidak dapat membatalkan pesanan yang telah selesai.");
             } elseif ($order->status == Order::CANCELLED) {
-                throw new \Exception("Tidak dapat mengkonfirmasi pesanan yang telah dibatalkan.");
+                throw new \Exception("Tidak dapat membatalkan pesanan yang telah dibatalkan.");
             }
 
             $order->update([
@@ -121,6 +121,54 @@ class OrderController extends Controller
         }
 
         return json(['status' => true, 'message' => 'OK'], 200);
+    }
+
+    public function recap()
+    {
+        return view('admin.orders.recap')->output();
+    }
+
+    public function recapData(Request $request)
+    {
+        $filter = $request->filter ? $request->filter : 'daily';
+        $startDate = $request->start_date ? $request->start_date : new \DateTime('-1 month');
+        $endDate = $request->end_date ? $request->end_date : new \DateTime('+1 month');
+        $dateFormat = 'Y-m-d';
+
+        if ($startDate instanceof \DateTime && $endDate instanceof \DateTime) {
+            $betweenDate = $startDate > $endDate 
+            ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
+            : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
+
+        } elseif (strtotime($startDate) !== false && strtotime($endDate) !== false) {
+            $startDate = date_create()->setTimestamp(strtotime($startDate));
+            $endDate = date_create()->setTimestamp(strtotime($endDate));
+
+            $betweenDate = $startDate > $endDate
+            ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
+            : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
+
+        } else {
+            return json(['message' => 'Bad Request!'], 400);
+        }
+
+        $query = ["SELECT DATE_FORMAT(o.created_at, '%d/%m/%Y') as date, count(*) as total_order, SUM(oi.quantity) as products_sold, SUM(p.amount) as income FROM `orders` as o",
+            "JOIN order_items as oi ON o.id = oi.order_id",
+            "JOIN payments as p ON o.id = p.order_id",
+            "WHERE p.status = 1 AND o.status = 2 AND",
+            "o.created_at BETWEEN ? AND ?"
+        ];
+        
+        if ($filter == 'daily' || !in_array($filter, ['daily', 'monthly', 'yearly'])) {
+            array_push($query, 'GROUP BY DAY(o.created_at)');
+        } elseif ($filter == 'monthly') {
+            array_push($query, 'GROUP BY MONTH(o.created_at)');
+        } elseif ($filter == 'yearly') {
+            array_push($query, 'GROUP BY YEAR(o.created_at)');
+        }
+
+        $data = Order::raw(implode(' ', $query), $betweenDate);
+        return json(compact('data'), 200);
     }
 
     public function api(Request $request)
