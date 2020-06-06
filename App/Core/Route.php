@@ -128,19 +128,15 @@ class Route {
     public static function run($serviceContainer, $basePath = '/')
     {
         $path = parse_url($_SERVER['REQUEST_URI'])['path'] ?? '/';
+        $clearPath = str_replace($basePath, '/', $path);
         $method = $_SERVER['REQUEST_METHOD'];
         $isRouteMatch = false; $isMethodMatch = false;
 
         foreach(self::$routes as $route) {
 
-            $basePathCheck = $basePath != '' && $basePath != '/';
-            $expression = $route['expression'];
-            if ($basePathCheck) {
-                $expression = '(' . $basePath . ')' . $route['expression'];
-            }
-            $expression = '~^'. $expression .'$~i';
+            $expression = '~^'. $route['expression'] .'$~i';
 
-            if (preg_match($expression, $path,$matches)) {
+            if (preg_match($expression, $clearPath, $matches)) {
                 $isRouteMatch = true;
                 if (strtolower($method) == strtolower($route['method'])) {
                     self::$currentRoute = $route['expression'];
