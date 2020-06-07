@@ -179,7 +179,6 @@
   <?php importView('sections.dashboard.js', ['js' => [
     'modules/summernote/summernote-bs4.js',
     'modules/jquery-selectric/jquery.selectric.min.js',
-    'modules/upload-preview/assets/js/jquery.uploadPreview.min.js',
     'modules/bootstrap-daterangepicker/daterangepicker.js',
     'modules/cleave-js/dist/cleave.min.js',
     'modules/datatables/datatables.min.js',
@@ -191,15 +190,6 @@
   var editor;
   $(document).ready(function() {
     $("select").selectric();
-    $.uploadPreview({
-      input_field: "#image-upload",   // Default: .image-upload
-      preview_box: "#image-preview",  // Default: .image-preview
-      label_field: "#image-label",    // Default: .image-label
-      label_default: "Choose File",   // Default: Choose File
-      label_selected: "Change File",  // Default: Change File
-      no_label: false,                // Default: false
-      success_callback: null          // Default: null
-    });
     var cleaveC = new Cleave('.currency', {
       numeral: true,
       numeralThousandsGroupStyle: 'thousand'
@@ -250,7 +240,7 @@
       }).then((result) => {
         if (result.value) {
           tableStock.ajax.reload();
-          Swal.fire('Sukses', 'Data berhasil ditambahkan!', 'succes');
+          Swal.fire('Sukses', 'Data berhasil ditambahkan!', 'success');
         }
       });
     });
