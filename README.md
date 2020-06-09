@@ -60,8 +60,8 @@ Milestone yang perlu dicapai
 - [X] Admin - Manage Products
 - [X] Admin - Manage Orders
 - [X] Admin - Orders Recap
-- [ ] Admin - Manage Categories
-- [ ] Admin - Manage Developers
+- [X] Admin - Manage Categories
+- [X] Admin - Manage Developers
 
 ## Flow
 Alur / Life-cycle dari Request -> Response

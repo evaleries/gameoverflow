@@ -21,6 +21,9 @@
                 </ul>
             </li>
 
+            <li class="<?= request()->is('/admin/categories') ? 'active' : '' ?>"><a href="<?= route('/admin/categories') ?>" class="nav-link"><i class="fas fa-tags"></i> <span>Kategori</span></a></li>
+            <li class="<?= request()->is('/admin/developers') ? 'active' : '' ?>"><a href="<?= route('/admin/developers') ?>" class="nav-link"><i class="fas fa-user-tie"></i> <span>Developer</span></a></li>
+
             <li class="menu-header">Menu Pesanan</li>
             <li class="dropdown <?= request()->is('/admin/orders*') ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i> <span>Pesanan</span></a>

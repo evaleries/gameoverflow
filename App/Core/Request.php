@@ -38,6 +38,8 @@ class Request
                 $this->__set($param, intval($this->__get($param)));
             } elseif ($rule === 'float' || $rule === 'double' && is_numeric($param)) {
                 $this->__set($param, floatval($this->__get($param)));
+            } elseif ($rule === 'trim') {
+                $this->__set($param, trim($this->__get($param)));
             } elseif ($rule == 'email') {
                 if (! filter_var($param, FILTER_VALIDATE_EMAIL)) {
                     $this->errors[$param] = [
@@ -53,7 +55,6 @@ class Request
                         'message' => $param . ' harus angka'
                     ];
                 }
-
             } elseif ($rule == 'required') {
                 if (! $this->__isset($param) || empty(trim($this->requestData[$param]))) {
                     $this->__set($param, null);

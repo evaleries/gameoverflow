@@ -4,6 +4,11 @@ use App\Core\Route;
 use App\Controllers\Front\CartController;
 use App\Controllers\Front\CheckoutController;
 use App\Controllers\Auth\AuthController;
+use App\Controllers\Admin\ProductController as AdminProduct;
+use App\Controllers\Admin\OrderController as AdminOrder;
+use App\Controllers\Admin\CategoryController as AdminCategory;
+use App\Controllers\Admin\DeveloperController as AdminDeveloper;
+
 
 Route::get('/', '\App\Controllers\Front\HomeController@index');
 Route::get('/categories', '\App\Controllers\Front\HomeController@categories');
@@ -21,24 +26,37 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'], 'require
 Route::get('/checkout/failed', [CheckoutController::class, 'failed'], 'requireLogin');
 
 Route::get('/admin', [App\Controllers\Admin\DashboardController::class, 'index'], 'requireAdmin');
-Route::get('/admin/products', [App\Controllers\Admin\ProductController::class, 'index'], 'requireAdmin');
-Route::get('/admin/products/create', [App\Controllers\Admin\ProductController::class, 'create'], 'requireAdmin');
-Route::get('/admin/products/api', [App\Controllers\Admin\ProductController::class, 'api'], 'requireAdmin');
-Route::get('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/edit', [App\Controllers\Admin\ProductController::class, 'edit'], 'requireAdmin');
-Route::post('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/update', [App\Controllers\Admin\ProductController::class, 'update'], 'requireAdmin');
-Route::get('/admin/products/(\d+)/stocks', [App\Controllers\Admin\ProductController::class, 'stocks'], 'requireAdmin');
-Route::post('/admin/products/stocks/(\d+)/update', [App\Controllers\Admin\ProductController::class, 'updateStocks'], 'requireAdmin');
-Route::post('/admin/products/stocks/delete', [App\Controllers\Admin\ProductController::class, 'deleteStocks'], 'requireAdmin');
-Route::post('/admin/products/(\d+)/stocks/create', [App\Controllers\Admin\ProductController::class, 'createStocks', 'requireAdmin']);
-Route::post('/admin/products/store', [App\Controllers\Admin\ProductController::class, 'store'], 'requireAdmin');
+Route::get('/admin/products', [AdminProduct::class, 'index'], 'requireAdmin');
+Route::get('/admin/products/create', [AdminProduct::class, 'create'], 'requireAdmin');
+Route::get('/admin/products/api', [AdminProduct::class, 'api'], 'requireAdmin');
+Route::get('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/edit', [AdminProduct::class, 'edit'], 'requireAdmin');
+Route::post('/admin/products/([a-z0-9_]+(?:-[a-z0-9]+)*)/update', [AdminProduct::class, 'update'], 'requireAdmin');
 
-Route::get('/admin/orders', [App\Controllers\Admin\OrderController::class, 'index'], 'requireAdmin');
-Route::get('/admin/orders/api', [App\Controllers\Admin\OrderController::class, 'api'], 'requireAdmin');
-Route::get('/admin/orders/detail/(\d+)', [App\Controllers\Admin\OrderController::class, 'show'], 'requireAdmin');
-Route::post('/admin/orders/(\d+)/confirm', [App\Controllers\Admin\OrderController::class, 'confirm'], 'requireAdmin');
-Route::post('/admin/orders/(\d+)/cancel', [App\Controllers\Admin\OrderController::class, 'cancel'], 'requireAdmin');
-Route::get('/admin/orders/recap', [App\Controllers\Admin\OrderController::class, 'recap'], 'requireAdmin');
-Route::post('/admin/orders/recap/data', [App\Controllers\Admin\OrderController::class, 'recapData'], 'requireAdmin');
+Route::get('/admin/products/(\d+)/stocks', [AdminProduct::class, 'stocks'], 'requireAdmin');
+Route::post('/admin/products/stocks/(\d+)/update', [AdminProduct::class, 'updateStocks'], 'requireAdmin');
+Route::post('/admin/products/stocks/delete', [AdminProduct::class, 'deleteStocks'], 'requireAdmin');
+Route::post('/admin/products/(\d+)/stocks/create', [AdminProduct::class, 'createStocks', 'requireAdmin']);
+Route::post('/admin/products/store', [AdminProduct::class, 'store'], 'requireAdmin');
+
+Route::get('/admin/orders', [AdminOrder::class, 'index'], 'requireAdmin');
+Route::get('/admin/orders/api', [AdminOrder::class, 'api'], 'requireAdmin');
+Route::get('/admin/orders/detail/(\d+)', [AdminOrder::class, 'show'], 'requireAdmin');
+Route::post('/admin/orders/(\d+)/confirm', [AdminOrder::class, 'confirm'], 'requireAdmin');
+Route::post('/admin/orders/(\d+)/cancel', [AdminOrder::class, 'cancel'], 'requireAdmin');
+Route::get('/admin/orders/recap', [AdminOrder::class, 'recap'], 'requireAdmin');
+Route::post('/admin/orders/recap/data', [AdminOrder::class, 'recapData'], 'requireAdmin');
+
+Route::get('/admin/categories', [AdminCategory::class, 'index'], 'requireAdmin');
+Route::get('/admin/categories/api', [AdminCategory::class, 'api'], 'requireAdmin');
+Route::post('/admin/categories/store', [AdminCategory::class, 'store'], 'requireAdmin');
+Route::post('/admin/categories/update', [AdminCategory::class, 'update'], 'requireAdmin');
+Route::post('/admin/categories/delete', [AdminCategory::class, 'delete'], 'requireAdmin');
+
+Route::get('/admin/developers', [AdminDeveloper::class, 'index'], 'requireAdmin');
+Route::get('/admin/developers/api', [AdminDeveloper::class, 'api'], 'requireAdmin');
+Route::post('/admin/developers/store', [AdminDeveloper::class, 'store'], 'requireAdmin');
+Route::post('/admin/developers/update', [AdminDeveloper::class, 'update'], 'requireAdmin');
+Route::post('/admin/developers/delete', [AdminDeveloper::class, 'delete'], 'requireAdmin');
 
 Route::get('/customer', [App\Controllers\Customer\DashboardController::class, 'index'], 'requireLogin');
 Route::get('/customer/invoice', [App\Controllers\Customer\DashboardController::class, 'invoice'], 'requireLogin');
@@ -53,16 +71,3 @@ Route::post('/auth/logout', [AuthController::class, 'logout'], 'requireLogin');
 Route::get('/products', [App\Controllers\Front\ProductController::class, 'index']);
 Route::get('/products/search', [App\Controllers\Front\ProductController::class, 'search']);
 Route::get('/products/([a-z0-9_]+(?:-[a-z0-9]+)*)', [App\Controllers\Front\ProductController::class, 'show']);
-
-Route::get('/admin/product/codes/generate', function () {
-    echo '<pre>';
-    for ($i=0; $i < 10; $i++) {
-        var_dump((new \App\Models\ProductCode)->create([
-            'product_id' => rand(1, 10),
-            'user_id' => null,
-            'status' => 0,
-            'activation_code' => generateActivationCode()
-        ]));
-    }
-    echo '</pre>';
-}, 'requireAdmin');
