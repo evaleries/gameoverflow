@@ -47,15 +47,15 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12">
               <div class="card card-statistic-1">
-                <div class="card-icon bg-warning">
-                  <i class="fas fa-clock"></i>
+                <div class="card-icon bg-success">
+                  <i class="fas fa-users"></i>
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Antrian Konfirmasi Pembayaran</h4>
+                    <h4>Total Pengguna</h4>
                   </div>
                   <div class="card-body">
-                    <?= isset($paymentsPending) ? $paymentsPending : 0 ?>
+                    <?= isset($totalUsers) ? $totalUsers : 0 ?>
                   </div>
                 </div>
               </div>
