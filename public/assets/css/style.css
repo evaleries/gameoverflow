@@ -1103,6 +1103,11 @@ ol {
 	list-style: none;
 }
 
+.sidebar__item ul li.active {
+	font-weight: bold;
+	color: #000000;
+}
+
 .sidebar__item ul li a {
 	font-size: 16px;
 	color: #1c1c1c;

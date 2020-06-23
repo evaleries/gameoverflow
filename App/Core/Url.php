@@ -14,21 +14,40 @@ class Url
 
     private static function getScheme()
     {
+        if (defined('APP_URL')) {
+            return startsWith(APP_URL, 'http:') ? 'http' : 'https';
+        }
+
         return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http';
+    }
+
+    private static function getHost()
+    {
+        return defined('APP_URL') ? parse_url(APP_URL, PHP_URL_HOST) : $_SERVER['SERVER_NAME'];
     }
 
     public static function current()
     {
-        return sprintf("%s://%s%s",
+        return sprintf("%s://%s/%s",
             self::getScheme(),
-            $_SERVER['SERVER_NAME'],
+            self::getHost(),
             $_SERVER['REQUEST_URI']
         );
     }
 
     public static function base($dir = '')
     {
-        return sprintf("%s://%s/%s", self::getScheme(), $_SERVER['SERVER_NAME'], !empty($dir) || $dir != '/' ? (startsWith($dir, '/') ? substr($dir, 1, strlen($dir)) : $dir) : '');
+        $dir = !empty($dir) || $dir != '/' ? (startsWith($dir, '/') ? substr($dir, 1, strlen($dir)) : $dir) : '';
+        
+        if (defined('APP_URL')) {
+            return APP_URL . $dir;
+        }
+
+        return sprintf("%s://%s/%s", 
+            self::getScheme(),
+            self::getHost(),
+            $dir
+        );
     }
 
     public static function asset($file = '', $rootDir = 'assets/')

@@ -12,26 +12,8 @@ class HomeController extends Controller {
 
     public function index()
     {
-        $products = Product::all(10);
+        $products = Product::morphManyRaw('SELECT * FROM products ORDER BY created_at DESC LIMIT 15');
         view('home.index', compact('products'))->output();
-    }
-
-    public function post() {
-
-    }
-
-    public function categories() {
-        $categories = Category::all();
-        foreach ($categories as $cat) {
-            print_r($cat);
-        }
-    }
-
-    public function category($slug) {
-        $cat = Category::firstOrFail(['%slug%' => $slug]);
-        echo "<h1>{$cat->name}</h1>";
-        echo "<p>{$cat->description}</p>";
-        echo "<img src='{$cat->getImage()}'>";
     }
 
 }

@@ -16,6 +16,8 @@
  */
 ini_set('display_errors', E_ALL);
 
+define('APP_URL', 'http://game-overflow.test/');
+
 define('DS', DIRECTORY_SEPARATOR);
 define('FRONT_PATH', __DIR__);
 define('ROOT_PATH', dirname(__DIR__));
