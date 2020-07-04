@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2020 at 02:45 AM
+-- Generation Time: Jul 04, 2020 at 03:55 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -47,7 +47,8 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `image`) VALUES
 (4, 'Role-Playing Games', 'rpg', 'RPGs, mostly feature medieval or fantasy settings. This is due mainly to the origin of the genre, which can be traced back to Dungeons & Dragons and other pen and paper role-playing games. Still, hardcore RPGers don\'t discount sci-fi fantasy-themed RPGs like Mass Effect, Fallout, and Final Fantasy, which have helped put unique spins on the genre.', 'img/categories/cat-4.jpg'),
 (5, 'Simulation Games', 'simulation', 'Games in the simulation genre have one thing in common, they\'re all designed to emulate real or fictional reality, to simulate a real situation or event.', 'img/categories/cat-5.jpg'),
 (6, 'Strategy Games', 'strategy', 'With gameplay is based on traditional strategy board games, strategy games give players a godlike access to the world and its resources. These games require players to use carefully developed strategy and tactics to overcome challenges. More recently, these type of games have moved from turn-based systems to real-time gameplay in response to player feedback.', 'img/categories/cat-1.jpg'),
-(7, 'Sports Games', 'sports', 'Sports games simulate sports like golf, football, basketball, baseball, and soccer. They can also include Olympic sports like skiing, and even pub sports like darts and pool. Opposing players in these games are often computer-controlled but can also take the form of live opponents.', 'img/categories/cat-2.jpg');
+(7, 'Sports Games', 'sports', 'Sports games simulate sports like golf, football, basketball, baseball, and soccer. They can also include Olympic sports like skiing, and even pub sports like darts and pool. Opposing players in these games are often computer-controlled but can also take the form of live opponents.', 'img/categories/cat-2.jpg'),
+(11, 'Tycoon', 'tycoon', 'A business magnate is someone who has achieved great success and enormous wealth through the ownership of a multiple line of businesses. An Industrialist is an individual who starts a business with their own unique idea or concept, is a risk taker and innovative who is a market leader.', 'img/categories/cat-29365.jpg');
 
 -- --------------------------------------------------------
 
@@ -115,7 +116,14 @@ INSERT INTO `invoices` (`id`, `order_id`, `title`, `no`, `description`, `due_dat
 (33, 218, 'Invoice untuk Order #218', 'GO-159077595', NULL, '2020-06-06 01:12:31', '2020-05-29 01:12:31', '2020-05-31 01:11:32'),
 (34, 219, 'Invoice untuk Order #219', 'GO-159078801', NULL, '2020-06-06 04:33:35', '2020-06-29 04:33:35', '2020-05-31 01:11:45'),
 (35, 220, 'Invoice untuk Order #220', 'GO-159086194', NULL, '2020-06-07 01:05:39', '2020-06-29 01:05:40', '2020-05-31 01:12:39'),
-(36, 221, 'Invoice untuk Order #221', 'GO-159086900', NULL, '2020-06-07 03:03:20', '2020-05-31 03:03:21', NULL);
+(36, 221, 'Invoice untuk Order #221', 'GO-159086900', NULL, '2020-06-07 03:03:20', '2020-05-31 03:03:21', NULL),
+(37, 222, 'Invoice untuk Order #222', 'GO-159111509', NULL, '2020-06-09 23:24:57', '2020-06-02 23:24:57', NULL),
+(38, 223, 'Invoice untuk Order #223', 'GO-159111539', NULL, '2020-06-09 23:29:52', '2020-06-02 23:29:52', NULL),
+(39, 224, 'Invoice untuk Order #224', 'GO-159111595', NULL, '2020-06-09 23:39:17', '2020-06-02 23:39:17', NULL),
+(40, 225, 'Invoice untuk Order #225', 'GO-159119647', NULL, '2020-06-10 22:01:15', '2020-06-03 22:01:15', NULL),
+(41, 226, 'Invoice untuk Order #226', 'GO-159119696', NULL, '2020-06-10 22:09:29', '2020-06-03 22:09:29', NULL),
+(42, 227, 'Invoice untuk Order #227', 'GO-159119710', NULL, '2020-06-10 22:11:46', '2020-06-03 22:11:46', NULL),
+(43, 228, 'Invoice untuk Order #228', 'GO-159119728', NULL, '2020-06-10 22:14:41', '2020-06-03 22:14:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -141,7 +149,14 @@ INSERT INTO `orders` (`id`, `user_id`, `status`, `description`, `created_at`, `u
 (218, 17, 2, '', '2020-05-29 00:00:00', '2020-05-31 04:26:27'),
 (219, 4, 2, '', '2020-05-29 00:00:00', '2020-05-31 04:26:34'),
 (220, 4, 2, 'Proses ya min!', '2020-05-29 00:00:00', '2020-05-31 04:26:41'),
-(221, 4, 1, '', '2020-05-31 03:03:19', NULL);
+(221, 4, 2, '', '2020-05-31 03:03:19', '2020-06-02 23:20:26'),
+(222, 5, 2, 'Cepat di proses ya admin', '2020-06-02 23:24:57', '2020-06-02 23:26:57'),
+(223, 5, 2, 'Proses min!', '2020-06-02 23:29:52', '2020-06-02 23:30:32'),
+(224, 5, 3, 'Freeee', '2020-06-02 23:39:17', '2020-06-03 00:48:42'),
+(225, 5, 1, '', '2020-06-03 22:01:14', NULL),
+(226, 5, 2, 'p', '2020-06-03 22:09:28', '2020-06-03 22:10:23'),
+(227, 5, 2, 'pp', '2020-06-03 22:11:46', '2020-06-03 22:12:25'),
+(228, 5, 2, 'ppp', '2020-06-03 22:14:41', '2020-06-03 22:15:28');
 
 -- --------------------------------------------------------
 
@@ -167,7 +182,14 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) 
 (87, 218, 2, 2, 689000),
 (88, 219, 2, 1, 689000),
 (89, 220, 2, 2, 689000),
-(90, 221, 3, 2, 1180000);
+(90, 221, 3, 2, 1180000),
+(91, 222, 1, 1, 150000),
+(92, 223, 10, 1, 115000),
+(93, 224, 4, 1, 0),
+(94, 225, 3, 1, 1180000),
+(95, 226, 3, 1, 1180000),
+(96, 227, 3, 2, 1180000),
+(97, 228, 3, 3, 1180000);
 
 -- --------------------------------------------------------
 
@@ -195,7 +217,14 @@ INSERT INTO `payments` (`id`, `order_id`, `amount`, `bank_name`, `bank_number`, 
 (3, 218, 2558000, 'BCA', '2000582571', 1, '2020-05-29 01:12:31', '2020-05-31 04:27:04'),
 (4, 219, 689000, 'MANDIRI', '1231234124123', 1, '2020-05-29 04:33:35', '2020-05-31 04:27:11'),
 (5, 220, 1378000, 'BCA', '123124123123', 1, '2020-05-29 01:05:39', '2020-05-31 04:27:18'),
-(6, 221, 2360000, 'BTN', '123121231454', 0, '2020-05-31 03:03:20', NULL);
+(6, 221, 2360000, 'BTN', '123121231454', 1, '2020-05-31 03:03:20', '2020-06-02 23:20:26'),
+(7, 222, 150000, 'BTN', '123123123123', 1, '2020-06-02 23:24:57', '2020-06-02 23:26:57'),
+(8, 223, 115000, 'BTN', '123123123123', 1, '2020-06-02 23:29:52', '2020-06-02 23:30:32'),
+(9, 224, 0, 'BTN', '123123123123', 0, '2020-06-02 23:39:17', NULL),
+(10, 225, 1180000, 'BCA', '', 0, '2020-06-03 22:01:14', NULL),
+(11, 226, 1180000, 'BNI', '12345124123', 1, '2020-06-03 22:09:29', '2020-06-03 22:10:23'),
+(12, 227, 2360000, 'BCA', '123412341234', 1, '2020-06-03 22:11:46', '2020-06-03 22:12:25'),
+(13, 228, 3540000, 'BTN', '123412341234', 1, '2020-06-03 22:14:41', '2020-06-03 22:15:28');
 
 -- --------------------------------------------------------
 
@@ -235,7 +264,8 @@ INSERT INTO `products` (`id`, `developer_id`, `code`, `title`, `slug`, `price`, 
 (9, 3, 'hawx-2', 'Tom Clancy\'s H.A.W.X. 2', 'hawx2', 80000, 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/48160/dc4b24167aa2d3ad95dea4c5b15cb71db3335d51.jpg', 'Aerial warfare has evolved. So have you. As a member of the ultra-secret HAWX 2 squadron, you are one of the chosen few. One of the truly elite. You will use finely honed reflexes, bleeding-edge technology and ultra-sophisticated aircraft – their existence denied by many governments – to dominate the skies. You will do so by mastering every nuance of the world’s finest combat aircraft. You will slip into enemy territory undetected, deliver a crippling blow and escape before he can summon a response. You will use your superior technology to decimate the enemy from afar, then draw him in close for a pulse-pounding dogfight. You will do all this with professionalism, skill and consummate lethality. Because you are a member of HAWX 2. And you are one of the finest military aviators the world has ever known.', 'Synopsis\r\nThis is the moment you\'ve been waiting and training for your whole life - you are at the controls of the most technologically advanced aircraft on the planet. Your palms are slick with sweat, but you won\'t lose your grip, because the mission depends on you staying cool and in control. You have been chosen for this job and it\'s up to you as an elite aerial soldier to protect life as you know it.\r\n\r\nThis highly anticipated sequel to Tom Clancy\'s H.A.W.X. lands you in the cockpit of the world\'s most technologically advanced fighter jet. Become an elite aerial soldier as you complete adrenaline-pumping airborne missions high above the Earth. Will you be able to soar with the best? You will take off into an explosive environment where you are in control of the world\'s most powerful and technologically advanced aircraft. Pilot these elite aerial machines in intense heart-racing airborne missions.\r\n\r\nKey Features:\r\nEnlist as an elite aerial soldier in control of the world\'s most technologically advanced aircraft\r\nUse cutting-edge technology in amazing airborne attacks\r\nComplete adrenaline-pumping missions high above the ground\r\nDirectly inspired by Tom Clancy\'s books\r\nSequel to the renowned Tom Clancy\'s H.A.W.X.', 5, '2010-02-09 00:00:00', '2020-05-25 20:41:09', NULL),
 (10, 2, 'shadow-complex', 'Shadow Complex Remastered', 'shadow-complex-re', 115000, 'https://steamcdn-a.akamaihd.net/steam/apps/385560/header.jpg?t=1470279978', 'ChAIR’s fresh twist on classic side-scrolling design with modern gameplay is amplified in Shadow Complex Remastered. 10+ hrs of exploration and fast-paced combat from award-winning original game, updated with graphical enhancements, dynamic melee take-downs, and new Master Challenges.\r\nALL REVIEWS:', 'Powered by Unreal Engine technology, the “modern and masterful side-scroller” Shadow Complex became an instant classic when initially released in 2009, exclusively for Xbox 360. The fan favorite won more than 50 Game of the Year and Editor’s Choice Awards and was one of the most popular console games of the year. Shadow Complex Remastered features all the great content from the original game updated with exciting new enhancements and achievements to support its debut on Steam.\r\n\r\nGiant Bomb - \"5 out of 5 Stars - Amazing from start to finish!\"\r\nIGN - \"The classic, exploration-heavy gameplay is a winner.\"\r\nGameSpot - \"An incredible adventure that won\'t be forgotten.\"\r\nWorthplaying - \"A love letter to Super Metroid\"\r\n\r\nGame Play Overview:\r\nChAIR’s fresh twist on classic side-scrolling design with modern, cutting-edge gameplay is amplified in Shadow Complex Remastered, featuring all the content from the award-winning original game, updated with graphical enhancements, all-new dynamic melee take-downs, and additional Achievements and Master Challenges.\r\nThrough 10+ hours of exploration and fast-paced combat, you’ll discover game-altering power-ups to overcome obstacles, thwart legions of enemies, and delve further into a mysterious and challenging, non-linear game world.\r\n\r\nCore Game Play Elements:\r\n- Original single-player experience inspired by classic non-linear exploration side-scrolling genre\r\n- Open world design that evolves as the player explores and progresses through the game\r\n- Huge, mysterious game world populated with legions of enemies, challenges, and jaw-dropping boss battles\r\n- Dozens of unique game-altering power-ups and more than 100 additional items and enhancements to discover\r\n- Intense game play infused with a compelling action-thriller storyline\r\n- Incredible graphics with robust physics, made possible by Epic Games’ Unreal Engine 3\r\n- Bonus Proving Grounds game mode provides side-challenges to help players become the ultimate Shadow Complex master\r\n\r\nUpdated Features:\r\n- Up-rezzed characters, enemies, environments, and interface\r\n- Updated lighting, post-processing, and visual effects\r\n- New contextual melee take-downs\r\n- New Achievements and Master Challenges\r\n- Supports keyboard/mouse and PC controller with customizable controller and key bindings, and up to 4K resolution support\r\n\r\nStory Synopsis:\r\nShadow Complex propels lost hiker Jason Fleming into the hollows of government conspiracy, dark political motives, and military upheaval. When Jason and his girlfriend Claire accidentally stumble upon a rogue paramilitary group called The Restoration, it soon becomes clear that the faction’s intent is to set in motion a chain of events that will cause America to collapse into a new civil war. Along the way, Jason acquires many high-tech “toys” The Restoration is developing, and eventually becomes a super-powered engine of destruction.', 1, '2016-05-03 00:00:00', '2020-05-25 21:19:25', NULL),
 (11, 7, 'gta-v', 'Grand Theft Auto V', 'grand-theft-auto-v', 290000, 'https://steamcdn-a.akamaihd.net/steam/apps/271590/header.jpg?t=1586539531', '<p>Grand Theft Auto V for PC offers players the option to explore the award-winning world of Los Santos and Blaine County in resolutions of up to 4k and beyond, as well as the chance to experience the game running at 60 frames per second.<br></p>', '<p>When a young street hustler, a retired bank robber and a terrifying psychopath find themselves entangled with some of the most frightening and deranged elements of the criminal underworld, the U.S. government and the entertainment industry, they must pull off a series of dangerous heists to survive in a ruthless city in which they can trust nobody, least of all each other.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Grand Theft Auto V for PC offers players the option to explore the award-winning world of Los Santos and Blaine County in resolutions of up to 4k and beyond, as well as the chance to experience the game running at 60 frames per second.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">The game offers players a huge range of PC-specific customization options, including over 25 separate configurable settings for texture quality, shaders, tessellation, anti-aliasing and more, as well as support and extensive customization for mouse and keyboard controls. Additional options include a population density slider to control car and pedestrian traffic, as well as dual and triple monitor support, 3D compatibility, and plug-and-play controller support.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Grand Theft Auto V for PC also includes Grand Theft Auto Online, with support for 30 players and two spectators. Grand Theft Auto Online for PC will include all existing gameplay upgrades and Rockstar-created content released since the launch of Grand Theft Auto Online, including Heists and Adversary modes.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">The PC version of Grand Theft Auto V and Grand Theft Auto Online features First Person Mode, giving players the chance to explore the incredibly detailed world of Los Santos and Blaine County in an entirely new way.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Grand Theft Auto V for PC also brings the debut of the Rockstar Editor, a powerful suite of creative tools to quickly and easily capture, edit and share game footage from within Grand Theft Auto V and Grand Theft Auto Online. The Rockstar Editor’s Director Mode allows players the ability to stage their own scenes using prominent story characters, pedestrians, and even animals to bring their vision to life. Along with advanced camera manipulation and editing effects including fast and slow motion, and an array of camera filters, players can add their own music using songs from GTAV radio stations, or dynamically control the intensity of the game’s score. Completed videos can be uploaded directly from the Rockstar Editor to YouTube and the Rockstar Games Social Club for easy sharing.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Soundtrack artists The Alchemist and Oh No return as hosts of the new radio station, The Lab FM. The station features new and exclusive music from the production duo based on and inspired by the game’s original soundtrack. Collaborating guest artists include Earl Sweatshirt, Freddie Gibbs, Little Dragon, Killer Mike, Sam Herring from Future Islands, and more. Players can also discover Los Santos and Blaine County while enjoying their own music through Self Radio, a new radio station that will host player-created custom soundtracks.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Special access content requires Rockstar Games Social Club account. Visit&nbsp;<a href=\"https://steamcommunity.com/linkfilter/?url=http://rockstargames.com/v/bonuscontent\" target=\"_blank\" rel=\"noopener\" style=\"padding: 0px; margin: 0px;\">http://rockstargames.com/v/bonuscontent</a>&nbsp;for details.<br></p>', 1, '2015-04-14 00:00:00', '2020-05-31 05:45:44', '2020-05-31 05:48:14'),
-(12, 3, 'far-cry-5', 'Far Cry&reg; 5', 'far-cry-5', 689000, 'https://steamcdn-a.akamaihd.net/steam/apps/552520/header.jpg?t=1575655495', '<p>Welcome to Hope County, Montana, home to a fanatical doomsday cult known as Eden’s Gate. Stand up to cult leader Joseph Seed &amp; his siblings, the Heralds, to spark the fires of resistance &amp; liberate the besieged community.<br></p>', '<p>Far Cry comes to America in the latest installment of the award-winning franchise.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Welcome to Hope County, Montana, land of the free and the brave but also home to a fanatical doomsday cult known as Eden’s Gate. Stand up to cult leader Joseph Seed, and his siblings, the Heralds, to spark the fires of resistance and liberate the besieged community.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>FIGHT AGAINST A DEADLY CULT</b><br style=\"padding: 0px; margin: 0px;\">Free Hope County in solo or two-player co-op. Recruit Guns and Fangs for hire to help defeat the cult.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>A WORLD THAT HITS BACK</b><br style=\"padding: 0px; margin: 0px;\">Wreak havoc on the cult and its members but beware of the wrath of Joseph Seed and his followers.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>CARVE YOUR OWN PATH</b><br style=\"padding: 0px; margin: 0px;\">Build your character and choose your adventure in the largest customizable Far Cry game ever!<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>DYNAMIC TOYS</b><br style=\"padding: 0px; margin: 0px;\">Take control of iconic muscle cars, ATV\'s, planes and a lot more to engage the cult forces in epic fights.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>RE-DEFINED STEALTH MECHANICS</b><br style=\"padding: 0px; margin: 0px;\">Enhance your gameplay with eye tracking. Tag enemies by looking at them to increase your stealth skills and help your teammates spot threats.<br style=\"padding: 0px; margin: 0px;\">Compatible with all Tobii Eye Tracking gaming devices.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>Additional notes:</b><br style=\"padding: 0px; margin: 0px;\">Eye tracking features available with Tobii Eye Tracking.<br></p>', 2, '2018-03-27 00:00:00', '2020-05-31 05:54:55', NULL);
+(12, 3, 'far-cry-5', 'Far Cry&reg; 5', 'far-cry-5', 689000, 'https://steamcdn-a.akamaihd.net/steam/apps/552520/header.jpg?t=1575655495', '<p>Welcome to Hope County, Montana, home to a fanatical doomsday cult known as Eden’s Gate. Stand up to cult leader Joseph Seed & his siblings, the Heralds, to spark the fires of resistance & liberate the besieged community.<br></p>', '<p>Far Cry comes to America in the latest installment of the award-winning franchise.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\">Welcome to Hope County, Montana, land of the free and the brave but also home to a fanatical doomsday cult known as Eden’s Gate. Stand up to cult leader Joseph Seed, and his siblings, the Heralds, to spark the fires of resistance and liberate the besieged community.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>FIGHT AGAINST A DEADLY CULT</b><br style=\"padding: 0px; margin: 0px;\">Free Hope County in solo or two-player co-op. Recruit Guns and Fangs for hire to help defeat the cult.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>A WORLD THAT HITS BACK</b><br style=\"padding: 0px; margin: 0px;\">Wreak havoc on the cult and its members but beware of the wrath of Joseph Seed and his followers.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>CARVE YOUR OWN PATH</b><br style=\"padding: 0px; margin: 0px;\">Build your character and choose your adventure in the largest customizable Far Cry game ever!<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>DYNAMIC TOYS</b><br style=\"padding: 0px; margin: 0px;\">Take control of iconic muscle cars, ATV\'s, planes and a lot more to engage the cult forces in epic fights.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>RE-DEFINED STEALTH MECHANICS</b><br style=\"padding: 0px; margin: 0px;\">Enhance your gameplay with eye tracking. Tag enemies by looking at them to increase your stealth skills and help your teammates spot threats.<br style=\"padding: 0px; margin: 0px;\">Compatible with all Tobii Eye Tracking gaming devices.<br style=\"padding: 0px; margin: 0px;\"><br style=\"padding: 0px; margin: 0px;\"><b>Additional notes:</b><br style=\"padding: 0px; margin: 0px;\">Eye tracking features available with Tobii Eye Tracking.<br></p>', 2, '2018-03-27 00:00:00', '2020-05-31 05:54:55', '2020-05-31 10:10:32'),
+(14, 1, 'l4d-2', 'Left 4 Dead 2', 'left-4-dead-2', 69900, 'https://steamcdn-a.akamaihd.net/steam/apps/550/header.jpg?t=1587582634', 'Set in the zombie apocalypse, Left 4 Dead 2 (L4D2) is the highly anticipated sequel to the award-winning Left 4 Dead, the #1 co-op game of 2008. This co-operative action horror FPS takes you and your friends through the cities, swamps and cemeteries of the Deep South, from Savannah to New Orleans ', '<p>Set in the zombie apocalypse, Left 4 Dead 2 (L4D2) is the highly anticipated sequel to the award-winning Left 4 Dead, the #1 co-op game of 2008.<br style=\"padding: 0px; margin: 0px;\">This co-operative action horror FPS takes you and your friends through the cities, swamps and cemeteries of the Deep South, from Savannah to New Orleans across five expansive campaigns.<br style=\"padding: 0px; margin: 0px;\">You\'ll play as one of four new survivors armed with a wide and devastating array of classic and upgraded weapons. In addition to firearms, you\'ll also get a chance to take out some aggression on infected with a variety of carnage-creating melee weapons, from chainsaws to axes and even the deadly frying pan.<br style=\"padding: 0px; margin: 0px;\">You\'ll be putting these weapons to the test against (or playing as in Versus) three horrific and formidable new Special Infected. You\'ll also encounter five new ?uncommon? common infected, including the terrifying Mudmen.<br style=\"padding: 0px; margin: 0px;\">Helping to take L4D\'s frantic, action-packed gameplay to the next level is AI Director 2.0. This improved Director has the ability to procedurally change the weather you\'ll fight through and the pathways you\'ll take, in addition to tailoring the enemy population, effects, and sounds to match your performance. L4D2 promises a satisfying and uniquely challenging experience every time the game is played, custom-fitted to your style of play.<br style=\"padding: 0px; margin: 0px;\"></p><ul class=\"bb_ul\" style=\"padding: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 16px; list-style-type: square; list-style-position: inside;\"><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">Next generation co-op action gaming from the makers of Half-Life, Portal, Team Fortress and Counter-Strike.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">Over 20 new weapons & items headlined by over 10 melee weapons – axe, chainsaw, frying pan, baseball bat – allow you to get up close with the zombies<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">New survivors. New Story. New dialogue.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">Five expansive campaigns for co-operative, Versus and Survival game modes.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">An all new multiplayer mode.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">Uncommon common infected. Each of the five new campaigns contains at least one new ?uncommon common? zombies which are exclusive to that campaign.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">AI Director 2.0: Advanced technology dubbed ?The AI Director? drove L4D\'s unique gameplay – customizing enemy population, effects, and music, based upon the players’ performance. L4D 2 features ?The AI Director 2.0? which expands the Director’s ability to customize level layout, world objects, weather, and lighting to reflect different times of day.<br style=\"padding: 0px; margin: 0px;\"></li><li style=\"padding: 0px; margin: 0px 0px 8px; list-style-position: outside;\">Stats, rankings, and awards system drives collaborative play</li></ul>', 1, '2009-11-17 00:00:00', '2020-06-01 00:58:37', '2020-06-01 01:04:27');
 
 -- --------------------------------------------------------
 
@@ -259,7 +289,7 @@ CREATE TABLE `product_codes` (
 
 INSERT INTO `product_codes` (`id`, `product_id`, `user_id`, `status`, `activation_code`, `created_at`, `updated_at`) VALUES
 (1, 1, 17, 1, 'ABCD-EFGH-IJKL-1234', '2020-05-29 05:07:15', '2020-05-30 23:52:41'),
-(2, 1, NULL, 0, 'DCAS-KASD-DAAA-1423', '2020-05-29 05:09:08', NULL),
+(2, 1, 5, 1, 'DCAS-KASD-DAAA-1423', '2020-05-29 05:09:08', '2020-06-02 23:26:56'),
 (3, 1, NULL, 0, 'DCAS-KASD-DAAA-5123', '2020-05-29 05:09:08', NULL),
 (4, 1, NULL, 0, 'DCAS-KASD-DAAA-1423', '2020-05-29 05:09:08', NULL),
 (5, 1, NULL, 0, 'DCAS-KASD-DAAA-5125', '2020-05-29 05:09:08', NULL),
@@ -283,13 +313,13 @@ INSERT INTO `product_codes` (`id`, `product_id`, `user_id`, `status`, `activatio
 (23, 3, 17, 1, 'A555-4445-2313-ABCD', '2020-05-29 05:12:43', '2020-05-31 04:30:33'),
 (24, 3, 4, 0, 'A555-4445-2313-1231', '2020-05-29 05:12:43', '2020-05-31 04:36:12'),
 (25, 3, 4, 0, 'A555-4445-2313-WA21', '2020-05-29 05:12:43', '2020-05-31 04:36:18'),
-(26, 3, NULL, 0, 'A555-4445-2313-A131', '2020-05-29 05:12:43', NULL),
-(27, 3, NULL, 0, 'A555-4445-2313-AD12', '2020-05-29 05:12:43', NULL),
-(28, 3, NULL, 0, 'A555-4445-2313-AC13', '2020-05-29 05:12:43', NULL),
-(29, 3, NULL, 0, 'A555-4445-2313-AS2S', '2020-05-29 05:12:43', NULL),
-(30, 3, NULL, 0, 'VH23-CF70-45OC-19RM', '2020-05-31 04:53:24', NULL),
-(31, 10, NULL, 0, 'PT83-RR61-92EZ-18OR', '2020-05-31 04:53:24', NULL),
-(32, 3, NULL, 0, 'RL99-XZ05-96JK-92ZV', '2020-05-31 04:53:24', NULL),
+(26, 3, 4, 0, 'A555-4445-2313-A131', '2020-05-29 05:12:43', '2020-06-02 23:20:26'),
+(27, 3, 5, 0, 'A555-4445-2313-AD12', '2020-05-29 05:12:43', '2020-06-03 22:10:23'),
+(28, 3, 5, 0, 'A555-4445-2313-AC13', '2020-05-29 05:12:43', '2020-06-03 22:12:25'),
+(29, 3, 5, 0, 'A555-4445-2313-AS2S', '2020-05-29 05:12:43', '2020-06-03 22:15:28'),
+(30, 3, 5, 0, 'VH23-CF70-45OC-19RM', '2020-05-31 04:53:24', '2020-06-03 22:15:28'),
+(31, 10, 5, 0, 'PT83-RR61-92EZ-18OR', '2020-05-31 04:53:24', '2020-06-02 23:30:32'),
+(32, 3, 5, 0, 'RL99-XZ05-96JK-92ZV', '2020-05-31 04:53:24', '2020-06-03 22:15:28'),
 (33, 3, NULL, 0, 'ST65-BN22-77PE-27RA', '2020-05-31 04:53:24', NULL),
 (34, 6, NULL, 0, 'DC15-RO40-59BE-31RG', '2020-05-31 04:53:24', NULL),
 (35, 2, NULL, 0, 'BG52-RH75-33RN-42EW', '2020-05-31 04:53:24', NULL),
@@ -358,7 +388,19 @@ INSERT INTO `product_codes` (`id`, `product_id`, `user_id`, `status`, `activatio
 (98, 12, NULL, 0, 'SM16-IM72-66EQ-22UG', '2020-05-31 05:54:55', NULL),
 (99, 12, NULL, 0, 'UT71-KZ66-29TU-23YR', '2020-05-31 05:54:55', NULL),
 (100, 12, NULL, 0, 'VH37-NG21-04PH-67RL', '2020-05-31 05:54:55', NULL),
-(101, 12, NULL, 0, 'LK76-DU02-86ZF-94UC', '2020-05-31 05:54:55', NULL);
+(101, 12, NULL, 0, 'LK76-DU02-86ZF-94UC', '2020-05-31 05:54:55', NULL),
+(115, 14, NULL, 0, 'ZM38-QZ45-57IW-78EM', '2020-06-01 00:58:38', '2020-06-02 11:31:19'),
+(116, 14, NULL, 0, 'HH27-KO56-18HK-21LL', '2020-06-01 00:58:38', '2020-06-02 18:52:12'),
+(117, 14, NULL, 0, 'SG19-ZS06-63PM-79QX', '2020-06-01 00:58:38', NULL),
+(118, 14, NULL, 0, 'QX26-LU47-27WJ-63GN', '2020-06-01 00:58:38', NULL),
+(119, 14, NULL, 0, 'OF61-MY65-49PZ-42AM', '2020-06-01 00:58:38', NULL),
+(120, 14, NULL, 0, 'TV22-PC21-10VN-79BM', '2020-06-01 00:58:38', NULL),
+(121, 14, NULL, 0, 'UK86-TQ15-98WO-58UK', '2020-06-01 00:58:38', NULL),
+(122, 14, NULL, 0, 'EU62-ZL77-64AT-77PE', '2020-06-01 00:58:38', NULL),
+(123, 14, NULL, 0, 'JA44-BM25-07XK-96OP', '2020-06-01 00:58:38', NULL),
+(126, 14, NULL, 0, 'G4ME-0VER-FL0W-T3ST', '2020-06-02 19:12:19', NULL),
+(127, 11, NULL, 0, 'DD53-GA82-52LM-8AGY', '2020-06-02 19:54:05', NULL),
+(128, 3, NULL, 0, '0CST-BN18-77WB-40RA', '2020-06-03 23:18:36', NULL);
 
 -- --------------------------------------------------------
 
@@ -465,7 +507,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `developers`
@@ -477,43 +519,43 @@ ALTER TABLE `developers`
 -- AUTO_INCREMENT for table `invoices`
 --
 ALTER TABLE `invoices`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=222;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=229;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `product_codes`
 --
 ALTER TABLE `product_codes`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
