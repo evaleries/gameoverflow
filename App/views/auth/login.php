@@ -35,16 +35,16 @@
                             <img src="<?= asset('img/logo.png') ?>" alt="logo" width="50%" class="shadow-light rounded-circle">
                         </div>
 
-                        <?php if (session()->has('error')): ?>
+                        <?php if (session()->has('error')) { ?>
                         <div class="alert alert-danger">
                             <?= session()->flash('error') ?>
                         </div>
-                        <?php endif; ?>
-                        <?php if (session()->has('success')): ?>
+                        <?php } ?>
+                        <?php if (session()->has('success')) { ?>
                             <div class="alert alert-success">
                                 <?= session()->flash('success') ?>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
 
                         <div class="card card-primary">
                             <div class="card-header"><h4>Login</h4></div>

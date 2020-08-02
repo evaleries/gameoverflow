@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -11,17 +10,17 @@ class Category extends Model
         'name',
         'slug',
         'description',
-        'image'
+        'image',
     ];
 
     protected $appends = [
-        'getImage'
+        'getImage',
     ];
 
     protected $table = 'categories';
 
-    public function getAssetImage() {
+    public function getAssetImage()
+    {
         return startsWith($this->attributes['image'], 'http') ? $this->attributes['image'] : \App\Core\Url::asset($this->attributes['image']);
     }
-
 }

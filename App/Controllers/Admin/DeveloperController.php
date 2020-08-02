@@ -2,10 +2,9 @@
 
 namespace App\Controllers\Admin;
 
-
+use App\Controllers\Controller;
 use App\Core\Request;
 use App\Models\Developer;
-use App\Controllers\Controller;
 
 class DeveloperController extends Controller
 {
@@ -17,19 +16,19 @@ class DeveloperController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|trim',
-            'website' => 'required',
-            'description' => 'string'
+            'name'        => 'required|trim',
+            'website'     => 'required',
+            'description' => 'string',
         ]);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
-        (new Developer)->create([
-            'name' => __e($request->name),
-            'website' => $request->website,
-            'description' => $request->description
+        (new Developer())->create([
+            'name'        => __e($request->name),
+            'website'     => $request->website,
+            'description' => $request->description,
         ]);
 
         return json(['message' => 'Developer berhasil ditambahkan!'], 201);
@@ -38,21 +37,21 @@ class DeveloperController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'id' => 'required|int',
-            'name' => 'required|trim',
-            'website' => 'required|trim',
-            'description' => 'string'
+            'id'          => 'required|int',
+            'name'        => 'required|trim',
+            'website'     => 'required|trim',
+            'description' => 'string',
         ]);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
         $developer = Developer::firstOrFail(['id' => $request->id]);
         $developer->update([
-            'name' => __e($request->name),
-            'website' => $request->website,
-            'description' => $request->description
+            'name'        => __e($request->name),
+            'website'     => $request->website,
+            'description' => $request->description,
         ]);
 
         return json(['message' => 'Developer berhasil dirubah'], 200);
@@ -62,7 +61,7 @@ class DeveloperController extends Controller
     {
         $request->validate(['id' => 'required|int']);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
@@ -74,7 +73,7 @@ class DeveloperController extends Controller
     public function api()
     {
         return json([
-            'data' => Developer::all(-1, 0, false)
+            'data' => Developer::all(-1, 0, false),
         ]);
     }
 }

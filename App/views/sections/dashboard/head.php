@@ -2,11 +2,11 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
 
-  <?php if (isset($pageTitle)): ?>
+  <?php if (isset($pageTitle)) { ?>
     <title><?= $pageTitle ?> &mdash; GameOverflow</title>
-  <?php else: ?>
+  <?php } else { ?>
     <title>Dashboard &mdash; GameOverflow</title>
-  <?php endif; ?>
+  <?php } ?>
 
   <link rel="apple-touch-icon" sizes="180x180" href="<?= asset('apple-touch-icon.png') ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= asset('favicon-32x32.png') ?>">
@@ -25,10 +25,12 @@
   <link rel="stylesheet" href="<?= asset('dashboard/css/style.css') ?>">
   <link rel="stylesheet" href="<?= asset('dashboard/css/components.css') ?>">
 
-  <?php if (isset($css)): foreach($css as $c): ?>
+  <?php if (isset($css)) {
+    foreach ($css as $c) { ?>
 
-  <link rel="stylesheet" href="<?= ! startsWith($c, 'http') ? asset('dashboard/'. $c) : $c ?>">
+  <link rel="stylesheet" href="<?= !startsWith($c, 'http') ? asset('dashboard/'.$c) : $c ?>">
 
-  <?php endforeach; endif; ?>
+  <?php }
+} ?>
 
 </head>

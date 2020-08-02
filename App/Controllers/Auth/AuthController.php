@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controllers\Auth;
-
 
 use App\Core\Request;
 use App\Core\Route;
@@ -11,7 +9,6 @@ use App\Models\User;
 
 class AuthController
 {
-
     public function authenticate(Request $request)
     {
         $request->validate(['email' => 'required|email', 'password' => 'required']);
@@ -22,7 +19,7 @@ class AuthController
             Route::back();
         }
 
-        session()->set('__logout_token', base64_encode(md5($user->email . time())));
+        session()->set('__logout_token', base64_encode(md5($user->email.time())));
         session()->set('__auth', $user);
         if ($user->isAdmin()) {
             Route::redirect('admin');
@@ -41,14 +38,15 @@ class AuthController
             Route::back();
         }
 
-        $user = (new User)->create([
-            'name' => __e($request->name),
-            'email' => strtolower($request->email),
-            'password' => md5($request->password)
+        $user = (new User())->create([
+            'name'     => __e($request->name),
+            'email'    => strtolower($request->email),
+            'password' => md5($request->password),
         ]);
 
-        if (! $user) {
+        if (!$user) {
             session()->set('error', 'Pendaftaran gagal!');
+
             return Route::back();
         }
 

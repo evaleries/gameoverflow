@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -18,6 +17,6 @@ class OrderItem extends Model
         'product_id',
         'quantity',
         'price',
-        'discount'
+        'discount',
     ];
 }

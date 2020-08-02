@@ -79,7 +79,8 @@
                 </div>
                 <div class="card-body">
                   <div class="owl-carousel owl-theme" id="products-carousel">
-                  <?php if (isset($bestProducts)): foreach($bestProducts as $product): ?>
+                  <?php if (isset($bestProducts)) {
+    foreach ($bestProducts as $product) { ?>
                     <div>
                       <div class="product-item pb-3">
                         <div class="product-image">
@@ -89,12 +90,13 @@
                           <div class="product-name"><?= $product->title ?></div>
                           <div class="text-muted text-small"><?= $product->sales ?> Penjualan</div>
                           <div class="product-cta">
-                            <a href="<?= route('products/'. $product->slug) ?>" class="btn btn-primary">Detail</a>
+                            <a href="<?= route('products/'.$product->slug) ?>" class="btn btn-primary">Detail</a>
                           </div>
                         </div>  
                       </div>
                     </div>
-                  <?php endforeach; endif; ?>
+                  <?php }
+} ?>
                   </div>
                 </div>
               </div>
@@ -121,7 +123,8 @@
                         <th>Tanggal Pesanan</th>
                         <th>Aksi</th>
                       </tr>
-                      <?php if(isset($recentOrders)): foreach($recentOrders as $order): ?>
+                      <?php if (isset($recentOrders)) {
+    foreach ($recentOrders as $order) { ?>
                       <tr>
                         <td>#<?= $order->id ?></a></td>
                         <td><?= $order->no ?></a></td>
@@ -130,10 +133,11 @@
                         <td><?= dt($order->due_date, 'Y-m-d H:i:s', 'j F Y') ?></td>
                         <td><?= $order->created_at ?></td>
                         <td>
-                          <a href="<?= route('admin/orders/detail/'. $order->id) ?>" class="btn btn-primary">Detail</a>
+                          <a href="<?= route('admin/orders/detail/'.$order->id) ?>" class="btn btn-primary">Detail</a>
                         </td>
                       </tr>
-                      <?php endforeach; endif; ?>
+                      <?php }
+} ?>
                     </table>
                   </div>
                 </div>
@@ -155,10 +159,10 @@
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: [<?= implode(', ', array_map(function($data) { return "'". $data->month ."'"; }, $incomes)) ?>],
+      labels: [<?= implode(', ', array_map(function ($data) { return "'".$data->month."'"; }, $incomes)) ?>],
       datasets: [{
         label: 'Penjualan',
-        data: [<?= implode(', ', array_map(function($data) { return "'". $data->sales ."'"; }, $sales)) ?>],
+        data: [<?= implode(', ', array_map(function ($data) { return "'".$data->sales."'"; }, $sales)) ?>],
         borderWidth: 2,
         backgroundColor: 'rgba(63,82,227,.7)',
         borderWidth: 0,
@@ -170,7 +174,7 @@
       },
       {
         label: 'Pendapatan',
-        data: [<?= implode(', ', array_map(function($data) { return $data->income; }, $incomes)) ?>],
+        data: [<?= implode(', ', array_map(function ($data) { return $data->income; }, $incomes)) ?>],
         borderWidth: 2,
         backgroundColor: 'rgb(99, 237, 122, .7)',
         borderWidth: 0,

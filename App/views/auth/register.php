@@ -35,11 +35,11 @@
                         <img src="<?= asset('img/logo.png') ?>" alt="logo" width="50%" class="shadow-light rounded-circle">
                     </div>
 
-                    <?php if (session()->has('error')): ?>
+                    <?php if (session()->has('error')) { ?>
                         <div class="alert alert-danger">
                             <?= session()->flash('error') ?>
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
                     <div class="card card-primary">
                         <div class="card-header"><h4>Register</h4></div>
 
@@ -58,9 +58,9 @@
                                     <label for="email">Email</label>
                                     <input id="email" type="email" class="form-control" placeholder="Email" name="email" tabindex="1" required autofocus value="<?= old('email') ?>">
                                         <div class="invalid-feedback">
-                                        <?php if (session()->has('validation_error', 'email')): ?>
+                                        <?php if (session()->has('validation_error', 'email')) { ?>
                                             <?= session()->flash('validation_error', 'email', 'Masukkan email yang valid!') ?>
-                                        <?php endif; ?>
+                                        <?php } ?>
                                         </div>
                                 </div>
 
@@ -70,9 +70,9 @@
                                     </div>
                                     <input id="password" type="password" placeholder="*******" class="form-control" name="password" tabindex="2" required>
                                         <div class="invalid-feedback">
-                                        <?php if (session()->has('validation_error', 'password')): ?>
+                                        <?php if (session()->has('validation_error', 'password')) { ?>
                                             <?= session()->flash('validation_error', 'password', 'Password tidak valid') ?>
-                                        <?php endif; ?>
+                                        <?php } ?>
                                         </div>
                                 </div>
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -17,20 +16,20 @@ class User extends Model
         'password',
         'recovery_code',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $appends = [
-        'getRoleName'
+        'getRoleName',
     ];
 
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $table = 'users';
@@ -44,5 +43,4 @@ class User extends Model
     {
         return $this->isAdmin() ? 'ADMIN' : 'USER';
     }
-
 }

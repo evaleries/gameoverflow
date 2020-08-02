@@ -2,12 +2,12 @@
 <html lang="en">
 
 <?php importView('sections.dashboard.head', [
-  'pageTitle' => 'Products',
-  'css' => [
-    'modules/datatables/datatables.min.css',
-    'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css'
-  ]
-  ]) 
+    'pageTitle' => 'Products',
+    'css'       => [
+        'modules/datatables/datatables.min.css',
+        'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
+    ],
+    ])
 ?>
 
 <body>
@@ -65,10 +65,10 @@
   </div>
 
   <?php importView('sections.dashboard.js', [
-    'js' => [
-      'modules/datatables/datatables.min.js',
-      'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js'
-    ]
+      'js' => [
+          'modules/datatables/datatables.min.js',
+          'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
+      ],
   ]) ?>
 
   <script>

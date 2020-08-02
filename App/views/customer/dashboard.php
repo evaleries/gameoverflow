@@ -63,7 +63,8 @@
                         <th>Batas Tanggal</th>
                         <th>Aksi</th>
                       </tr>
-                      <?php if(isset($orders)): foreach($orders as $order): ?>
+                      <?php if (isset($orders)) {
+    foreach ($orders as $order) { ?>
                       <tr>
                         <td>#<?= $order->id ?></a></td>
                         <td><?= $order->no ?></a></td>
@@ -74,7 +75,8 @@
                           <a href="<?= route('customer/invoice', ['no' => $order->no]) ?>" class="btn btn-primary">Detail</a>
                         </td>
                       </tr>
-                      <?php endforeach; endif; ?>
+                      <?php }
+} ?>
                     </table>
                   </div>
                 </div>
@@ -96,20 +98,22 @@
                         <th>Kode Aktivasi</th>
                         <th>Aksi</th>
                       </tr>
-                      <?php if(isset($myGames)): foreach($myGames as $game): ?>
+                      <?php if (isset($myGames)) {
+    foreach ($myGames as $game) { ?>
                       <tr>
                         <td>#<?= $game->product_id ?></a></td>
                         <td class="font-weight-600"><?= $game->title ?></td>
                         <td class="activation-code"><?= ($game->status == 1) ? $game->activation_code : str_repeat('****', 4) ?></a></td>
                         <td>
-                          <?php if ($game->status == 0): ?>
+                          <?php if ($game->status == 0) { ?>
                             <a href="javascript:none" data-id="<?= $game->id ?>" class="btn btn-primary btn-redeem">Redeem</a>
-                          <?php else: ?>
+                          <?php } else { ?>
                             <a href="#" class="btn disabled btn-outline-success">Selesai</a>
-                          <?php endif; ?>
+                          <?php } ?>
                         </td>
                       </tr>
-                      <?php endforeach; endif; ?>
+                      <?php }
+} ?>
                     </table>
                   </div>
                 </div>

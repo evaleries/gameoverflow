@@ -76,7 +76,7 @@
                           <th class="text-center">Jumlah</th>
                           <th class="text-right">Total</th>
                         </tr>
-                        <?php $total = 0; $i = 1; foreach($orderItems as $item): ?>
+                        <?php $total = 0; $i = 1; foreach ($orderItems as $item) { ?>
                         <tr>
                           <th data-width="40"><?= $i ?></th>
                           <th><?= $item->product_title ?></th>
@@ -84,17 +84,17 @@
                           <th class="text-center"><?= $item->quantity ?></th>
                           <th class="text-right">Rp <?= number_format($item->quantity * $item->price, 0, ',', '.') ?>,-</th>
                         </tr>
-                        <?php $total += $item->quantity * $item->price; $i++; endforeach; ?>
+                        <?php $total += $item->quantity * $item->price; $i++; } ?>
                       </table>
                     </div>
                     <div class="row mt-4">
                       <div class="col-lg-8">
                         <div class="section-title">Pembayaran</div>
-                        <?php if ($payment->status == \App\Models\Payment::CONFIRMED): ?>
+                        <?php if ($payment->status == \App\Models\Payment::CONFIRMED) { ?>
                           <p class="section-lead">Pembayaran sudah dikonfirmasi pada tanggal <?= $payment->getUpdatedAtFormat('j F Y H:i A') ?></p>
-                        <?php else: ?>
+                        <?php } else { ?>
                           <p class="section-lead">Pembayaran harus dilakukan sebelum tanggal jatuh tempo.</p>
-                        <?php endif; ?>
+                        <?php } ?>
                       </div>
                       <div class="col-lg-4 text-right">
                         <hr class="mt-2 mb-2">

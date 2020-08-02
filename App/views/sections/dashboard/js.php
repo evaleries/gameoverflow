@@ -17,6 +17,8 @@
 <!-- Template JS File -->
 <script src="<?= asset('dashboard/js/scripts.js') ?>"></script>
 
-<?php if (isset($js)): foreach($js as $j): ?>
-    <script src="<?= (! startsWith($j, 'http')) ? asset('dashboard/'. $j) : $j ?>"></script>
-<?php endforeach; endif; ?>
+<?php if (isset($js)) {
+    foreach ($js as $j) { ?>
+    <script src="<?= (!startsWith($j, 'http')) ? asset('dashboard/'.$j) : $j ?>"></script>
+<?php }
+} ?>

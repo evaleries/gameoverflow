@@ -2,11 +2,13 @@
 
 use App\Core\View;
 
-function __e($string) {
+function __e($string)
+{
     return htmlentities($string, ENT_QUOTES, 'UTF-8');
 }
 
-function service($className = null) {
+function service($className = null)
+{
     if (empty($className)) {
         return \App\Core\ServiceContainer::i();
     } else {
@@ -17,131 +19,163 @@ function service($className = null) {
 /**
  * @return \App\Core\Request|mixed|null
  */
-function request() {
+function request()
+{
     return service(\App\Core\Request::class);
 }
 
 /**
  * @return \App\Core\Session|mixed|null
  */
-function session() {
+function session()
+{
     return service(\App\Core\Session::class);
 }
 
-function ev($obj = [], ...$args) {
+function ev($obj = [], ...$args)
+{
     var_dump($obj, ...$args);
     exit();
 }
 
-function now($format = 'Y-m-d H:i:s') {
+function now($format = 'Y-m-d H:i:s')
+{
     return (new DateTime('now'))->format($format);
 }
 
-function lastMonth($format = 'Y-m-d H:i:s') {
+function lastMonth($format = 'Y-m-d H:i:s')
+{
     return (new DateTime('-1 month'))->format($format);
 }
 
-function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y') {
+function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y')
+{
     return (DateTime::createFromFormat($format, $dateString))->format($outputFormat);
 }
 
-function view($path, $data = []) {
+function view($path, $data = [])
+{
     return View::make($path, $data);
 }
 
 /**
  * set output to json.
+ *
  * @param $data
  * @param int $statusCode
+ *
  * @return false|string
  */
-function json($data, $statusCode = 200) {
+function json($data, $statusCode = 200)
+{
     header('Content-Type: application/json');
     http_response_code($statusCode);
-    print(json_encode($data, JSON_PRETTY_PRINT));
+    echo json_encode($data, JSON_PRETTY_PRINT);
 }
 
 /**
  * @param $haystack
  * @param $needle
  * @param bool $caseSensitive
+ *
  * @return bool
+ *
  * @see https://stackoverflow.com/questions/4366730/how-do-i-check-if-a-string-contains-a-specific-word
  */
-function contains($haystack, $needle, $caseSensitive = false) {
+function contains($haystack, $needle, $caseSensitive = false)
+{
     return $caseSensitive ?
-        (strpos($haystack, $needle) === FALSE ? FALSE : TRUE):
-        (stripos($haystack, $needle) === FALSE ? FALSE : TRUE);
+        (strpos($haystack, $needle) === false ? false : true) :
+        (stripos($haystack, $needle) === false ? false : true);
 }
 
 /**
  * @param $string
  * @param $startString
+ *
  * @return bool
+ *
  * @see https://css-tricks.com/snippets/php/test-if-string-starts-with-certain-characters-in-php/
  */
-function startsWith($string, $startString) {
+function startsWith($string, $startString)
+{
     return strpos($string, $startString) === 0;
 }
 
 /**
  * @param $haystack
  * @param $needle
+ *
  * @return bool
+ *
  * @see https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
  */
-function endsWith($haystack, $needle) {
+function endsWith($haystack, $needle)
+{
     $length = strlen($needle);
     if ($length == 0) {
         return true;
     }
 
-    return (substr($haystack, -$length) === $needle);
+    return substr($haystack, -$length) === $needle;
 }
 
 /**
- * Get base url
+ * Get base url.
+ *
  * @return string
  */
-function base_url() {
+function base_url()
+{
     return \App\Core\Url::base();
 }
 
-function route($to = '', $param = null, $withCurrentQuery = false) {
+function route($to = '', $param = null, $withCurrentQuery = false)
+{
     return \App\Core\Url::route($to, $param, $withCurrentQuery);
 }
 
 /**
- * Get current url
+ * Get current url.
+ *
  * @return string
  */
-function current_url() {
+function current_url()
+{
     return \App\Core\Url::current();
 }
 
 /**
- * Get asset path
+ * Get asset path.
+ *
  * @param string $path
  * @param string $rootDir
+ *
  * @return string
  */
-function asset($path = '', $rootDir = 'assets/') {
+function asset($path = '', $rootDir = 'assets/')
+{
     return \App\Core\Url::asset($path, $rootDir);
 }
 
-function importView($fileName, $data = []) {
+function importView($fileName, $data = [])
+{
     extract(View::getSharedAttributes(), EXTR_SKIP);
     extract($data, EXTR_SKIP);
-    include_once VIEW_PATH . DS . str_replace('.', DS, str_replace('.php', '', $fileName)) . '.php';
+    include_once VIEW_PATH.DS.str_replace('.', DS, str_replace('.php', '', $fileName)).'.php';
 }
 
 /**
- * Convert String Seperti ini menjadi string-seperti-ini
+ * Convert String Seperti ini menjadi string-seperti-ini.
+ *
  * @param $text
+ *
  * @return false|string|string[]|null
+ *
  * @see https://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string
  */
-function slugify($text) {
+function slugify($text)
+{
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
     $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
     $text = preg_replace('~[^-\w]+~', '', $text);
@@ -159,34 +193,38 @@ function slugify($text) {
 /**
  * @return \App\Models\User|null
  */
-function auth() {
+function auth()
+{
     return session()->get('__auth', null);
 }
 
-function old($key, $default = null) {
+function old($key, $default = null)
+{
     return request()->getOldRequest($key, $default);
 }
 
-function generateInvoiceNo($prefix = 'GO') {
-    return $prefix . '-' . strtoupper(substr(uniqid(time()), 0, 9));
+function generateInvoiceNo($prefix = 'GO')
+{
+    return $prefix.'-'.strtoupper(substr(uniqid(time()), 0, 9));
 }
 
 /**
  * @param string|null $template
+ *
  * @see https://forums.phpfreaks.com/topic/120028-solved-how-to-generate-a-product-serial-number/
  */
-function generateActivationCode($template = null) {
-    $template   = 'XX99-XX99-99XX-99XX';
+function generateActivationCode($template = null)
+{
+    $template = 'XX99-XX99-99XX-99XX';
     $k = strlen($template);
     $sernum = '';
-    for ($i=0; $i<$k; $i++)
-    {
-        switch($template[$i])
-        {
-            case 'X': $sernum .= chr(rand(65,90)); break;
-            case '9': $sernum .= rand(0,9); break;
-            case '-': $sernum .= '-';  break; 
+    for ($i = 0; $i < $k; $i++) {
+        switch ($template[$i]) {
+            case 'X': $sernum .= chr(rand(65, 90)); break;
+            case '9': $sernum .= rand(0, 9); break;
+            case '-': $sernum .= '-'; break;
         }
     }
+
     return $sernum;
 }

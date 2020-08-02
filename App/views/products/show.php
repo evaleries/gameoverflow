@@ -21,10 +21,10 @@
 
     <!-- Breadcrumb Section Begin -->
     <?php importView('sections.front.breadcrumb', ['breadcrumbs' => [
-        'Home' => '/', 
-        'Produk' => '/products',
+        'Home'                  => '/',
+        'Produk'                => '/products',
         $product->category_name => route('products', ['category' => $product->category_slug]),
-        $product->title => '#'
+        $product->title         => '#',
     ]]) ?>
     <!-- Breadcrumb Section End -->
 
@@ -55,9 +55,9 @@
                         </div>
                         <input type="hidden" name="id" value="<?= $product->id ?>">
                         <input type="hidden" name="slug" value="<?= $product->slug ?>">
-                        <?php if ($stock > 0): ?>
+                        <?php if ($stock > 0) { ?>
                         <input type="submit" class="primary-btn" style="border-style: none" value="Tambahkan ke keranjang">
-                        <?php endif; ?>
+                        <?php } ?>
                         <ul>
                             <li><b>Stok</b> <span><?= $stock > 0 ? $stock : '<b>Out of Stock</b>' ?></span></li>
                             <li><b>Kategori</b> <span><?=  $product->category_name ?></span></li>
@@ -65,7 +65,7 @@
                             <li><b>Tanggal Rilis</b> <span><?= $product->getReleasedAt() ?></span></li>
                             <li><b>Bagikan</b>
                                 <div class="share">
-                                    <a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow" target="_new"><i class="fa fa-retweet"></i></a>
+                                    <a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'.$product->slug) ?>&hashtags=gameoverflow" target="_new"><i class="fa fa-retweet"></i></a>
                                 </div>
                             </li>
                         </ul>

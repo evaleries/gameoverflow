@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -23,14 +22,13 @@ class Order extends Model
         'status',
         'description',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
-
 
     public function getStatusString()
     {
@@ -83,5 +81,4 @@ class Order extends Model
             break;
         }
     }
-
 }

@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
-                        <?php if (!empty($carts['data'])): ?>
+                        <?php if (!empty($carts['data'])) { ?>
                         <table>
                             <thead>
                             <tr>
@@ -43,7 +43,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach($carts['data'] as $productId => $cart): ?>
+                            <?php foreach ($carts['data'] as $productId => $cart) { ?>
                             <tr>
                                 <td class="shoping__cart__item">
                                     <img src="<?= $cart->image ?>" style="max-width: 30%;" alt="<?= $cart->title ?>">
@@ -66,10 +66,10 @@
                                     <span class="icon_close" data-id="<?= $productId ?>"></span>
                                 </td>
                             </tr>
-                            <?php endforeach; ?>
+                            <?php } ?>
                             </tbody>
                         </table>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -87,9 +87,9 @@
                         <ul>
                             <li>Total <span><?= isset($carts['formattedTotalPrice']) ? $carts['formattedTotalPrice'] : '0' ?></span></li>
                         </ul>
-                        <?php if (isset($carts['data']) && count($carts['data']) > 0): ?>
+                        <?php if (isset($carts['data']) && count($carts['data']) > 0) { ?>
                         <a href="<?= route('checkout') ?>" class="primary-btn <?= empty($carts['data']) ? 'disabled' : '' ?>">Lanjutkan Ke Pembayaran</a>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

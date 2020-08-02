@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Core;
-
 
 use PDO;
 use PDOStatement;
@@ -33,72 +31,95 @@ class DB
 
     /**
      * DB constructor.
+     *
      * @param null $query
+     *
      * @throws \Exception
      */
     public function __construct($query = null)
     {
-        if ($this->db !== null) return;
+        if ($this->db !== null) {
+            return;
+        }
 
-        $dsn = sprintf("mysql:host=%s;dbname=%s", self::$host, self::$database);
+        $dsn = sprintf('mysql:host=%s;dbname=%s', self::$host, self::$database);
+
         try {
             $this->db = new \PDO($dsn, self::$user, self::$pass, [
-                PDO::ATTR_PERSISTENT => true,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                PDO::ATTR_PERSISTENT         => true,
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
             ]);
         } catch (\PDOException $e) {
             $this->error = $e->getMessage();
+
             throw new \Exception($e);
         } finally {
-            if ($query !== null) $this->prepare($query);
+            if ($query !== null) {
+                $this->prepare($query);
+            }
         }
     }
 
     /**
      * @return PDO
      */
-    public function PDO() {
+    public function PDO()
+    {
         return $this->db;
     }
 
-    public function queryString() {
+    public function queryString()
+    {
         return $this->statement->queryString;
     }
 
-    public function debug() {
+    public function debug()
+    {
         return $this->statement->debugDumpParams();
     }
 
     /**
-     * DB::make($query)->execute($data)->all();
+     * DB::make($query)->execute($data)->all();.
+     *
      * @param $query
-     * @return static
+     *
      * @throws \Exception
+     *
+     * @return static
      */
-    public static function make($query) {
+    public static function make($query)
+    {
         $instance = new static();
         $instance->prepare($query);
+
         return $instance;
     }
 
     /**
      * @param $query
-     * @return $this
+     *
      * @throws \Exception
+     *
+     * @return $this
      */
-    public function query($query) {
+    public function query($query)
+    {
         $this->prepare($query);
+
         return $this;
     }
 
-
     /**
      * @param $query
+     *
      * @throws \Exception
      */
-    public function prepare($query) {
-        if (! $this->db instanceof PDO) throw new \Exception("[DB] Invalid instance, given: ". get_class($this->db));
+    public function prepare($query)
+    {
+        if (!$this->db instanceof PDO) {
+            throw new \Exception('[DB] Invalid instance, given: '.get_class($this->db));
+        }
         $this->statement = $this->db->prepare($query);
     }
 
@@ -107,7 +128,8 @@ class DB
      * @param $value
      * @param null $type
      */
-    public function bindParam($key, $value, $type = null) {
+    public function bindParam($key, $value, $type = null)
+    {
         if ($type === null) {
             if (is_int($type)) {
                 $this->statement->bindParam($key, $value, PDO::PARAM_INT);
@@ -124,80 +146,97 @@ class DB
     /**
      * @param array $params
      */
-    private function bindParams($params = []) {
+    private function bindParams($params = [])
+    {
         $params = (!empty($params) && is_array($params)) ? $params : $this->attributes;
         foreach ($params as $param => &$val) {
-            $this->bindParam(':' . $param, $val);
+            $this->bindParam(':'.$param, $val);
         }
     }
 
     /**
      * @param array $data
+     *
      * @return $this
      */
-    public function execute($data = []) {
+    public function execute($data = [])
+    {
         if (!empty($data)) {
             $this->statement->execute($data);
+
             return $this;
         }
 
         $this->bindParams();
         $this->statement->execute();
+
         return $this;
     }
 
     /**
      * @return PDOStatement
      */
-    public function statement() {
+    public function statement()
+    {
         return $this->statement;
     }
 
     /**
      * @param null $type
+     *
      * @return mixed
      */
-    public function first($type = null) {
+    public function first($type = null)
+    {
         $this->execute();
         $type = !empty($type) ? $type : PDO::FETCH_OBJ;
+
         return $this->statement->fetch($type);
     }
 
     /**
      * @param null $type
+     *
      * @return array
      */
-    public function all($type = null) {
+    public function all($type = null)
+    {
         $this->execute();
         $type = !empty($type) ? $type : PDO::FETCH_OBJ;
+
         return $this->statement->fetchAll($type);
     }
 
     /**
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return $this->statement->rowCount();
     }
 
     /**
      * @param string $name
+     *
      * @return mixed
      */
-    public function lastInsertId($name = '') {
+    public function lastInsertId($name = '')
+    {
         return $this->db->lastInsertId($name);
     }
 
     public function __isset($name)
     {
-        return isset($this->attributes[$name]) OR property_exists($this, $name);
+        return isset($this->attributes[$name]) or property_exists($this, $name);
     }
 
-    public function __set($key, $val) {
+    public function __set($key, $val)
+    {
         $this->attributes[$key] = $val;
     }
 
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->attributes[$key];
     }
 
@@ -214,7 +253,8 @@ class DB
 
     public function __destruct()
     {
-        if ($this->error !== null) throw new \Exception("[DB] " . $this->error);
+        if ($this->error !== null) {
+            throw new \Exception('[DB] '.$this->error);
+        }
     }
-
 }

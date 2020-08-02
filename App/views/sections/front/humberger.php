@@ -20,11 +20,11 @@
             </ul>
         </div> -->
         <div class="header__top__right__auth">
-        <?php if (isAuthenticated()): ?>
+        <?php if (isAuthenticated()) { ?>
             <a href="<?= route(auth()->isAdmin() ? 'admin' : 'customer') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
-        <?php else: ?>
+        <?php } else { ?>
             <a href="<?= route('auth/login') ?>"><i class="fa fa-user"></i> Login</a>
-        <?php endif; ?>
+        <?php } ?>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
@@ -39,9 +39,9 @@
         <ul>
             <li><i class="fa fa-envelope"></i> hello@gameoverflow.test</li>
             <li>Official game store</li>
-            <?php if (isAuthenticated()): ?>
+            <?php if (isAuthenticated()) { ?>
             <li><form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Keluar</button></form></li>
-            <?php endif; ?>
+            <?php } ?>
         </ul>
     </div>
 </div>

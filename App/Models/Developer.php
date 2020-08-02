@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
 
 class Developer extends Model
 {
-
     protected $attributes = [];
 
     protected $fillable = [
@@ -15,9 +13,8 @@ class Developer extends Model
         'description',
         'website',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $table = 'developers';
-
 }

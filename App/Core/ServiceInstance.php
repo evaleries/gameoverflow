@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Core;
-
 
 /**
  * Service instance
- * Class ServiceInstance
- * @package App\Core
+ * Class ServiceInstance.
+ *
  * @see https://catchmetech.com/en/post/95/implementation-of-dependency-injection-in-php
  */
 class ServiceInstance
@@ -27,11 +25,13 @@ class ServiceInstance
         }
     }
 
-    public function getService() {
+    public function getService()
+    {
         if ($this->instance === null) {
             $loaderClosure = $this->loader;
             $this->instance = $loaderClosure();
         }
+
         return $this->instance;
     }
 }

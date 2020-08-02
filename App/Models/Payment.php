@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
 
 class Payment extends Model
 {
-
     public const PENDING = 0;
     public const CONFIRMED = 1;
 
@@ -22,16 +20,15 @@ class Payment extends Model
         'bank_number',
         'status',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $table = 'payments';
-
 
     public function getPaymentStatus()
     {
@@ -45,7 +42,6 @@ class Payment extends Model
 
     public function formattedAmount()
     {
-        return ($this->attributes['amount'] > 0) ? "Rp. " . number_format($this->attributes['amount'], 0, ".", ",") . ",-" : '0';
+        return ($this->attributes['amount'] > 0) ? 'Rp. '.number_format($this->attributes['amount'], 0, '.', ',').',-' : '0';
     }
-
 }

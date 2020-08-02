@@ -1,17 +1,13 @@
 <?php
 
-
 namespace App\Core;
-
 
 /**
  * Class untuk menghandle session.
- * Class Session
- * @package App\Core
+ * Class Session.
  */
 class Session
 {
-
     /**
      * @var bool
      */
@@ -19,11 +15,12 @@ class Session
 
     /**
      * @param int $maxLifeTime in minutes
+     *
      * @return bool
      */
     public function __construct($maxLifeTime = 60)
     {
-        if (! $this->isStarted) {
+        if (!$this->isStarted) {
             session_set_cookie_params($maxLifeTime * 60);
             session_start();
 
@@ -51,6 +48,7 @@ class Session
     /**
      * @param null $key
      * @param null $defaultValue
+     *
      * @return mixed|null
      */
     public function get($key = null, $defaultValue = null)
@@ -65,6 +63,7 @@ class Session
     /**
      * @param $key
      * @param null $secondKey
+     *
      * @return bool
      */
     public function has($key, $secondKey = null)
@@ -78,9 +77,11 @@ class Session
 
     /**
      * Mengambil session dan di return, lalu di hapus.
+     *
      * @param $key
-     * @param null $secondKey
+     * @param null       $secondKey
      * @param mixed|null $defaultValue
+     *
      * @return mixed|null
      */
     public function flash($key, $secondKey = null, $defaultValue = null)
@@ -122,6 +123,7 @@ class Session
     {
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
+
             return true;
         }
 

@@ -36,30 +36,32 @@
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">All</li>
-                            <?php foreach ($categories as $category): ?>
+                            <?php foreach ($categories as $category) { ?>
                                 <li data-filter=".cat-<?= $category->id ?>"><?= $category->name ?></li>
-                            <?php endforeach; ?>
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="row featured__filter">
-                <?php if (!empty($products)): foreach ($products as $product): ?>
+                <?php if (!empty($products)) {
+    foreach ($products as $product) { ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 mix cat-<?= $product->category_id ?>">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="<?= $product->getAssetImage() ?>">
                             <ul class="featured__item__pic__hover">
-                                <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'. $product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="<?= route('products/' . $product->slug) ?>"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="http://twitter.com/share?text=Buy <?= $product->title ?>&url=<?= route('products/'.$product->slug) ?>&hashtags=gameoverflow"><i class="fa fa-retweet"></i></a></li>
+                                <li><a href="<?= route('products/'.$product->slug) ?>"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="<?= route('products/' . $product->slug) ?>"><?= $product->title ?></a></h6>
+                            <h6><a href="<?= route('products/'.$product->slug) ?>"><?= $product->title ?></a></h6>
                             <h5><?= $product->getFormattedPrice(); ?></h5>
                         </div>
                     </div>
                 </div>
-                <?php endforeach; endif; ?>
+                <?php }
+} ?>
             </div>
         </div>
     </section>

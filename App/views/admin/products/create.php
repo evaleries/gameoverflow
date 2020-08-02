@@ -2,12 +2,12 @@
 <html lang="en">
 
 <?php importView('sections.dashboard.head', [
-  'pageTitle' => 'Create Product',
-  'css' => [
-    'modules/summernote/summernote-bs4.css',
-    'modules/jquery-selectric/selectric.css',
-    'modules/bootstrap-daterangepicker/daterangepicker.css',
-]]) ?>
+    'pageTitle' => 'Create Product',
+    'css'       => [
+        'modules/summernote/summernote-bs4.css',
+        'modules/jquery-selectric/selectric.css',
+        'modules/bootstrap-daterangepicker/daterangepicker.css',
+    ], ]) ?>
 
 <body>
   <div id="app">
@@ -70,9 +70,9 @@
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Developer</label>
                         <div class="col-sm-12 col-md-7">
                           <select class="form-control selectric" name="developer">
-                          <?php foreach($developers as $developer): ?>
+                          <?php foreach ($developers as $developer) { ?>
                             <option value="<?= $developer->id ?>"><?= $developer->name ?></option>
-                          <?php endforeach; ?>
+                          <?php } ?>
                           </select>
                         </div>
                       </div>
@@ -80,9 +80,9 @@
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori</label>
                         <div class="col-sm-12 col-md-7">
                           <select class="form-control selectric" name="category">
-                          <?php foreach($categories as $category): ?>
+                          <?php foreach ($categories as $category) { ?>
                             <option value="<?= $category->id ?>"><?= $category->name ?></option>
-                          <?php endforeach; ?>
+                          <?php } ?>
                           </select>
                         </div>
                       </div>
@@ -113,7 +113,9 @@
                       <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Activation Codes (stok)</label>
                         <div class="col-sm-12 col-md-7">
-                          <textarea class="form-control" style="min-height: 150px" name="game_codes" required><?php for($i = 0; $i < 10; $i++) echo generateActivationCode() . PHP_EOL; ?></textarea>
+                          <textarea class="form-control" style="min-height: 150px" name="game_codes" required><?php for ($i = 0; $i < 10; $i++) {
+      echo generateActivationCode().PHP_EOL;
+} ?></textarea>
                         </div>
                       </div>
                       <div class="form-group row mb-4">
@@ -137,11 +139,11 @@
   </div>
 
   <?php importView('sections.dashboard.js', ['js' => [
-    'modules/summernote/summernote-bs4.js',
-    'modules/jquery-selectric/jquery.selectric.min.js',
-    'modules/upload-preview/assets/js/jquery.uploadPreview.min.js',
-    'modules/bootstrap-daterangepicker/daterangepicker.js',
-    'modules/cleave-js/dist/cleave.min.js'
+      'modules/summernote/summernote-bs4.js',
+      'modules/jquery-selectric/jquery.selectric.min.js',
+      'modules/upload-preview/assets/js/jquery.uploadPreview.min.js',
+      'modules/bootstrap-daterangepicker/daterangepicker.js',
+      'modules/cleave-js/dist/cleave.min.js',
   ]]) ?>
 
   <script>

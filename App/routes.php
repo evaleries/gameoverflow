@@ -1,14 +1,13 @@
 <?php
 
-use App\Core\Route;
-use App\Controllers\Front\CartController;
-use App\Controllers\Front\CheckoutController;
-use App\Controllers\Auth\AuthController;
-use App\Controllers\Admin\ProductController as AdminProduct;
-use App\Controllers\Admin\OrderController as AdminOrder;
 use App\Controllers\Admin\CategoryController as AdminCategory;
 use App\Controllers\Admin\DeveloperController as AdminDeveloper;
-
+use App\Controllers\Admin\OrderController as AdminOrder;
+use App\Controllers\Admin\ProductController as AdminProduct;
+use App\Controllers\Auth\AuthController;
+use App\Controllers\Front\CartController;
+use App\Controllers\Front\CheckoutController;
+use App\Core\Route;
 
 Route::get('/', '\App\Controllers\Front\HomeController@index');
 Route::get('/categories', '\App\Controllers\Front\HomeController@categories');

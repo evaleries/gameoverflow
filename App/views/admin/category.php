@@ -2,12 +2,12 @@
 <html lang="en">
 
 <?php importView('sections.dashboard.head', [
-  'pageTitle' => 'Kategori',
-  'css' => [
-    'modules/datatables/datatables.min.css',
-    'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css'
-  ]
-  ]) 
+    'pageTitle' => 'Kategori',
+    'css'       => [
+        'modules/datatables/datatables.min.css',
+        'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
+    ],
+    ])
 ?>
 
 <body>
@@ -108,12 +108,12 @@
   </div>
 
   <?php importView('sections.dashboard.js', [
-    'js' => [
-      'modules/datatables/datatables.min.js',
-      'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
-      'modules/upload-preview/assets/js/jquery.uploadPreview.min.js',
-      'https://cdn.jsdelivr.net/npm/sweetalert2@9'
-    ]
+      'js' => [
+          'modules/datatables/datatables.min.js',
+          'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
+          'modules/upload-preview/assets/js/jquery.uploadPreview.min.js',
+          'https://cdn.jsdelivr.net/npm/sweetalert2@9',
+      ],
   ]) ?>
 
   <script>

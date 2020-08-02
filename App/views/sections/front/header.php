@@ -13,16 +13,16 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__right">
                         <div class="header__top__right__language">
-                            <?php if (isAuthenticated()): ?>
+                            <?php if (isAuthenticated()) { ?>
                             <form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Keluar</button></form>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
                         <div class="header__top__right__auth">
-                            <?php if (isAuthenticated()): ?>
+                            <?php if (isAuthenticated()) { ?>
                                 <a href="<?= route(auth()->isAdmin() ? 'admin' : 'customer') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
-                            <?php else: ?>
+                            <?php } else { ?>
                                 <a href="<?= route('auth/login') ?>"><i class="fa fa-user"></i> Masuk</a>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
