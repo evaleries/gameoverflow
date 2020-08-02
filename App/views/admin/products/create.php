@@ -114,8 +114,8 @@
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Activation Codes (stok)</label>
                         <div class="col-sm-12 col-md-7">
                           <textarea class="form-control" style="min-height: 150px" name="game_codes" required><?php for ($i = 0; $i < 10; $i++) {
-      echo generateActivationCode().PHP_EOL;
-} ?></textarea>
+        echo generateActivationCode().PHP_EOL;
+    } ?></textarea>
                         </div>
                       </div>
                       <div class="form-group row mb-4">
