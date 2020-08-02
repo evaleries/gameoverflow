@@ -73,9 +73,9 @@
                                 <h4>Pesanan Anda</h4>
                                 <div class="checkout__order__products">Produk <span>Total</span></div>
                                 <ul>
-                                    <?php foreach($carts['data'] as $productId => $cart): ?>
+                                    <?php foreach ($carts['data'] as $productId => $cart) { ?>
                                         <li><?= $cart->title ?> <span><?= $cart->formattedTotalPrice ?></span></li>
-                                    <?php endforeach; ?>
+                                    <?php } ?>
                                 </ul>
                                 <div class="checkout__order__total mt-4">Total <span><?= $carts['formattedTotalPrice'] ?></span></div>
                                 <button type="submit" class="site-btn">Pesan Sekarang</button>

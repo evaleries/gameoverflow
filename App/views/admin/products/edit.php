@@ -2,11 +2,11 @@
 <html lang="en">
 
 <?php importView('sections.dashboard.head', ['css' => [
-  'modules/datatables/datatables.min.css',
-  'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
-  'modules/summernote/summernote-bs4.css',
-  'modules/jquery-selectric/selectric.css',
-  'modules/bootstrap-daterangepicker/daterangepicker.css',
+    'modules/datatables/datatables.min.css',
+    'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
+    'modules/summernote/summernote-bs4.css',
+    'modules/jquery-selectric/selectric.css',
+    'modules/bootstrap-daterangepicker/daterangepicker.css',
 ]]) ?>
 
 <body>
@@ -46,7 +46,7 @@
                     </div>
                   </div>
                   <div class="card-body collapse show" id="info-product">
-                    <form action="<?= route('admin/products/'. $product->slug .'/update') ?>" method="POST">
+                    <form action="<?= route('admin/products/'.$product->slug.'/update') ?>" method="POST">
                       <input type="hidden" name="product_id" value="<?= $product->id ?>">
                       <div class="form-group row mb-4">
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Judul</label>
@@ -75,9 +75,9 @@
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Developer</label>
                         <div class="col-sm-12 col-md-7">
                           <select class="form-control selectric" name="developer">
-                          <?php foreach($developers as $developer): ?>
+                          <?php foreach ($developers as $developer) { ?>
                             <option value="<?= $developer->id ?>" <?= $product->developer_id == $developer->id ? 'selected' : '' ?> ><?= $developer->name ?></option>
-                          <?php endforeach; ?>
+                          <?php } ?>
                           </select>
                         </div>
                       </div>
@@ -85,9 +85,9 @@
                         <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kategori</label>
                         <div class="col-sm-12 col-md-7">
                           <select class="form-control selectric" name="category">
-                          <?php foreach($categories as $category): ?>
+                          <?php foreach ($categories as $category) { ?>
                             <option value="<?= $category->id ?>" <?= $product->category_id == $category->id ? 'selected' : '' ?>><?= $category->name ?></option>
-                          <?php endforeach; ?>
+                          <?php } ?>
                           </select>
                         </div>
                       </div>
@@ -177,13 +177,13 @@
   </div>
 
   <?php importView('sections.dashboard.js', ['js' => [
-    'modules/summernote/summernote-bs4.js',
-    'modules/jquery-selectric/jquery.selectric.min.js',
-    'modules/bootstrap-daterangepicker/daterangepicker.js',
-    'modules/cleave-js/dist/cleave.min.js',
-    'modules/datatables/datatables.min.js',
-    'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
-    'https://cdn.jsdelivr.net/npm/sweetalert2@9'
+      'modules/summernote/summernote-bs4.js',
+      'modules/jquery-selectric/jquery.selectric.min.js',
+      'modules/bootstrap-daterangepicker/daterangepicker.js',
+      'modules/cleave-js/dist/cleave.min.js',
+      'modules/datatables/datatables.min.js',
+      'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
+      'https://cdn.jsdelivr.net/npm/sweetalert2@9',
   ]]) ?>
 
   <script>
@@ -196,7 +196,7 @@
     });
 
     const tableStock = $('#table-stocks').DataTable({
-      ajax: '<?= route('admin/products/'. $product->id .'/stocks') ?>',
+      ajax: '<?= route('admin/products/'.$product->id.'/stocks') ?>',
       ordering: false,
       columns: [
         { data: "id" },
@@ -231,7 +231,7 @@
         allowOutsideCick: () => !Swal.isLoading(),
         confirmButtonText: '<i class="fa fa-plus"></i> Tambah',
         preConfirm: (val) => {
-          return $.post(`<?= route('admin/products/'. $product->id .'/stocks/create') ?>`, {data: val}, function () {
+          return $.post(`<?= route('admin/products/'.$product->id.'/stocks/create') ?>`, {data: val}, function () {
             return true;
           }).fail(function (err) {
             Swal.fire('Gagal!', 'Gagal menambahkan data', 'error');

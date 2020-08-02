@@ -4,11 +4,11 @@
     <meta name="keywords" content="<?= isset($pageMeta['keywords']) ? implode(', ', $pageMeta['keywords']) : 'gameoverflow, game' ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <?php if (isset($pageTitle)): ?>
+    <?php if (isset($pageTitle)) { ?>
         <title><?= $pageTitle ?> - GameOverFlow</title>
-    <?php else: ?>
+    <?php } else { ?>
         <title>GameOverFlow</title>
-    <?php endif; ?>
+    <?php } ?>
 
     <link rel="apple-touch-icon" sizes="180x180" href="<?= asset('apple-touch-icon.png') ?>">
     <link rel="icon" type="image/png" sizes="32x32" href="<?= asset('favicon-32x32.png') ?>">

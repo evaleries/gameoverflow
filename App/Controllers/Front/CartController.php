@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controllers\Front;
 
 use App\Controllers\Controller;
@@ -20,26 +19,25 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $request->validate(['id' => 'numeric|int', 'slug' => 'string', 'quantity' => 'int']);
-        $carts = session()->get("__cart", []);
+        $carts = session()->get('__cart', []);
 
         if (isset($carts['data'][$request->id]) && isset($carts['data'][$request->id]->quantity)) {
             $carts['data'][$request->id]->quantity = $request->quantity + $carts['data'][$request->id]->quantity;
             $carts['data'][$request->id]->totalPrice = $carts['data'][$request->id]->quantity * $carts['data'][$request->id]->price;
             $carts['data'][$request->id]->formattedTotalPrice = Product::humanizePrice($carts['data'][$request->id]->totalPrice);
-
         } else {
             $product = Product::firstOrFail(['id' => $request->id, 'slug' => $request->slug]);
             $totalPrice = $product->price * (intval($request->quantity));
 
             $carts['data'][$product->id] = (object) [
-                'quantity' => intval($request->quantity),
-                'title' => $product->title,
-                'image' => $product->getAssetImage(),
-                'url' => route('products/'. $product->slug),
-                'price' => $product->price,
-                'totalPrice' => $totalPrice,
-                'formattedPrice' => Product::humanizePrice($product->price),
-                'formattedTotalPrice' => Product::humanizePrice($totalPrice)
+                'quantity'            => intval($request->quantity),
+                'title'               => $product->title,
+                'image'               => $product->getAssetImage(),
+                'url'                 => route('products/'.$product->slug),
+                'price'               => $product->price,
+                'totalPrice'          => $totalPrice,
+                'formattedPrice'      => Product::humanizePrice($product->price),
+                'formattedTotalPrice' => Product::humanizePrice($totalPrice),
             ];
         }
 
@@ -51,17 +49,16 @@ class CartController extends Controller
     public function update(Request $request)
     {
         $request->validate(['data' => 'array']);
-        if (! $request->ajax()) {
-            throw new \Exception("Unauthorized", 401);
+        if (!$request->ajax()) {
+            throw new \Exception('Unauthorized', 401);
         }
 
         $carts = session()->get('__cart', []);
 
         if (session()->has('__cart', 'data')) {
-
             if (is_array($request->data)) {
                 foreach ($request->data as $itemId => $quantity) {
-                    if (! isset($carts['data'][$itemId]->quantity)) {
+                    if (!isset($carts['data'][$itemId]->quantity)) {
                         continue;
                     }
 
@@ -92,8 +89,8 @@ class CartController extends Controller
     public function delete(Request $request)
     {
         $request->validate(['id' => 'int']);
-        if (! $request->ajax()) {
-            throw new \Exception("Unauthorized", 401);
+        if (!$request->ajax()) {
+            throw new \Exception('Unauthorized', 401);
         }
 
         if (isset(session()->get('__cart', [])['data'][$request->id])) {

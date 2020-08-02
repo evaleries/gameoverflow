@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -18,16 +17,14 @@ class Invoice extends Model
         'description',
         'due_date',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'due_date'
+        'due_date',
     ];
 
     protected $table = 'invoices';
-
-
 }

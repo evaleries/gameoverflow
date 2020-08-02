@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-
 use Closure;
 use Exception;
 use ReflectionException;
@@ -10,13 +9,13 @@ use ReflectionException;
 /**
  * Routing sederhana memanfaatkan RegEx dan telah dikembangkan.
  * Terinspirasi dari Laravel.
- * Class Route
- * @package App\Core
+ * Class Route.
+ *
  * @see https://steampixel.de/en/simple-and-elegant-url-routing-with-php/
  * @see https://stackoverflow.com/questions/11722711/url-routing-regex-php
  */
-class Route {
-
+class Route
+{
     /**
      * @var array
      */
@@ -30,12 +29,13 @@ class Route {
     /**
      * @param $expression
      * @param closure|array|string $function
-     * @param string $method
+     * @param string               $method
      */
     public static function add($expression, $function, $method = 'GET', $beforeMiddleware = null)
     {
-        if (is_array($function))
+        if (is_array($function)) {
             $function = implode('@', $function);
+        }
 
         array_push(self::$routes, compact('expression', 'function', 'method', 'beforeMiddleware'));
     }
@@ -43,10 +43,11 @@ class Route {
     /**
      * @param $expression
      * @param closure|array|string $function
-     * @param closure|null $beforeMiddleware
+     * @param closure|null         $beforeMiddleware
      */
-    public static function get($expression, $function, $beforeMiddleware = null) {
-        self::add($expression, $function, "GET", $beforeMiddleware);
+    public static function get($expression, $function, $beforeMiddleware = null)
+    {
+        self::add($expression, $function, 'GET', $beforeMiddleware);
     }
 
     /**
@@ -54,18 +55,20 @@ class Route {
      * @param $function
      * @param closure|null $beforeMiddleware
      */
-    public static function post($expression, $function, $beforeMiddleware = null) {
-        self::add($expression, $function, "POST", $beforeMiddleware);
+    public static function post($expression, $function, $beforeMiddleware = null)
+    {
+        self::add($expression, $function, 'POST', $beforeMiddleware);
     }
 
     /**
-     * @param int $code
+     * @param int  $code
      * @param null $message
      */
-    public static function error($code = 400, $message = null) {
+    public static function error($code = 400, $message = null)
+    {
         http_response_code($code);
-        if (View::isExist('errors.' . $code)) {
-            view('errors.' . $code, compact('code', 'message'))->output();
+        if (View::isExist('errors.'.$code)) {
+            view('errors.'.$code, compact('code', 'message'))->output();
         } else {
             view('errors.error', compact('code', 'message'))->output();
         }
@@ -76,7 +79,8 @@ class Route {
     /**
      * @return array
      */
-    public static function routes() {
+    public static function routes()
+    {
         return self::$routes;
     }
 
@@ -87,6 +91,7 @@ class Route {
 
     /**
      * @param $route
+     *
      * @return bool
      */
     public static function is($route)
@@ -103,8 +108,9 @@ class Route {
     /**
      * @param string $to
      */
-    public static function redirect($to = '/') {
-        header('Location: '. Url::base($to));
+    public static function redirect($to = '/')
+    {
+        header('Location: '.Url::base($to));
         exit();
     }
 
@@ -112,17 +118,17 @@ class Route {
     {
         $referer = Url::referer();
         if (startsWith($referer, Url::base())) {
-            header('Location: '. $referer);
+            header('Location: '.$referer);
             exit();
         }
 
         self::redirect($fallback);
-        return;
     }
 
     /**
      * @param ServiceContainer $serviceContainer
-     * @param string $basePath
+     * @param string           $basePath
+     *
      * @throws ReflectionException
      */
     public static function run($serviceContainer, $basePath = '/')
@@ -130,11 +136,11 @@ class Route {
         $path = parse_url($_SERVER['REQUEST_URI'])['path'] ?? '/';
         $clearPath = str_replace($basePath, '/', $path);
         $method = $_SERVER['REQUEST_METHOD'];
-        $isRouteMatch = false; $isMethodMatch = false;
+        $isRouteMatch = false;
+        $isMethodMatch = false;
 
-        foreach(self::$routes as $route) {
-
-            $expression = '~^'. $route['expression'] .'$~i';
+        foreach (self::$routes as $route) {
+            $expression = '~^'.$route['expression'].'$~i';
 
             if (preg_match($expression, $clearPath, $matches)) {
                 $isRouteMatch = true;
@@ -152,17 +158,18 @@ class Route {
 
         if ($isRouteMatch && !$isMethodMatch) {
             self::error(405, 'Method not allowed!');
-        } elseif (! $isRouteMatch) {
+        } elseif (!$isRouteMatch) {
             self::error(404, 'Not found');
         }
-
     }
 
     /**
      * Memanggil method pada controller.
+     *
      * @param ServiceContainer $serviceContainer
      * @param $route
      * @param $matches
+     *
      * @throws ReflectionException
      * @throws Exception
      */
@@ -183,21 +190,20 @@ class Route {
 
                     foreach ($method->getParameters() as $index => $param) {
                         if ($param->getClass()) {
-
                             $nameRequiredClass = $param->getClass()->getName();
                             $service = $serviceContainer->findClass($nameRequiredClass);
 
                             if ($service instanceof $nameRequiredClass) {
                                 $paramToInject[$param->getPosition()] = $service;
                             } else {
-                                throw new Exception("[Route] Service gagal di inject ke controller: ". $nameRequiredClass);
+                                throw new Exception('[Route] Service gagal di inject ke controller: '.$nameRequiredClass);
                             }
                         } elseif (isset($matches[$index])) {
                             $paramToInject[$index] = $matches[$index];
                         }
                     }
 
-                    if (!empty ($matches)) {
+                    if (!empty($matches)) {
                         foreach ($matches as $param) {
                             $paramToInject[] = $param;
                         }
@@ -205,15 +211,14 @@ class Route {
 
                     $method->invokeArgs($instance, $paramToInject);
                 } else {
-                    throw new \BadMethodCallException("[Route] Method tidak ditemukan: ". $methodName);
+                    throw new \BadMethodCallException('[Route] Method tidak ditemukan: '.$methodName);
                 }
 
                 // Jika menggunakan call_user_func, constructor parent tidak terpanggil
                 // call_user_func_array([$className, $methodName], $matches);
             } else {
-                throw new \BadFunctionCallException("[Route] Class tidak ditemukan: ". $className);
+                throw new \BadFunctionCallException('[Route] Class tidak ditemukan: '.$className);
             }
         }
     }
-
 }

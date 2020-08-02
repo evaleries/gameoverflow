@@ -3,9 +3,9 @@
         <span>×</span>
     </button>
     
-    <?php if (isset($title)): ?>
+    <?php if (isset($title)) { ?>
     <div class="alert-title">Danger</div>
-    <?php endif; ?>
+    <?php } ?>
 
 
     <?= isset($message) ? $message : null ?>

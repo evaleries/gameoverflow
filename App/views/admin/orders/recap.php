@@ -2,13 +2,13 @@
 <html lang="en">
 
 <?php importView('sections.dashboard.head', [
-  'pageTitle' => 'Rekap Pesanan',
-  'css' => [
-    'modules/datatables/datatables.min.css',
-    'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
-    'modules/bootstrap-daterangepicker/daterangepicker.css'
-  ]
-  ]);
+    'pageTitle' => 'Rekap Pesanan',
+    'css'       => [
+        'modules/datatables/datatables.min.css',
+        'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
+        'modules/bootstrap-daterangepicker/daterangepicker.css',
+    ],
+    ]);
 ?>
 
 <body>
@@ -71,11 +71,11 @@
   </div>
 
   <?php importView('sections.dashboard.js', [
-    'js' => [
-      'modules/datatables/datatables.min.js',
-      'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
-      'modules/bootstrap-daterangepicker/daterangepicker.js'
-    ]
+      'js' => [
+          'modules/datatables/datatables.min.js',
+          'modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js',
+          'modules/bootstrap-daterangepicker/daterangepicker.js',
+      ],
   ]) ?>
 
   <script>

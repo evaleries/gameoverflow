@@ -1,17 +1,14 @@
 <?php
 
-
 namespace App\Core;
-
 
 /**
  * Template rendering sederhana menggunakan RegEx, preg_replace.
  * Terinspirasi dari Blade.
- * Class View
- * @package App\Core
+ * Class View.
  */
-class View {
-
+class View
+{
     /**
      * @var array
      */
@@ -27,11 +24,12 @@ class View {
      */
     private $template;
 
-
     /**
      * View constructor.
+     *
      * @param $fileName
      * @param array $attributes
+     *
      * @throws \Exception
      */
     public function __construct($fileName, $attributes = [])
@@ -39,29 +37,33 @@ class View {
         $this->with($attributes);
         $this->template = $this->loadFile($fileName);
 
-        if (! $this->template) {
-            throw new \Exception("[View] Template tidak valid: ". $fileName);
+        if (!$this->template) {
+            throw new \Exception('[View] Template tidak valid: '.$fileName);
         }
     }
 
     /**
      * @param $fileName
      * @param array $attributes
-     * @return static
+     *
      * @throws \Exception
+     *
+     * @return static
      */
-    public static function make($fileName, $attributes = []) {
+    public static function make($fileName, $attributes = [])
+    {
         return new static($fileName, $attributes);
     }
 
     /**
      * @param null|string|array $attributes
-     * @param null|string $value
+     * @param null|string       $value
      */
     public static function shared($attributes = null, $value = null)
     {
         if (is_string($attributes)) {
             self::$sharedAttributes[$attributes] = $value;
+
             return;
         }
 
@@ -83,6 +85,7 @@ class View {
 
     /**
      * @param $fileName
+     *
      * @return bool|string
      */
     public static function isExist($fileName)
@@ -92,27 +95,31 @@ class View {
 
     /**
      * @param $fileName
+     *
      * @return bool|string
      */
     private static function resolveAbsolutePath($fileName)
     {
         $fileName = str_replace('.', '/', $fileName);
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileName .= (empty($extension)) ? '.php' : '.' . $extension;
+        $fileName .= (empty($extension)) ? '.php' : '.'.$extension;
 
-        $absolutePath = VIEW_PATH . DS . $fileName;
+        $absolutePath = VIEW_PATH.DS.$fileName;
+
         return (file_exists($absolutePath)) ? $absolutePath : false;
     }
 
     /**
      * @param $fileName
+     *
      * @return bool|false|string
      */
     private function loadFile($fileName)
     {
         $absolutePath = self::resolveAbsolutePath($fileName);
-        if (! $absolutePath)
+        if (!$absolutePath) {
             return false;
+        }
 
         extract(array_merge($this->attributes, self::$sharedAttributes), EXTR_SKIP);
 
@@ -125,9 +132,10 @@ class View {
     }
 
     /**
-     * Replace {{test}} & {!! $test }} dengan isi variable $test
+     * Replace {{test}} & {!! $test }} dengan isi variable $test.
      */
-    private function replaceAttributes() {
+    private function replaceAttributes()
+    {
         $this->compilePattern('~{{(.+?)}}~m');
         $this->compilePattern('~{!!(.+?)!!}~m', false);
     }
@@ -139,7 +147,9 @@ class View {
     private function compilePattern($pattern, $safe = true)
     {
         if (preg_match_all($pattern, $this->template, $matches)) {
-            if (! isset($matches[0])) return;
+            if (!isset($matches[0])) {
+                return;
+            }
             foreach ($matches[0] as $vars) {
                 $cleanVar = str_replace('{{', '', $vars);
                 $cleanVar = trim(str_replace('}}', '', $cleanVar));
@@ -147,27 +157,33 @@ class View {
                     $replaceWith = ($safe)
                         ? $this->safeEcho($this->attributes[$cleanVar])
                         : $this->unsafeEcho($this->attributes[$cleanVar]);
-                    $this->template = preg_replace('~' . $vars . '~', $replaceWith, $this->template);
+                    $this->template = preg_replace('~'.$vars.'~', $replaceWith, $this->template);
                 }
             }
         }
     }
 
     /**
-     * Penggunaan {{ $value }} agar terhindar dari XSS
+     * Penggunaan {{ $value }} agar terhindar dari XSS.
+     *
      * @param $value
+     *
      * @return string
      */
-    private function safeEcho($value) {
+    private function safeEcho($value)
+    {
         $value = htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+
         return $value;
     }
 
     /**
      * @param $value
+     *
      * @return string
      */
-    private function unsafeEcho($value) {
+    private function unsafeEcho($value)
+    {
         return trim($value);
     }
 
@@ -181,16 +197,13 @@ class View {
         return $this->template;
     }
 
-    /**
-     *
-     */
     public function output()
     {
         $this->replaceAttributes();
 
 //        ob_start(); ob_end_clean();
 
-        print($this->template);
+        echo $this->template;
     }
 
     /**
@@ -203,12 +216,13 @@ class View {
 
     /**
      * @param array $data
-     * @param null $val
+     * @param null  $val
      */
     public function with($data = [], $val = null)
     {
         if (!is_array($data) && !empty($val)) {
             $this->__set($data, $val);
+
             return;
         }
 
@@ -221,31 +235,36 @@ class View {
 
     /**
      * Magic method untuk set attribute
-     * e.g: $view->a = 123;
+     * e.g: $view->a = 123;.
+     *
      * @param $key
      * @param $value
      */
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         $this->attributes[$key] = $value;
     }
 
     /**
      * Magic method untuk get attribute
-     * e.g: $view->a;
+     * e.g: $view->a;.
+     *
      * @param $key
+     *
      * @return mixed
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->attributes[$key];
     }
 
     /**
-     * Magic method digunakan apabila object class ini dikonversi menjadi string atau dipanggil melalui var_dump(View);
+     * Magic method digunakan apabila object class ini dikonversi menjadi string atau dipanggil melalui var_dump(View);.
+     *
      * @return string
      */
     public function __toString()
     {
         return $this->render();
     }
-
 }

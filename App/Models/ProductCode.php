@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -18,12 +17,12 @@ class ProductCode extends Model
         'status',
         'activation_code',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $table = 'product_codes';

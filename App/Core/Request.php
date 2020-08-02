@@ -1,12 +1,9 @@
 <?php
 
-
 namespace App\Core;
-
 
 class Request
 {
-
     private $requestData = [];
 
     private $errors = [];
@@ -15,7 +12,7 @@ class Request
     {
         $this->requestData = $_REQUEST;
 
-        if (! empty($data)) {
+        if (!empty($data)) {
             $this->requestData = array_merge($this->requestData, $data);
         }
     }
@@ -41,26 +38,26 @@ class Request
             } elseif ($rule === 'trim') {
                 $this->__set($param, trim($this->__get($param)));
             } elseif ($rule == 'email') {
-                if (! filter_var($param, FILTER_VALIDATE_EMAIL)) {
+                if (!filter_var($param, FILTER_VALIDATE_EMAIL)) {
                     $this->errors[$param] = [
-                        'field' => $param,
-                        'message' => $param . ' harus email yang valid!'
+                        'field'   => $param,
+                        'message' => $param.' harus email yang valid!',
                     ];
                 }
             } elseif ($rule == 'numeric') {
-                if (! is_numeric($this->get($param, null))) {
+                if (!is_numeric($this->get($param, null))) {
                     $this->__set($param, null);
                     $this->errors[$param] = [
-                        'field' => $param,
-                        'message' => $param . ' harus angka'
+                        'field'   => $param,
+                        'message' => $param.' harus angka',
                     ];
                 }
             } elseif ($rule == 'required') {
-                if (! $this->__isset($param) || empty(trim($this->requestData[$param]))) {
+                if (!$this->__isset($param) || empty(trim($this->requestData[$param]))) {
                     $this->__set($param, null);
                     $this->errors[$param] = [
-                        'field' => $param,
-                        'message' => $param . ' dibutuhkan!'
+                        'field'   => $param,
+                        'message' => $param.' dibutuhkan!',
                     ];
                 }
             }
@@ -76,6 +73,7 @@ class Request
 
     /**
      * @see https://stackoverflow.com/questions/18260537/how-to-check-if-the-request-is-an-ajax-request-with-php
+     *
      * @return bool
      */
     public function ajax()
@@ -89,6 +87,7 @@ class Request
 
     /**
      * @param string $route
+     *
      * @return bool
      */
     public static function is($route)
@@ -100,7 +99,7 @@ class Request
     {
         $oldRequest = $this->getOldRequest($key, $default);
 
-        return is_null($key) ? count ($oldRequest) > 0 : ! is_null($oldRequest);
+        return is_null($key) ? count($oldRequest) > 0 : !is_null($oldRequest);
     }
 
     public function getOldRequest($key = null, $default = null)
@@ -110,13 +109,18 @@ class Request
 
     /**
      * Get request uri.
+     *
      * @param $name
      * @param null $defaultValue
+     *
      * @return array|mixed
      */
     public function get($name = null, $defaultValue = null)
     {
-        if ($name === null) return $this->requestData;
+        if ($name === null) {
+            return $this->requestData;
+        }
+
         return isset($this->requestData[$name]) ? $this->requestData[$name] : $defaultValue;
     }
 

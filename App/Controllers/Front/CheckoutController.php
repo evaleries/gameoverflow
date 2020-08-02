@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controllers\Front;
 
 use App\Controllers\Controller;
@@ -14,7 +13,6 @@ use App\Models\ProductCode;
 
 class CheckoutController extends Controller
 {
-
     private function hasItemsOnCartOrRedirect()
     {
         if (!session()->has('__cart', 'data') && count(session()->get('__cart')['data']) <= 0) {
@@ -42,64 +40,67 @@ class CheckoutController extends Controller
         try {
             Order::PDO()->beginTransaction();
 
-            $order = (new Order)->create([
-                'user_id' => auth()->id,
+            $order = (new Order())->create([
+                'user_id'     => auth()->id,
                 'description' => __e($request->get('description')),
-                'status' => Order::PROCESSING
+                'status'      => Order::PROCESSING,
             ]);
 
             $carts = session()->get('__cart', ['data' => []]);
 
             if (empty($carts['data'])) {
-                throw new \Exception("Cart kosong!");
+                throw new \Exception('Cart kosong!');
             }
 
-            if (! $order) {
-                throw new \Exception("Order failed to create: ". $order);
+            if (!$order) {
+                throw new \Exception('Order failed to create: '.$order);
             }
 
             $amount = 0;
             foreach ($carts['data'] as $productId => $cart) {
-                $totalProductInDatabase = ProductCode::rawFirst("SELECT count(*) as total FROM product_codes WHERE product_id = :product_id AND status = :status AND user_id IS NULL", ['product_id' => $productId, 'status' => ProductCode::AVAILABLE]);
+                $totalProductInDatabase = ProductCode::rawFirst('SELECT count(*) as total FROM product_codes WHERE product_id = :product_id AND status = :status AND user_id IS NULL', ['product_id' => $productId, 'status' => ProductCode::AVAILABLE]);
 
-                if (isset($totalProductInDatabase->total)) $totalProductInDatabase = $totalProductInDatabase->total;
-                else $totalProductInDatabase = 0;
+                if (isset($totalProductInDatabase->total)) {
+                    $totalProductInDatabase = $totalProductInDatabase->total;
+                } else {
+                    $totalProductInDatabase = 0;
+                }
 
                 if ($totalProductInDatabase < $cart->quantity) {
                     throw new \Exception("Produk {$cart->title} melebihi stok yang tersedia. Silahkan menghubungi kami");
                 }
 
                 $amount += $cart->quantity * $cart->price;
-                (new OrderItem)->create([
-                    'order_id' => $order->id,
+                (new OrderItem())->create([
+                    'order_id'   => $order->id,
                     'product_id' => $productId,
-                    'quantity' => $cart->quantity,
-                    'price' => $cart->price
+                    'quantity'   => $cart->quantity,
+                    'price'      => $cart->price,
                 ]);
             }
 
-            (new Payment)->create([
-                'order_id' => $order->id,
-                'amount' => $amount,
-                'bank_name' => __e($request->bank_name),
+            (new Payment())->create([
+                'order_id'    => $order->id,
+                'amount'      => $amount,
+                'bank_name'   => __e($request->bank_name),
                 'bank_number' => __e($request->bank_number),
-                'status' => Payment::PENDING,
+                'status'      => Payment::PENDING,
             ]);
 
             $due_date = new \DateTime('now');
             $due_date->add(\DateInterval::createFromDateString('1 week'));
-            (new Invoice)->create([
+            (new Invoice())->create([
                 'order_id' => $order->id,
-                'no' => generateInvoiceNo(),
-                'title' => 'Invoice untuk Order #'. $order->id,
-                'due_date' => $due_date->format('Y-m-d H:i:s')
+                'no'       => generateInvoiceNo(),
+                'title'    => 'Invoice untuk Order #'.$order->id,
+                'due_date' => $due_date->format('Y-m-d H:i:s'),
             ]);
 
             Order::PDO()->commit();
-
         } catch (\Exception $e) {
             Order::PDO()->rollBack();
             session()->set('order_failed_reason', $e->getMessage());
+
             return Route::redirect('/checkout/failed');
         }
 
@@ -111,8 +112,8 @@ class CheckoutController extends Controller
     public function success()
     {
         $this->isCheckoutHasStartedOrRedirect();
-        
-        view('checkout.status', ['status' => true, 'message' => 'Pesanan berhasil! Order #'. session()->flash('checkout_order_id') .' <br/> Invoice dapat dilihat pada dashboard'])->output();
+
+        view('checkout.status', ['status' => true, 'message' => 'Pesanan berhasil! Order #'.session()->flash('checkout_order_id').' <br/> Invoice dapat dilihat pada dashboard'])->output();
         session()->unset('__cart');
         session()->unset('checkout_started');
     }
@@ -120,7 +121,7 @@ class CheckoutController extends Controller
     public function failed()
     {
         $this->isCheckoutHasStartedOrRedirect();
-        view('checkout.status', ['status' => false, 'message' => 'Pesanan gagal! ' . session()->flash('order_failed_reason')])->output();
+        view('checkout.status', ['status' => false, 'message' => 'Pesanan gagal! '.session()->flash('order_failed_reason')])->output();
         session()->unset('checkout_started');
     }
 
@@ -128,5 +129,4 @@ class CheckoutController extends Controller
     {
         return session()->has('checkout_started') ? true : Route::redirect('/');
     }
-
 }

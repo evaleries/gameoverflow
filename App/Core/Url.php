@@ -1,17 +1,13 @@
 <?php
 
-
 namespace App\Core;
-
 
 /**
  * Class sederhana untuk membantu mengambil URL
- * Class Url
- * @package App\Core
+ * Class Url.
  */
 class Url
 {
-
     private static function getScheme()
     {
         if (defined('APP_URL')) {
@@ -28,7 +24,8 @@ class Url
 
     public static function current()
     {
-        return sprintf("%s://%s/%s",
+        return sprintf(
+            '%s://%s/%s',
             self::getScheme(),
             self::getHost(),
             $_SERVER['REQUEST_URI']
@@ -38,12 +35,13 @@ class Url
     public static function base($dir = '')
     {
         $dir = !empty($dir) || $dir != '/' ? (startsWith($dir, '/') ? substr($dir, 1, strlen($dir)) : $dir) : '';
-        
+
         if (defined('APP_URL')) {
-            return APP_URL . $dir;
+            return APP_URL.$dir;
         }
 
-        return sprintf("%s://%s/%s", 
+        return sprintf(
+            '%s://%s/%s',
             self::getScheme(),
             self::getHost(),
             $dir
@@ -52,7 +50,7 @@ class Url
 
     public static function asset($file = '', $rootDir = 'assets/')
     {
-        return self::base($rootDir . $file);
+        return self::base($rootDir.$file);
     }
 
     public static function route($to = '/', $param = [], $withCurrentQuery = false)
@@ -60,10 +58,10 @@ class Url
         if (is_array($param)) {
             $queries = [];
             parse_str($_SERVER['QUERY_STRING'], $queries);
-            $param = '?' . http_build_query($withCurrentQuery ? array_replace($queries, $param) : $param);
+            $param = '?'.http_build_query($withCurrentQuery ? array_replace($queries, $param) : $param);
         }
 
-        return self::base($to . $param);
+        return self::base($to.$param);
     }
 
     public static function referer()
@@ -74,5 +72,4 @@ class Url
 
         return null;
     }
-
 }

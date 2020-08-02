@@ -71,12 +71,12 @@
                         <input type="text" class="form-control" value="<?= $invoice->due_date ?>" disabled>
                       </div>
                     </div>
-                    <?php if ($order->description): ?>
+                    <?php if ($order->description) { ?>
                     <div class="form-group">
                       <label for="description">Deskripsi Pesanan</label>
                       <input type="text" name="description" id="order_description" class="form-control" value="<?= $order->description ?>" disabled>
                     </div>
-                    <?php endif; ?>
+                    <?php } ?>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@
                           <th class="text-center">Jumlah</th>
                           <th class="text-right">Total</th>
                         </tr>
-                        <?php $total = 0; $i = 1; foreach($orderItems as $item): ?>
+                        <?php $total = 0; $i = 1; foreach ($orderItems as $item) { ?>
                         <tr>
                           <th data-width="40"><?= $i ?></th>
                           <th><?= $item->title ?></th>
@@ -142,17 +142,17 @@
                           <th class="text-center"><?= $item->quantity ?></th>
                           <th class="text-right">Rp <?= number_format($item->quantity * $item->price, 0, ',', '.') ?>,-</th>
                         </tr>
-                        <?php $total += $item->quantity * $item->price; $i++; endforeach; ?>
+                        <?php $total += $item->quantity * $item->price; $i++; } ?>
                       </table>
                     </div>
                     <div class="row mt-4">
                       <div class="col-lg-8">
                         <div class="section-title">Pembayaran</div>
-                        <?php if ($payment->status == \App\Models\Payment::CONFIRMED): ?>
+                        <?php if ($payment->status == \App\Models\Payment::CONFIRMED) { ?>
                           <p class="section-lead">Pembayaran sudah dikonfirmasi pada tanggal <?= $payment->getUpdatedAtFormat('j F Y H:i A') ?></p>
-                        <?php else: ?>
+                        <?php } else { ?>
                           <p class="section-lead">Pembayaran harus dilakukan sebelum tanggal jatuh tempo.</p>
-                        <?php endif; ?>
+                        <?php } ?>
                       </div>
                       <div class="col-lg-4 text-right">
                         <hr class="mt-2 mb-2">
@@ -184,10 +184,10 @@
   </div>
 
   <?php importView('sections.dashboard.js', [
-    'js' => [
-      'https://printjs-4de6.kxcdn.com/print.min.js',
-      'https://cdn.jsdelivr.net/npm/sweetalert2@9'
-    ]
+      'js' => [
+          'https://printjs-4de6.kxcdn.com/print.min.js',
+          'https://cdn.jsdelivr.net/npm/sweetalert2@9',
+      ],
   ]) ?>
 
   <script>
@@ -210,7 +210,7 @@
       })
 
       if (accept) {
-        $.post('<?= route('admin/orders/'. $order->id .'/confirm') ?>', {id: '<?= $order->id ?>'}, function (data) {
+        $.post('<?= route('admin/orders/'.$order->id.'/confirm') ?>', {id: '<?= $order->id ?>'}, function (data) {
           if (data.status) {
             Swal.fire('Sukses!', 'Pesanan sudah terkonfirmasi, kode aktivasi akan dikirim ke akun pengguna.', 'success');
             setTimeout(() => {
@@ -245,7 +245,7 @@
       })
 
       if (accept) {
-        $.post('<?= route('admin/orders/'. $order->id .'/cancel') ?>', {id: '<?= $order->id ?>'}, function (data) {
+        $.post('<?= route('admin/orders/'.$order->id.'/cancel') ?>', {id: '<?= $order->id ?>'}, function (data) {
           if (data.status) {
             Swal.fire('Sukses!', 'Pesanan sudah dibatalkan.', 'success');
             setTimeout(() => {

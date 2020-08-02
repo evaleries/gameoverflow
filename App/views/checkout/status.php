@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<?php importView('sections.front.head', ['pageTitle' => 'Order ' . $status ? 'Berhasil' : 'Gagal']) ?>
+<?php importView('sections.front.head', ['pageTitle' => 'Order '.$status ? 'Berhasil' : 'Gagal']) ?>
 
 <body>
     <!-- Page Preloder -->

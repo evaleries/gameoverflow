@@ -2,10 +2,9 @@
 
 namespace App\Controllers\Admin;
 
-
+use App\Controllers\Controller;
 use App\Core\Request;
 use App\Models\Category;
-use App\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -17,28 +16,28 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|trim',
-            'slug' => 'required',
-            'description' => 'string'
+            'name'        => 'required|trim',
+            'slug'        => 'required',
+            'description' => 'string',
         ]);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
         $data = [
-            'name' => __e($request->name),
-            'slug' => slugify($request->slug),
-            'description' => $request->description
+            'name'        => __e($request->name),
+            'slug'        => slugify($request->slug),
+            'description' => $request->description,
         ];
 
         $upload = $this->tryUpload();
 
         if ($upload['success']) {
-            $data['image'] = 'img/categories/' . $upload['fileName'];
+            $data['image'] = 'img/categories/'.$upload['fileName'];
         }
 
-        (new Category)->create($data);
+        (new Category())->create($data);
 
         return json(['message' => 'Kategori berhasil ditambahkan!'], 201);
     }
@@ -46,28 +45,28 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'id' => 'required|int',
-            'name' => 'required|trim',
-            'slug' => 'required|trim',
-            'description' => 'string'
+            'id'          => 'required|int',
+            'name'        => 'required|trim',
+            'slug'        => 'required|trim',
+            'description' => 'string',
         ]);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
         $upload = $this->tryUpload($request->id);
 
         $category = Category::firstOrFail(['id' => $request->id]);
-        
+
         if ($upload['success']) {
-            $category->image = 'img/categories/' . $upload['fileName'];
+            $category->image = 'img/categories/'.$upload['fileName'];
         }
-        
+
         $category->update([
-            'name' => __e($request->name),
-            'slug' => slugify($request->slug),
-            'description' => $request->description
+            'name'        => __e($request->name),
+            'slug'        => slugify($request->slug),
+            'description' => $request->description,
         ]);
 
         return json(['message' => 'Kategori berhasil dirubah'], 200);
@@ -77,7 +76,7 @@ class CategoryController extends Controller
     {
         $request->validate(['id' => 'required|int']);
 
-        if ($request->isError() || ! $request->ajax()) {
+        if ($request->isError() || !$request->ajax()) {
             return json(['message' => 'Bad Request'], 422);
         }
 
@@ -89,7 +88,7 @@ class CategoryController extends Controller
     public function api()
     {
         return json([
-            'data' => Category::all(-1, 0, false)
+            'data' => Category::all(-1, 0, false),
         ]);
     }
 
@@ -106,8 +105,9 @@ class CategoryController extends Controller
             $ext = pathinfo($image['name'], PATHINFO_EXTENSION);
             if ($this->isAllowedExtension($ext)) {
                 $fileName = sprintf('cat-%d.%s', $id, $ext);
-                if (is_writable($uploadDir))
-                    $success = move_uploaded_file($image['tmp_name'], $uploadDir . DS . $fileName);
+                if (is_writable($uploadDir)) {
+                    $success = move_uploaded_file($image['tmp_name'], $uploadDir.DS.$fileName);
+                }
             }
         }
 

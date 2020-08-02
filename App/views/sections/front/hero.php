@@ -9,9 +9,9 @@
                     </div>
                     <ul>
                         <li><a href="<?= route('products') ?>">All</a></li>
-                        <?php foreach ($categories as $category): ?>
+                        <?php foreach ($categories as $category) { ?>
                             <li><a href="<?= route('products', ['category' => $category->slug]) ?>"><?= $category->name ?></a></li>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </ul>
                 </div>                                              
             </div>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <?php if (!isset($heroClass)): ?>
+                <?php if (!isset($heroClass)) { ?>
                 <div class="hero__item set-bg" data-setbg="<?= asset('img/banner/banner-1.jpg') ?>" style="background-position-y: center;">
                     <div class="hero__text">
                         <span>GameOverflow</span>
@@ -41,7 +41,7 @@
                         <a href="<?= route('products') ?>" class="primary-btn">Beli Sekarang</a>
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php } ?>
             </div>
         </div>
     </div>

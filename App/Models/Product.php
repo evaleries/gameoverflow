@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
@@ -19,7 +18,7 @@ class Product extends Model
         'category_id',
         'released_at',
         'updated_at',
-        'created_at'
+        'created_at',
     ];
 
     protected $foreignAttributes = [];
@@ -31,7 +30,8 @@ class Product extends Model
         return (startsWith($this->attributes['image'], 'http')) ? $this->attributes['image'] : \App\Core\Url::asset($this->attributes['image']);
     }
 
-    public function getReleasedAt($format = 'j F Y') {
+    public function getReleasedAt($format = 'j F Y')
+    {
         return (new \DateTime($this->attributes['released_at']))->format($format);
     }
 
@@ -42,6 +42,6 @@ class Product extends Model
 
     public static function humanizePrice($price)
     {
-        return ($price > 0) ? "Rp. " . number_format($price, 0, ".", ",") . ",-" : 'Gratis';
+        return ($price > 0) ? 'Rp. '.number_format($price, 0, '.', ',').',-' : 'Gratis';
     }
 }
