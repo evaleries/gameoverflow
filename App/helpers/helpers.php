@@ -10,9 +10,9 @@ function __e($string)
 function service($className = null)
 {
     if (empty($className)) {
-        return \App\Core\ServiceContainer::i();
+        return \App\Core\ServiceContainer::getInstance();
     } else {
-        return \App\Core\ServiceContainer::i()->findClass($className);
+        return \App\Core\ServiceContainer::getInstance()->findClass($className);
     }
 }
 
