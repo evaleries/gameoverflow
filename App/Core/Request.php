@@ -4,7 +4,11 @@ namespace App\Core;
 
 class Request
 {
-    private $requestData = [];
+
+    /**
+     * @var array Store all requests data.
+     */
+    private $requestData;
 
     private $errors = [];
 
@@ -121,7 +125,7 @@ class Request
             return $this->requestData;
         }
 
-        return isset($this->requestData[$name]) ? $this->requestData[$name] : $defaultValue;
+        return $this->requestData[$name] ?? $defaultValue;
     }
 
     public function __get($name)

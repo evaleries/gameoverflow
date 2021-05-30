@@ -18,7 +18,7 @@ class Session
      *
      * @return bool
      */
-    public function __construct($maxLifeTime = 60)
+    public function __construct(int $maxLifeTime = 60)
     {
         if (!$this->isStarted) {
             session_set_cookie_params($maxLifeTime * 60);
@@ -54,10 +54,10 @@ class Session
     public function get($key = null, $defaultValue = null)
     {
         if ($key === null) {
-            return isset($_SESSION) ? $_SESSION : $defaultValue;
+            return $_SESSION ?? $defaultValue;
         }
 
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : $defaultValue;
+        return $_SESSION[$key] ?? $defaultValue;
     }
 
     /**
