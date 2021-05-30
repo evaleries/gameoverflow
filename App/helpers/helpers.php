@@ -157,6 +157,11 @@ function current_url()
     return \App\Core\Url::current();
 }
 
+function isAuthenticated()
+{
+    return session()->has('__user');
+}
+
 /**
  * Get asset path.
  *

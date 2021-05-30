@@ -59,7 +59,6 @@ function classLoader($className)
 }
 
 require_once HELPER_PATH.DS.'helpers.php';
-require_once HELPER_PATH.DS.'middleware.php';
 require_once APP_PATH.DS.'routes.php';
 
 $services = \App\Core\ServiceContainer::getInstance();
