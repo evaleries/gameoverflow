@@ -76,4 +76,8 @@ $services->put('database', function () {
     return new \App\Core\DB();
 }, \App\Core\DB::class);
 
+$services->put('middleware', function () {
+    return new \App\Core\Middleware\RegisteredMiddleware();
+}, \App\Core\Middleware\RegisteredMiddleware::class);
+
 \App\Core\Route::run($services);

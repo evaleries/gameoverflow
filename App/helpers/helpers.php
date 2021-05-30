@@ -85,8 +85,8 @@ function json($data, $statusCode = 200)
 function contains($haystack, $needle, $caseSensitive = false)
 {
     return $caseSensitive ?
-        (strpos($haystack, $needle) === false ? false : true) :
-        (stripos($haystack, $needle) === false ? false : true);
+        !(strpos($haystack, $needle) === false) :
+        !(stripos($haystack, $needle) === false);
 }
 
 /**
@@ -133,6 +133,18 @@ function base_url()
 function route($to = '', $param = null, $withCurrentQuery = false)
 {
     return \App\Core\Url::route($to, $param, $withCurrentQuery);
+}
+
+function redirect($to = '/')
+{
+    \App\Core\Route::redirect($to);
+    return true;
+}
+
+function abort($httpCode, $message = null)
+{
+    \App\Core\Route::error($httpCode, $message);
+    return true;
 }
 
 /**

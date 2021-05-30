@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Core\Middleware\Middleware;
+use App\Core\Middleware\RegisteredMiddleware;
 use Closure;
 use Exception;
 use ReflectionException;
@@ -28,43 +30,44 @@ class Route
 
     /**
      * @param $expression
-     * @param closure|array|string $function
-     * @param string               $method
+     * @param closure|mixed $function
+     * @param string $method
+     * @param null $middleware
      */
-    public static function add($expression, $function, $method = 'GET', $beforeMiddleware = null)
+    public static function add($expression, $function, string $method = 'GET', $middleware = null)
     {
         if (is_array($function)) {
             $function = implode('@', $function);
         }
 
-        array_push(self::$routes, compact('expression', 'function', 'method', 'beforeMiddleware'));
+        array_push(self::$routes, compact('expression', 'function', 'method', 'middleware'));
     }
 
     /**
      * @param $expression
-     * @param closure|array|string $function
-     * @param closure|null         $beforeMiddleware
+     * @param closure|mixed $function
+     * @param closure|null $middleware
      */
-    public static function get($expression, $function, $beforeMiddleware = null)
+    public static function get($expression, $function, $middleware = null)
     {
-        self::add($expression, $function, 'GET', $beforeMiddleware);
+        self::add($expression, $function, 'GET', $middleware);
     }
 
     /**
      * @param $expression
      * @param $function
-     * @param closure|null $beforeMiddleware
+     * @param closure|null $middleware
      */
-    public static function post($expression, $function, $beforeMiddleware = null)
+    public static function post($expression, $function, $middleware = null)
     {
-        self::add($expression, $function, 'POST', $beforeMiddleware);
+        self::add($expression, $function, 'POST', $middleware);
     }
 
     /**
-     * @param int  $code
+     * @param int $code
      * @param null $message
      */
-    public static function error($code = 400, $message = null)
+    public static function error(int $code = 400, $message = null)
     {
         http_response_code($code);
         if (View::isExist('errors.'.$code)) {
@@ -108,7 +111,7 @@ class Route
     /**
      * @param string $to
      */
-    public static function redirect($to = '/')
+    public static function redirect(string $to = '/')
     {
         header('Location: '.Url::base($to));
         exit();
@@ -127,11 +130,11 @@ class Route
 
     /**
      * @param ServiceContainer $serviceContainer
-     * @param string           $basePath
+     * @param string $basePath
      *
      * @throws ReflectionException
      */
-    public static function run($serviceContainer, $basePath = '/')
+    public static function run(ServiceContainer $serviceContainer, string $basePath = '/')
     {
         $path = parse_url($_SERVER['REQUEST_URI'])['path'] ?? '/';
         $clearPath = str_replace($basePath, '/', $path);
@@ -146,10 +149,10 @@ class Route
                 $isRouteMatch = true;
                 if (strtolower($method) == strtolower($route['method'])) {
                     self::$currentRoute = $route['expression'];
-                    if (isset($route['beforeMiddleware']) && is_callable($route['beforeMiddleware'])) {
-                        call_user_func($route['beforeMiddleware']);
+                    if (isset($route['middleware'])) {
+                        self::invokeMiddleware($serviceContainer, $route);
                     }
-                    self::invokeMethod($serviceContainer, $route, $matches);
+                    self::invokeController($serviceContainer, $route, $matches);
                     $isMethodMatch = true;
                     break;
                 }
@@ -170,55 +173,96 @@ class Route
      * @param $route
      * @param $matches
      *
+     * @return void
      * @throws ReflectionException
      * @throws Exception
      */
-    private static function invokeMethod($serviceContainer, $route, $matches)
+    private static function invokeController(ServiceContainer $serviceContainer, $route, $matches): void
     {
         array_shift($matches);
+
         if (is_callable($route['function'])) {
             call_user_func_array($route['function'], $matches);
-        } elseif (strpos($route['function'], '@')) {
+            return;
+        }
+
+        if (strpos($route['function'], '@')) {
             list($className, $methodName) = explode('@', $route['function']);
-            if (class_exists($className)) {
-                $class = new \ReflectionClass($className);
-                $instance = $class->newInstance();
 
-                if ($class->hasMethod($methodName)) {
-                    $paramToInject = [];
-                    $method = $class->getMethod($methodName);
-
-                    foreach ($method->getParameters() as $index => $param) {
-                        if ($param->getClass()) {
-                            $nameRequiredClass = $param->getClass()->getName();
-                            $service = $serviceContainer->findClass($nameRequiredClass);
-
-                            if ($service instanceof $nameRequiredClass) {
-                                $paramToInject[$param->getPosition()] = $service;
-                            } else {
-                                throw new Exception('[Route] Service gagal di inject ke controller: '.$nameRequiredClass);
-                            }
-                        } elseif (isset($matches[$index])) {
-                            $paramToInject[$index] = $matches[$index];
-                        }
-                    }
-
-                    if (!empty($matches)) {
-                        foreach ($matches as $param) {
-                            $paramToInject[] = $param;
-                        }
-                    }
-
-                    $method->invokeArgs($instance, $paramToInject);
-                } else {
-                    throw new \BadMethodCallException('[Route] Method tidak ditemukan: '.$methodName);
-                }
-
-                // Jika menggunakan call_user_func, constructor parent tidak terpanggil
-                // call_user_func_array([$className, $methodName], $matches);
-            } else {
+            if (!class_exists($className)) {
                 throw new \BadFunctionCallException('[Route] Class tidak ditemukan: '.$className);
             }
+
+            $class = new \ReflectionClass($className);
+            $instance = $class->newInstance();
+
+            if (!$class->hasMethod($methodName)) {
+                throw new \BadMethodCallException('[Route] Method tidak ditemukan: '.$methodName);
+            }
+
+            $paramToInject = [];
+            $method = $class->getMethod($methodName);
+
+            foreach ($method->getParameters() as $index => $param) {
+                if ($param->getClass()) {
+                    $nameRequiredClass = $param->getClass()->getName();
+                    $service = $serviceContainer->findClass($nameRequiredClass);
+
+                    if ($service instanceof $nameRequiredClass) {
+                        $paramToInject[$param->getPosition()] = $service;
+                    } else {
+                        throw new Exception('[Route] Service gagal di inject ke controller: '.$nameRequiredClass);
+                    }
+                } elseif (isset($matches[$index])) {
+                    $paramToInject[$index] = $matches[$index];
+                }
+            }
+
+            if (!empty($matches)) {
+                foreach ($matches as $param) {
+                    $paramToInject[] = $param;
+                }
+            }
+
+            $method->invokeArgs($instance, $paramToInject);
+            return;
         }
+
+        throw new \Exception('[Route] Tidak ada yang menangani route ini.');
+    }
+
+    /**
+     * Memanggil Middleware yang didefinisikan pada routes
+     * @throws Exception
+     */
+    public static function invokeMiddleware(ServiceContainer $serviceContainer, $route)
+    {
+        if (empty($route['middleware'])) {
+            return;
+        }
+
+        $middlewares = $route['middleware'];
+        if (!is_array($middlewares)) {
+            $middlewares = explode('|', $route['middleware']);
+        }
+
+        $layers = [];
+        foreach ($middlewares as $middleware) {
+            [$name, $parameters] = array_pad(explode(':', $middleware), 2, NULL);
+
+            if ($parameters !== null && strpos($parameters, ',') !== false) {
+                $parameters = explode(',', $parameters);
+            }
+
+            $layers[] = $serviceContainer->get('middleware')->resolve($name, $parameters);
+        }
+
+        $request = $serviceContainer->get('request');
+        (new Middleware)
+            ->layer($layers)
+            ->handle($request, function ($request) {
+                return $request;
+            });
+
     }
 }
