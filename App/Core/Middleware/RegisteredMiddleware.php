@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Core\Middleware;
-
 
 use App\Middleware\Authenticate;
 use App\Middleware\RedirectIfAuthenticated;
@@ -10,16 +8,16 @@ use App\Middleware\Role;
 
 class RegisteredMiddleware
 {
-
     protected $middleware = [
-        'auth' => Authenticate::class,
-        'role' => Role::class,
-        'guest' => RedirectIfAuthenticated::class
+        'auth'  => Authenticate::class,
+        'role'  => Role::class,
+        'guest' => RedirectIfAuthenticated::class,
     ];
 
     /**
-     * @return Middleware
      * @throws \Exception
+     *
+     * @return Middleware
      */
     public function resolve($middleware, $params = null)
     {
@@ -31,6 +29,6 @@ class RegisteredMiddleware
             return new $this->middleware[$middleware]([], $params);
         }
 
-        return new $this->middleware[$middleware];
+        return new $this->middleware[$middleware]();
     }
 }

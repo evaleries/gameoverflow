@@ -3,7 +3,6 @@
 namespace App\Core;
 
 use App\Core\Middleware\Middleware;
-use App\Core\Middleware\RegisteredMiddleware;
 use Closure;
 use Exception;
 use ReflectionException;
@@ -31,8 +30,8 @@ class Route
     /**
      * @param $expression
      * @param closure|mixed $function
-     * @param string $method
-     * @param null $middleware
+     * @param string        $method
+     * @param null          $middleware
      */
     public static function add($expression, $function, string $method = 'GET', $middleware = null)
     {
@@ -46,7 +45,7 @@ class Route
     /**
      * @param $expression
      * @param closure|mixed $function
-     * @param closure|null $middleware
+     * @param closure|null  $middleware
      */
     public static function get($expression, $function, $middleware = null)
     {
@@ -64,7 +63,7 @@ class Route
     }
 
     /**
-     * @param int $code
+     * @param int  $code
      * @param null $message
      */
     public static function error(int $code = 400, $message = null)
@@ -130,7 +129,7 @@ class Route
 
     /**
      * @param ServiceContainer $serviceContainer
-     * @param string $basePath
+     * @param string           $basePath
      *
      * @throws ReflectionException
      */
@@ -173,9 +172,10 @@ class Route
      * @param $route
      * @param $matches
      *
-     * @return void
      * @throws ReflectionException
      * @throws Exception
+     *
+     * @return void
      */
     private static function invokeController(ServiceContainer $serviceContainer, $route, $matches): void
     {
@@ -183,6 +183,7 @@ class Route
 
         if (is_callable($route['function'])) {
             call_user_func_array($route['function'], $matches);
+
             return;
         }
 
@@ -225,6 +226,7 @@ class Route
             }
 
             $method->invokeArgs($instance, $paramToInject);
+
             return;
         }
 
@@ -232,7 +234,8 @@ class Route
     }
 
     /**
-     * Memanggil Middleware yang didefinisikan pada routes
+     * Memanggil Middleware yang didefinisikan pada routes.
+     *
      * @throws Exception
      */
     public static function invokeMiddleware(ServiceContainer $serviceContainer, $route)
@@ -248,7 +251,7 @@ class Route
 
         $layers = [];
         foreach ($middlewares as $middleware) {
-            [$name, $parameters] = array_pad(explode(':', $middleware), 2, NULL);
+            [$name, $parameters] = array_pad(explode(':', $middleware), 2, null);
 
             if ($parameters !== null && strpos($parameters, ',') !== false) {
                 $parameters = explode(',', $parameters);
@@ -258,11 +261,10 @@ class Route
         }
 
         $request = $serviceContainer->get('request');
-        (new Middleware)
+        (new Middleware())
             ->layer($layers)
             ->handle($request, function ($request) {
                 return $request;
             });
-
     }
 }

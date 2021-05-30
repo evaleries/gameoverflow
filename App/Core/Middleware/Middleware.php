@@ -1,16 +1,14 @@
 <?php
 
-
 namespace App\Core\Middleware;
-
 
 use App\Core\Request;
 use Closure;
 
 /**
- * Implementasi middleware
+ * Implementasi middleware.
+ *
  * @see http://esbenp.github.io/2015/07/31/implementing-before-after-middleware/
- * @package App\Core\Middleware
  */
 class Middleware implements MiddlewareContracts
 {
@@ -35,7 +33,7 @@ class Middleware implements MiddlewareContracts
         }
 
         if (!is_array($layers)) {
-            throw new \InvalidArgumentException(get_class($layers) . " bukan middleware.");
+            throw new \InvalidArgumentException(get_class($layers).' bukan middleware.');
         }
 
         return new static(array_merge($this->layers, $layers));
@@ -43,9 +41,11 @@ class Middleware implements MiddlewareContracts
 
     /**
      * Run middleware around core function and pass an
-     * object through it
+     * object through it.
+     *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, \Closure $next)
@@ -54,7 +54,7 @@ class Middleware implements MiddlewareContracts
 
         $layers = array_reverse($this->layers);
 
-        $next = array_reduce($layers, function($nextLayer, $layer){
+        $next = array_reduce($layers, function ($nextLayer, $layer) {
             return $this->createLayer($nextLayer, $layer);
         }, $coreFunction);
 
@@ -62,7 +62,8 @@ class Middleware implements MiddlewareContracts
     }
 
     /**
-     * Get the layers of this middleware, can be used to merge with another middleware
+     * Get the layers of this middleware, can be used to merge with another middleware.
+     *
      * @return array
      */
     public function toArray()
@@ -72,29 +73,32 @@ class Middleware implements MiddlewareContracts
 
     /**
      * The inner function of the middleware.
-     * This function will be wrapped on layers
-     * @param  Closure $core the core function
+     * This function will be wrapped on layers.
+     *
+     * @param Closure $core the core function
+     *
      * @return Closure
      */
     private function createCoreFunction(Closure $core)
     {
-        return function($object) use($core) {
+        return function ($object) use ($core) {
             return $core($object);
         };
     }
 
     /**
      * Get an onion layer function.
-     * This function will get the object from a previous layer and pass it inwards
-     * @param  MiddlewareContracts $nextLayer
-     * @param  MiddlewareContracts $layer
+     * This function will get the object from a previous layer and pass it inwards.
+     *
+     * @param MiddlewareContracts $nextLayer
+     * @param MiddlewareContracts $layer
+     *
      * @return Closure
      */
     private function createLayer($nextLayer, $layer)
     {
-        return function($request) use($nextLayer, $layer){
+        return function ($request) use ($nextLayer, $layer) {
             return $layer->handle($request, $nextLayer, $layer->parameters);
         };
     }
-
 }

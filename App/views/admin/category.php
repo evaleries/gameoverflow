@@ -7,7 +7,7 @@
         'modules/datatables/datatables.min.css',
         'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
     ],
-    ])
+])
 ?>
 
 <body>
