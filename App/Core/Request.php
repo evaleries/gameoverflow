@@ -4,7 +4,6 @@ namespace App\Core;
 
 class Request
 {
-
     /**
      * @var array Store all requests data.
      */

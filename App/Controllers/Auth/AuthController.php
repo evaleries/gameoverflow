@@ -4,7 +4,6 @@ namespace App\Controllers\Auth;
 
 use App\Core\Request;
 use App\Core\Route;
-use App\Core\Session;
 use App\Models\User;
 
 class AuthController

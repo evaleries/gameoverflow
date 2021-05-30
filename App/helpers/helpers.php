@@ -138,12 +138,14 @@ function route($to = '', $param = null, $withCurrentQuery = false)
 function redirect($to = '/')
 {
     \App\Core\Route::redirect($to);
+
     return true;
 }
 
 function abort($httpCode, $message = null)
 {
     \App\Core\Route::error($httpCode, $message);
+
     return true;
 }
 

@@ -8,7 +8,7 @@
         'modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css',
         'modules/bootstrap-daterangepicker/daterangepicker.css',
     ],
-    ]);
+]);
 ?>
 
 <body>

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Middleware;
-
 
 use App\Core\Middleware\MiddlewareContracts;
 use App\Core\Request;
