@@ -3,10 +3,7 @@
 </p>
 
 # GameOverflow
-MVC e-commerce, Project Pemrograman Berbasis Website - Tanpa Library/Composer.
-
-## Live Demo
-GameOverflow dapat dilihat melalui demo [go.reach.my.id](http://go.reach.my.id)
+Simple PHP MVC e-commerce, Project Pemrograman Berbasis Website - Tanpa menggunakan library/composer.
 
 ## Ketentuan Project
 - __Dilarang memakai library/composer__.
@@ -36,7 +33,7 @@ Adapun materi dan refrensi yang didapatkan untuk membangun project ini:
 
 ## Implementasi
 List yang sudah diimplementasi:
-- Pipeline request ke 1 file php
+- Mengarahkan semua request ke satu file php
 - Routing (Url rewrite)
 - Service Container
 - Dependency Injection 
@@ -45,10 +42,10 @@ List yang sudah diimplementasi:
 - Database (Menggunakan PDO)
 - Helpers
 - Simple Closure Middleware (Fungsi pada routing yang akan dieksekusi sebelum meng-_invoke_ controller/closure)
+- Middleware (Berupa class middleware)
 - View Templating (Memanfaatkan fungsi _include_, _extract_, serta RegEx)
 
-## TODO
-Milestone yang perlu dicapai
+## Daftar fitur
 - [x] Front page
 - [X] Listing Products
 - [X] Cart Session
@@ -69,9 +66,11 @@ Alur / Life-cycle dari Request -> Response
 2. Register Services ke ServiceContainer. (Yang sudah di register: Request, Session, & DB)
 3. __ROUTING__: Regex url dengan routing yang sudah terdapat di routes.php
 4. __ROUTING__: Cari Parameter dengan tipe Class untuk di inject dengan Service yang tersedia di ServiceContainer.
-5. __ROUTING__: Invoke method pada controller / Closure dengan reflection class (jika controller, agar parent::__construct() dieksekusi) dan dengan call_user_func (jika closure)
-6. __Controller__: Mengeksekusi isi method.
-7. __Exception__: Menghandle apabila terjadi exception ketika proses eksekusi pada controller
+5. __ROUTING__: Invoke middleware yang telah didefinisikan pada routes
+6. __ROUTING__: Invoke controller setelah mengeksekusi middleware
+7. __CONTROLLER__: Mengeksekusi isi method dari controller.
+8. __VIEW__: Me render view. (Opsional)
+9. __Exception__: Menghandle apabila terjadi exception ketika proses eksekusi pada controller
 
 ## Credits
 Thanks to Colorlib & Stisla.
