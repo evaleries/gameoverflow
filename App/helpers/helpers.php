@@ -1,8 +1,11 @@
 <?php
 
+use App\Core\AuthManager;
+use App\Core\ServiceContainer;
 use App\Core\View;
+use App\Models\User;
 
-function __e($string)
+function __e($string): string
 {
     return htmlentities($string, ENT_QUOTES, 'UTF-8');
 }
@@ -10,9 +13,9 @@ function __e($string)
 function service($className = null)
 {
     if (empty($className)) {
-        return \App\Core\ServiceContainer::getInstance();
+        return ServiceContainer::getInstance();
     } else {
-        return \App\Core\ServiceContainer::getInstance()->findClass($className);
+        return ServiceContainer::getInstance()->findClass($className);
     }
 }
 
@@ -29,7 +32,7 @@ function request()
  */
 function session()
 {
-    return service(\App\Core\Session::class);
+    return \App\Core\Session::getInstance();
 }
 
 function ev($obj = [], ...$args)
@@ -38,22 +41,22 @@ function ev($obj = [], ...$args)
     exit();
 }
 
-function now($format = 'Y-m-d H:i:s')
+function now($format = 'Y-m-d H:i:s'): string
 {
     return (new DateTime('now'))->format($format);
 }
 
-function lastMonth($format = 'Y-m-d H:i:s')
+function lastMonth($format = 'Y-m-d H:i:s'): string
 {
     return (new DateTime('-1 month'))->format($format);
 }
 
-function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y')
+function dt($dateString, $format = 'Y-m-d H:i:s', $outputFormat = 'j F Y'): string
 {
     return (DateTime::createFromFormat($format, $dateString))->format($outputFormat);
 }
 
-function view($path, $data = [])
+function view($path, $data = []): View
 {
     return View::make($path, $data);
 }
@@ -66,7 +69,7 @@ function view($path, $data = [])
  *
  * @return false|string
  */
-function json($data, $statusCode = 200)
+function json($data, int $statusCode = 200)
 {
     header('Content-Type: application/json');
     http_response_code($statusCode);
@@ -82,7 +85,7 @@ function json($data, $statusCode = 200)
  *
  * @see https://stackoverflow.com/questions/4366730/how-do-i-check-if-a-string-contains-a-specific-word
  */
-function contains($haystack, $needle, $caseSensitive = false)
+function contains($haystack, $needle, bool $caseSensitive = false): bool
 {
     return $caseSensitive ?
         !(strpos($haystack, $needle) === false) :
@@ -97,7 +100,7 @@ function contains($haystack, $needle, $caseSensitive = false)
  *
  * @see https://css-tricks.com/snippets/php/test-if-string-starts-with-certain-characters-in-php/
  */
-function startsWith($string, $startString)
+function startsWith($string, $startString): bool
 {
     return strpos($string, $startString) === 0;
 }
@@ -110,7 +113,7 @@ function startsWith($string, $startString)
  *
  * @see https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
  */
-function endsWith($haystack, $needle)
+function endsWith($haystack, $needle): bool
 {
     $length = strlen($needle);
     if ($length == 0) {
@@ -125,12 +128,12 @@ function endsWith($haystack, $needle)
  *
  * @return string
  */
-function base_url()
+function base_url(): string
 {
     return \App\Core\Url::base();
 }
 
-function route($to = '', $param = null, $withCurrentQuery = false)
+function route($to = '', $param = null, $withCurrentQuery = false): string
 {
     return \App\Core\Url::route($to, $param, $withCurrentQuery);
 }
@@ -141,10 +144,10 @@ function redirect($to = '/')
     return true;
 }
 
-function abort($httpCode, $message = null)
+function abort($httpCode, $message = null): bool
 {
     \App\Core\Route::error($httpCode, $message);
-    return true;
+    exit();
 }
 
 /**
@@ -159,7 +162,7 @@ function current_url()
 
 function isAuthenticated()
 {
-    return session()->has('__user');
+    return auth()->check();
 }
 
 /**
@@ -170,7 +173,7 @@ function isAuthenticated()
  *
  * @return string
  */
-function asset($path = '', $rootDir = 'assets/')
+function asset(string $path = '', string $rootDir = 'assets/'): string
 {
     return \App\Core\Url::asset($path, $rootDir);
 }
@@ -179,7 +182,7 @@ function importView($fileName, $data = [])
 {
     extract(View::getSharedAttributes(), EXTR_SKIP);
     extract($data, EXTR_SKIP);
-    include_once VIEW_PATH.DS.str_replace('.', DS, str_replace('.php', '', $fileName)).'.php';
+    include_once VIEW_PATH . DS . str_replace('.', DS, str_replace('.php', '', $fileName)) . '.php';
 }
 
 /**
@@ -208,11 +211,11 @@ function slugify($text)
 }
 
 /**
- * @return \App\Models\User|null
+ * @return AuthManager
  */
-function auth()
+function auth(): AuthManager
 {
-    return session()->get('__auth', null);
+    return service(AuthManager::class);
 }
 
 function old($key, $default = null)
@@ -220,9 +223,9 @@ function old($key, $default = null)
     return request()->getOldRequest($key, $default);
 }
 
-function generateInvoiceNo($prefix = 'GO')
+function generateInvoiceNo($prefix = 'GO'): string
 {
-    return $prefix.'-'.strtoupper(substr(uniqid(time()), 0, 9));
+    return $prefix . '-' . strtoupper(substr(uniqid(time()), 0, 9));
 }
 
 /**
@@ -230,18 +233,48 @@ function generateInvoiceNo($prefix = 'GO')
  *
  * @see https://forums.phpfreaks.com/topic/120028-solved-how-to-generate-a-product-serial-number/
  */
-function generateActivationCode($template = null)
+function generateActivationCode(string $template = null): string
 {
-    $template = 'XX99-XX99-99XX-99XX';
-    $k = strlen($template);
-    $sernum = '';
-    for ($i = 0; $i < $k; $i++) {
+    $template = $template ?: 'XX99-XX99-99XX-99XX';
+    $serial = '';
+    for ($i = 0; $i < strlen($template); $i++) {
         switch ($template[$i]) {
-            case 'X': $sernum .= chr(rand(65, 90)); break;
-            case '9': $sernum .= rand(0, 9); break;
-            case '-': $sernum .= '-'; break;
+            case 'X':
+                $serial .= chr(rand(65, 90));
+                break;
+            case '9':
+                $serial .= rand(0, 9);
+                break;
+            case '-':
+                $serial .= '-';
+                break;
         }
     }
 
-    return $sernum;
+    return $serial;
+}
+
+/**
+ * The core function of autoloader.
+ * @param string $className
+ *
+ * @throws Exception
+ */
+function classLoader(string $className)
+{
+    $className = str_replace('\\', DS, $className);
+    $classPath = ROOT_PATH.DS.$className.'.php';
+    if (file_exists($classPath) && is_readable($classPath)) {
+        include $classPath;
+    } else {
+        exit('Class: '.$className.' is not found! on '.$classPath);
+    }
+}
+
+/**
+ * @param $exception
+ */
+function global_exception_handler($exception)
+{
+    \App\Core\Route::error(empty($exception->getCode()) ? 500 : $exception->getCode(), implode(PHP_EOL, [$exception->getMessage(), $exception->getFile().':'.$exception->getLine(), $exception->getTraceAsString()]));
 }
