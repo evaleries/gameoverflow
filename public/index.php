@@ -18,47 +18,23 @@
  */
 ini_set('display_errors', E_ALL);
 
-define('APP_URL', 'http://game-overflow.test/');
+const APP_URL = 'http://gameoverflow.test/';
 
-define('DS', DIRECTORY_SEPARATOR);
-define('FRONT_PATH', __DIR__);
+const DS = DIRECTORY_SEPARATOR;
+const FRONT_PATH = __DIR__;
 define('ROOT_PATH', dirname(__DIR__));
-define('APP_PATH', ROOT_PATH.DS.'App');
-define('CORE_PATH', APP_PATH.DS.'Core');
-define('CONTROLLER_PATH', APP_PATH.DS.'Controllers');
-define('VIEW_PATH', APP_PATH.DS.'views');
-define('HELPER_PATH', APP_PATH.DS.'helpers');
-date_default_timezone_set('Asia/Jakarta');
-
-set_exception_handler('global_exception_handler');
-
-/**
- * @param Exception $exception
- */
-function global_exception_handler($exception)
-{
-    App\Core\Route::error(empty($exception->getCode()) ? 500 : $exception->getCode(), implode(PHP_EOL, [$exception->getMessage(), $exception->getFile().':'.$exception->getLine(), $exception->getTraceAsString()]));
-}
-
-spl_autoload_register('classLoader');
-
-/**
- * @param string $className
- *
- * @throws Exception
- */
-function classLoader($className)
-{
-    $className = str_replace('\\', DS, $className);
-    $classPath = ROOT_PATH.DS.$className.'.php';
-    if (file_exists($classPath) && is_readable($classPath)) {
-        include $classPath;
-    } else {
-        exit('Class: '.$className.' is not found! on '.$classPath);
-    }
-}
+const APP_PATH = ROOT_PATH . DS . 'App';
+const CORE_PATH = APP_PATH . DS . 'Core';
+const CONTROLLER_PATH = APP_PATH . DS . 'Controllers';
+const VIEW_PATH = APP_PATH . DS . 'views';
+const HELPER_PATH = APP_PATH . DS . 'helpers';
 
 require_once HELPER_PATH.DS.'helpers.php';
+
+date_default_timezone_set('Asia/Jakarta');
+set_exception_handler('global_exception_handler');
+spl_autoload_register('classLoader');
+
 require_once APP_PATH.DS.'routes.php';
 
 $services = \App\Core\ServiceContainer::getInstance();
@@ -67,10 +43,6 @@ $services->put('request', function () {
     return new \App\Core\Request();
 }, \App\Core\Request::class);
 
-$services->put('session', function () {
-    return new \App\Core\Session(120);
-}, \App\Core\Session::class);
-
 $services->put('database', function () {
     return new \App\Core\DB();
 }, \App\Core\DB::class);
@@ -78,5 +50,9 @@ $services->put('database', function () {
 $services->put('middleware', function () {
     return new \App\Core\Middleware\RegisteredMiddleware();
 }, \App\Core\Middleware\RegisteredMiddleware::class);
+
+$services->put('auth', function () {
+    return new \App\Core\AuthManager();
+}, \App\Core\AuthManager::class);
 
 \App\Core\Route::run($services);

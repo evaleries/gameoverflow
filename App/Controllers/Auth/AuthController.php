@@ -2,32 +2,40 @@
 
 namespace App\Controllers\Auth;
 
+use App\Controllers\Controller;
 use App\Core\Request;
 use App\Core\Route;
-use App\Core\Session;
 use App\Models\User;
 
-class AuthController
+class AuthController extends Controller
 {
+    /**
+     * @throws \Exception
+     */
     public function authenticate(Request $request)
     {
         $request->validate(['email' => 'required|email', 'password' => 'required']);
+
         /** @var User $user */
         $user = User::first(['email' => $request->email, 'password' => md5($request->password)]);
+
         if (empty($user)) {
             session()->set('error', 'Email atau password salah!');
-            Route::back();
+            return Route::back();
         }
 
-        session()->set('__logout_token', base64_encode(md5($user->email.time())));
-        session()->set('__auth', $user);
+        auth()->loginAs($user);
+
         if ($user->isAdmin()) {
-            Route::redirect('admin');
+            return redirect('admin');
         }
 
-        Route::redirect('/');
+        return $this->redirectCustomer();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function registration(Request $request)
     {
         $request->validate(['name' => 'required|name', 'email' => 'required|email', 'password' => 'required']);
@@ -38,7 +46,7 @@ class AuthController
             Route::back();
         }
 
-        $user = (new User())->create([
+        $user = User::create([
             'name'     => __e($request->name),
             'email'    => strtolower($request->email),
             'password' => md5($request->password),
@@ -46,25 +54,26 @@ class AuthController
 
         if (!$user) {
             session()->set('error', 'Pendaftaran gagal!');
-
             return Route::back();
         }
 
-        session()->set('success', 'Pendaftaran berhasil! Silahkan login dengan email dan password baru anda');
-        Route::redirect('auth/login');
+        session()->set('success', 'Pendaftaran berhasil!');
+        auth()->loginAs($user);
+
+        return $this->redirectCustomer();
     }
 
     public function logout(Request $request)
     {
         $request->validate(['logout_token' => 'required']);
-        $logoutTokenSession = session()->get('__logout_token');
-        if ($logoutTokenSession == $request->get('logout_token', 'INVALID')) {
-            session()->unset('__auth');
-            session()->unset('__logout_token');
+
+        if (auth()->logoutToken() == $request->get('logout_token', 'INVALID')) {
+            auth()->logout();
             session()->set('success', 'Logout berhasil!');
         }
 
-        Route::back();
+
+        return redirect('/auth/login');
     }
 
     public function login()
@@ -75,5 +84,14 @@ class AuthController
     public function register()
     {
         view('auth.register')->output();
+    }
+
+    protected function redirectCustomer()
+    {
+        if (session()->has('__cart')) {
+            return redirect('/cart');
+        }
+
+        return redirect('/customer');
     }
 }

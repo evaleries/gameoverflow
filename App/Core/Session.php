@@ -11,23 +11,56 @@ class Session
     /**
      * @var bool
      */
-    private $isStarted = false;
+    const SESSION_STARTED = TRUE;
 
     /**
-     * @param int $maxLifeTime in minutes
-     *
-     * @return bool
+     * @var bool
      */
-    public function __construct(int $maxLifeTime = 60)
-    {
-        if (!$this->isStarted) {
-            session_set_cookie_params($maxLifeTime * 60);
-            session_start();
+    const SESSION_NOT_STARTED = FALSE;
 
-            return $this->isStarted = true;
+    /**
+     * @var bool
+     */
+    private $sessionState = self::SESSION_NOT_STARTED;
+
+    /**
+     * @var
+     */
+    private static $instance;
+
+    /**
+     * Session constructor.
+     */
+    private function __construct() {}
+
+
+    /**
+     * @return Session
+     */
+    public static function getInstance()
+    {
+        if ( !isset(self::$instance))
+        {
+            self::$instance = new self;
         }
 
-        return false;
+        self::$instance->startSession();
+
+        return self::$instance;
+    }
+
+    /**
+     * Restart the session.
+     * @return bool
+     */
+    public function startSession()
+    {
+        if ( $this->sessionState == self::SESSION_NOT_STARTED )
+        {
+            $this->sessionState = session_start();
+        }
+
+        return $this->sessionState;
     }
 
     /**
@@ -119,6 +152,10 @@ class Session
         return session_id();
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function unset($key)
     {
         if (isset($_SESSION[$key])) {
@@ -130,11 +167,18 @@ class Session
         return false;
     }
 
+    /**
+     * Destroy session.
+     */
     public function destroy()
     {
-        if (self::$isStarted) {
-            session_unset();
-            session_destroy();
+        if ( $this->sessionState == self::SESSION_STARTED )
+        {
+            $this->sessionState = !session_destroy();
+            unset( $_SESSION );
+
+            return !$this->sessionState;
         }
+        return $this;
     }
 }

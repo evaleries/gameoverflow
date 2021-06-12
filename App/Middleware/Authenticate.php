@@ -19,7 +19,7 @@ class Authenticate extends Middleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (session()->has('__auth')) {
+        if (auth()->check()) {
             return $next($request);
         }
 
