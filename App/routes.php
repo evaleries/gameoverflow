@@ -65,7 +65,7 @@ Route::get('/auth/login', [AuthController::class, 'login'], 'guest');
 Route::get('/auth/register', [AuthController::class, 'register'], 'guest');
 Route::post('/auth/authenticate', [AuthController::class, 'authenticate'], 'guest');
 Route::post('/auth/registration', [AuthController::class, 'registration'], 'guest');
-Route::post('/auth/logout', [AuthController::class, 'logout'], 'auth');
+Route::post('/auth/logout', [AuthController::class, 'logout']);
 
 Route::get('/products', [App\Controllers\Front\ProductController::class, 'index']);
 Route::get('/products/search', [App\Controllers\Front\ProductController::class, 'search']);
