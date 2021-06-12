@@ -14,12 +14,12 @@
                     <div class="header__top__right">
                         <div class="header__top__right__language">
                             <?php if (isAuthenticated()) { ?>
-                            <form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= session()->get('__logout_token') ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Keluar</button></form>
+                            <form action="<?= route('auth/logout') ?>" method="POST"><input type="hidden" name="logout_token" value="<?= auth()->logoutToken() ?>"><button type="submit" style="border-style: none"><i class="fa fa-sign-out"></i> Keluar</button></form>
                             <?php } ?>
                         </div>
                         <div class="header__top__right__auth">
                             <?php if (isAuthenticated()) { ?>
-                                <a href="<?= route(auth()->isAdmin() ? 'admin' : 'customer') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
+                                <a href="<?= route(auth()->user()->isAdmin() ? 'admin' : 'customer') ?>"><i class="fa fa-user"></i> <?= auth()->name ?></a>
                             <?php } else { ?>
                                 <a href="<?= route('auth/login') ?>"><i class="fa fa-user"></i> Masuk</a>
                             <?php } ?>

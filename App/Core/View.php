@@ -201,9 +201,8 @@ class View
     {
         $this->replaceAttributes();
 
-//        ob_start(); ob_end_clean();
-
-        echo $this->template;
+        print($this->template);
+        return $this->template;
     }
 
     /**
