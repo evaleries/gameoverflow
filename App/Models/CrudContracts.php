@@ -6,7 +6,7 @@ interface CrudContracts
 {
     public static function all();
 
-    public function create();
+    public static function create();
 
     public function update();
 

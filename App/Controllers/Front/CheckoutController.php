@@ -40,7 +40,7 @@ class CheckoutController extends Controller
         try {
             Order::PDO()->beginTransaction();
 
-            $order = (new Order())->create([
+            $order = Order::create([
                 'user_id'     => auth()->id,
                 'description' => __e($request->get('description')),
                 'status'      => Order::PROCESSING,
@@ -67,11 +67,11 @@ class CheckoutController extends Controller
                 }
 
                 if ($totalProductInDatabase < $cart->quantity) {
-                    throw new \Exception("Produk {$cart->title} melebihi stok yang tersedia. Silahkan menghubungi kami");
+                    throw new \Exception("Produk $cart->title melebihi stok yang tersedia. Silahkan menghubungi kami");
                 }
 
                 $amount += $cart->quantity * $cart->price;
-                (new OrderItem())->create([
+                OrderItem::create([
                     'order_id'   => $order->id,
                     'product_id' => $productId,
                     'quantity'   => $cart->quantity,
@@ -79,7 +79,7 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            (new Payment())->create([
+            Payment::create([
                 'order_id'    => $order->id,
                 'amount'      => $amount,
                 'bank_name'   => __e($request->bank_name),
@@ -89,7 +89,7 @@ class CheckoutController extends Controller
 
             $due_date = new \DateTime('now');
             $due_date->add(\DateInterval::createFromDateString('1 week'));
-            (new Invoice())->create([
+            Invoice::create([
                 'order_id' => $order->id,
                 'no'       => generateInvoiceNo(),
                 'title'    => 'Invoice untuk Order #'.$order->id,
@@ -125,8 +125,8 @@ class CheckoutController extends Controller
         session()->unset('checkout_started');
     }
 
-    private function isCheckoutHasStartedOrRedirect()
+    private function isCheckoutHasStartedOrRedirect(): void
     {
-        return session()->has('checkout_started') ? true : Route::redirect('/');
+        session()->has('checkout_started') || Route::redirect('/');
     }
 }

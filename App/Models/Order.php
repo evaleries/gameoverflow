@@ -35,30 +35,30 @@ class Order extends Model
         return self::statusString($this->attributes['status']);
     }
 
-    public function determineStatusClass()
-    {
-        return self::statusClass($this->attributes['status']);
-    }
-
     public static function statusString($status)
     {
         switch ($status) {
             case Order::PENDING:
                 return 'Pending';
-            break;
+                break;
 
             case Order::PROCESSING:
                 return 'Processing';
-            break;
+                break;
 
             case Order::COMPLETED:
                 return 'Completed';
-            break;
+                break;
 
             case Order::CANCELLED:
                 return 'Cancelled';
-            break;
+                break;
         }
+    }
+
+    public function determineStatusClass()
+    {
+        return self::statusClass($this->attributes['status']);
     }
 
     public static function statusClass($status)
@@ -66,19 +66,19 @@ class Order extends Model
         switch ($status) {
             case Order::PENDING:
                 return 'warning';
-            break;
+                break;
 
             case Order::PROCESSING:
                 return 'primary';
-            break;
+                break;
 
             case Order::COMPLETED:
                 return 'success';
-            break;
+                break;
 
             case Order::CANCELLED:
                 return 'danger';
-            break;
+                break;
         }
     }
 }

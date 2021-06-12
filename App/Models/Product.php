@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Core\Url;
 use App\Models\BaseModel as Model;
+use DateTime;
 
 class Product extends Model
 {
@@ -27,12 +29,12 @@ class Product extends Model
 
     public function getAssetImage()
     {
-        return (startsWith($this->attributes['image'], 'http')) ? $this->attributes['image'] : \App\Core\Url::asset($this->attributes['image']);
+        return (startsWith($this->attributes['image'], 'http')) ? $this->attributes['image'] : Url::asset($this->attributes['image']);
     }
 
     public function getReleasedAt($format = 'j F Y')
     {
-        return (new \DateTime($this->attributes['released_at']))->format($format);
+        return (new DateTime($this->attributes['released_at']))->format($format);
     }
 
     public function getFormattedPrice()
@@ -42,6 +44,6 @@ class Product extends Model
 
     public static function humanizePrice($price)
     {
-        return ($price > 0) ? 'Rp. '.number_format($price, 0, '.', ',').',-' : 'Gratis';
+        return ($price > 0) ? 'Rp. ' . number_format($price, 0, '.', ',') . ',-' : 'Gratis';
     }
 }

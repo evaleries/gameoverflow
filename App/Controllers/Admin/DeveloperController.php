@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Core\Request;
 use App\Models\Developer;
+use Exception;
 
 class DeveloperController extends Controller
 {
@@ -13,11 +14,14 @@ class DeveloperController extends Controller
         return view('admin.developer')->output();
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|trim',
-            'website'     => 'required',
+            'name' => 'required|trim',
+            'website' => 'required',
             'description' => 'string',
         ]);
 
@@ -25,9 +29,9 @@ class DeveloperController extends Controller
             return json(['message' => 'Bad Request'], 422);
         }
 
-        (new Developer())->create([
-            'name'        => __e($request->name),
-            'website'     => $request->website,
+        Developer::create([
+            'name' => __e($request->name),
+            'website' => $request->website,
             'description' => $request->description,
         ]);
 
@@ -37,9 +41,9 @@ class DeveloperController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'id'          => 'required|int',
-            'name'        => 'required|trim',
-            'website'     => 'required|trim',
+            'id' => 'required|int',
+            'name' => 'required|trim',
+            'website' => 'required|trim',
             'description' => 'string',
         ]);
 
@@ -49,8 +53,8 @@ class DeveloperController extends Controller
 
         $developer = Developer::firstOrFail(['id' => $request->id]);
         $developer->update([
-            'name'        => __e($request->name),
-            'website'     => $request->website,
+            'name' => __e($request->name),
+            'website' => $request->website,
             'description' => $request->description,
         ]);
 

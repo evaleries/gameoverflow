@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
+use DateTime;
 
 class Payment extends Model
 {
@@ -37,11 +38,11 @@ class Payment extends Model
 
     public function getUpdatedAtFormat($format = 'j F Y')
     {
-        return (new \DateTime($this->attributes['updated_at']))->format($format);
+        return (new DateTime($this->attributes['updated_at']))->format($format);
     }
 
     public function formattedAmount()
     {
-        return ($this->attributes['amount'] > 0) ? 'Rp. '.number_format($this->attributes['amount'], 0, '.', ',').',-' : '0';
+        return ($this->attributes['amount'] > 0) ? 'Rp. ' . number_format($this->attributes['amount'], 0, '.', ',') . ',-' : '0';
     }
 }

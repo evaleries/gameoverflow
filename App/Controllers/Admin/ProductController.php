@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\Developer;
 use App\Models\Product;
 use App\Models\ProductCode;
+use Exception;
+use PDO;
 
 class ProductController extends Controller
 {
@@ -17,6 +19,9 @@ class ProductController extends Controller
         return view('admin.products.index')->output();
     }
 
+    /**
+     * @throws Exception
+     */
     public function create()
     {
         $developers = Developer::all(-1);
@@ -27,16 +32,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'             => 'required',
-            'code'              => 'required',
-            'price'             => 'required',
-            'developer'         => 'required|int',
-            'category'          => 'required|int',
+            'title' => 'required',
+            'code' => 'required',
+            'price' => 'required',
+            'developer' => 'required|int',
+            'category' => 'required|int',
             'short_description' => 'string',
-            'description'       => 'string',
-            'image'             => 'required',
-            'released_at'       => 'required',
-            'game_codes'        => 'required',
+            'description' => 'string',
+            'image' => 'required',
+            'released_at' => 'required',
+            'game_codes' => 'required',
         ]);
 
         if ($request->isError()) {
@@ -46,17 +51,17 @@ class ProductController extends Controller
         try {
             Product::PDO()->beginTransaction();
 
-            $product = (new Product())->create([
-                'title'             => __e($request->title),
-                'developer_id'      => $request->developer,
-                'category_id'       => $request->category,
-                'price'             => intval(str_replace(',', '', $request->price)),
-                'slug'              => slugify($request->title),
-                'code'              => $request->code,
+            $product = Product::create([
+                'title' => __e($request->title),
+                'developer_id' => $request->developer,
+                'category_id' => $request->category,
+                'price' => intval(str_replace(',', '', $request->price)),
+                'slug' => slugify($request->title),
+                'code' => $request->code,
                 'short_description' => $request->short_description,
-                'description'       => $request->description,
-                'image'             => $request->image,
-                'released_at'       => $request->released_at,
+                'description' => $request->description,
+                'image' => $request->image,
+                'released_at' => $request->released_at,
             ]);
 
             if (!$product) {
@@ -70,16 +75,16 @@ class ProductController extends Controller
                     continue;
                 }
 
-                (new ProductCode())->create([
-                    'product_id'      => $product->id,
-                    'user_id'         => null,
-                    'status'          => ProductCode::AVAILABLE,
+                Product::create([
+                    'product_id' => $product->id,
+                    'user_id' => null,
+                    'status' => ProductCode::AVAILABLE,
                     'activation_code' => $code,
                 ]);
             }
 
             Product::PDO()->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Product::PDO()->rollBack();
             session()->set('error', $e->getMessage());
             Route::back();
@@ -89,6 +94,9 @@ class ProductController extends Controller
         Route::redirect('/admin/products');
     }
 
+    /**
+     * @throws Exception
+     */
     public function edit($slug, Request $request)
     {
         $product = Product::firstOrFail(compact('slug'));
@@ -101,16 +109,16 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'product_id'        => 'required|int',
-            'title'             => 'required',
-            'code'              => 'required',
-            'price'             => 'required',
-            'developer'         => 'required|int',
-            'category'          => 'required|int',
+            'product_id' => 'required|int',
+            'title' => 'required',
+            'code' => 'required',
+            'price' => 'required',
+            'developer' => 'required|int',
+            'category' => 'required|int',
             'short_description' => 'string',
-            'description'       => 'string',
-            'image'             => 'required',
-            'released_at'       => 'required',
+            'description' => 'string',
+            'image' => 'required',
+            'released_at' => 'required',
         ]);
 
         if ($request->isError()) {
@@ -122,16 +130,16 @@ class ProductController extends Controller
 
             $product = Product::firstOrFail(['id' => $request->product_id]);
             $product->update([
-                'title'             => __e($request->title),
-                'developer_id'      => $request->developer,
-                'category_id'       => $request->category,
-                'price'             => intval(str_replace(',', '', $request->price)),
-                'slug'              => slugify($request->title),
-                'code'              => $request->code,
+                'title' => __e($request->title),
+                'developer_id' => $request->developer,
+                'category_id' => $request->category,
+                'price' => intval(str_replace(',', '', $request->price)),
+                'slug' => slugify($request->title),
+                'code' => $request->code,
                 'short_description' => $request->short_description,
-                'description'       => $request->description,
-                'image'             => $request->image,
-                'released_at'       => $request->released_at,
+                'description' => $request->description,
+                'image' => $request->image,
+                'released_at' => $request->released_at,
             ]);
 
             if (!$product) {
@@ -139,7 +147,7 @@ class ProductController extends Controller
             }
 
             Product::PDO()->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Product::PDO()->rollBack();
             session()->set('error', $e->getMessage());
             Route::back();
@@ -149,19 +157,25 @@ class ProductController extends Controller
         Route::redirect('/admin/products');
     }
 
+    /**
+     * @throws Exception
+     */
     public function stocks($productId, Request $request)
     {
         if (!$request->ajax()) {
             Route::error(400, 'Bad Request!');
         }
 
-        $productCodes = ProductCode::raw('SELECT * FROM product_codes WHERE product_id = :product AND status = :status AND user_id IS NULL ORDER BY created_at DESC', ['product' => $productId, 'status' => ProductCode::AVAILABLE], \PDO::FETCH_ASSOC);
+        $productCodes = ProductCode::raw('SELECT * FROM product_codes WHERE product_id = :product AND status = :status AND user_id IS NULL ORDER BY created_at DESC', ['product' => $productId, 'status' => ProductCode::AVAILABLE], PDO::FETCH_ASSOC);
 
         return json([
             'data' => $productCodes,
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function updateStocks($productCodeId, Request $request)
     {
         if (!$request->ajax()) {
@@ -181,6 +195,9 @@ class ProductController extends Controller
         return json(['message' => 'Success'], 200);
     }
 
+    /**
+     * @throws Exception
+     */
     public function deleteStocks(Request $request)
     {
         if (!$request->ajax()) {
@@ -198,6 +215,9 @@ class ProductController extends Controller
         return json([], 204);
     }
 
+    /**
+     * @throws Exception
+     */
     public function createStocks($product_id, Request $request)
     {
         if (!$request->ajax()) {
@@ -211,17 +231,20 @@ class ProductController extends Controller
 
         $activation_codes = explode("\n", $request->data);
         foreach ($activation_codes as $code) {
-            (new ProductCode())->create([
-                'product_id'      => $product_id,
+            ProductCode::create([
+                'product_id' => $product_id,
                 'activation_code' => trim($code),
-                'user_id'         => null,
-                'status'          => ProductCode::AVAILABLE,
+                'user_id' => null,
+                'status' => ProductCode::AVAILABLE,
             ]);
         }
 
         return json(['message' => 'OK'], 201);
     }
 
+    /**
+     * @throws Exception
+     */
     public function api(Request $request)
     {
         if (!$request->ajax()) {
@@ -229,7 +252,7 @@ class ProductController extends Controller
         }
 
         return json([
-            'data' => Product::raw("SELECT p.id, p.slug, p.title, p.price, DATE_FORMAT(p.released_at, '%d %M %Y') as released_at, d.name as developer, c.name as category FROM products p JOIN developers d ON p.developer_id = d.id JOIN categories c ON p.category_id = c.id ORDER BY p.created_at desc", null, \PDO::FETCH_ASSOC),
+            'data' => Product::raw("SELECT p.id, p.slug, p.title, p.price, DATE_FORMAT(p.released_at, '%d %M %Y') as released_at, d.name as developer, c.name as category FROM products p JOIN developers d ON p.developer_id = d.id JOIN categories c ON p.category_id = c.id ORDER BY p.created_at desc", [], PDO::FETCH_ASSOC),
         ]);
     }
 }

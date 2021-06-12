@@ -11,6 +11,10 @@ use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\ProductCode;
 use App\Models\User;
+use DateTime;
+use Exception;
+use PDO;
+use ReflectionException;
 
 class OrderController extends Controller
 {
@@ -19,7 +23,11 @@ class OrderController extends Controller
         return view('admin.orders.index')->output();
     }
 
-    public function show($order_id, Request $request)
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public function show($order_id)
     {
         $order = Order::firstOrFail(['id' => $order_id]);
         $orderItems = OrderItem::morphManyRaw('SELECT oi.*, p.title FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = :order_id', ['order_id' => $order->id]);
@@ -48,9 +56,9 @@ class OrderController extends Controller
             $order = Order::firstOrFail(['id' => $request->id]);
 
             if ($order->status == Order::COMPLETED) {
-                throw new \Exception('Tidak dapat mengkonfirmasi pesanan yang telah selesai.');
+                throw new Exception('Tidak dapat mengkonfirmasi pesanan yang telah selesai.');
             } elseif ($order->status == Order::CANCELLED) {
-                throw new \Exception('Tidak dapat mengkonfirmasi pesanan yang telah dibatalkan.');
+                throw new Exception('Tidak dapat mengkonfirmasi pesanan yang telah dibatalkan.');
             }
 
             $orderItems = OrderItem::find(['order_id' => $order->id]);
@@ -60,7 +68,7 @@ class OrderController extends Controller
                     $productCode = ProductCode::morphRaw('SELECT * FROM product_codes WHERE user_id IS NULL AND status = :status AND product_id = :product_id', ['status' => ProductCode::AVAILABLE, 'product_id' => $item->product_id]);
 
                     if (empty($productCode)) {
-                        throw new \Exception("Stok produk dengan id {$item->product_id} tidak mencukupi. Silahkan menambah stock");
+                        throw new Exception("Stok produk dengan id {$item->product_id} tidak mencukupi. Silahkan menambah stock");
                     }
 
                     $productCode->update([
@@ -79,13 +87,13 @@ class OrderController extends Controller
             ]);
 
             Order::PDO()->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Order::PDO()->rollBack();
 
-            return json(['message' => $e->getMessage(), 'status' => false], 200);
+            return json(['message' => $e->getMessage(), 'status' => false]);
         }
 
-        return json(['status' => true, 'message' => 'OK'], 200);
+        return json(['status' => true, 'message' => 'OK']);
     }
 
     public function cancel($order_id, Request $request)
@@ -106,9 +114,9 @@ class OrderController extends Controller
             $order = Order::firstOrFail(['id' => $request->id]);
 
             if ($order->status == Order::COMPLETED) {
-                throw new \Exception('Tidak dapat membatalkan pesanan yang telah selesai.');
+                throw new Exception('Tidak dapat membatalkan pesanan yang telah selesai.');
             } elseif ($order->status == Order::CANCELLED) {
-                throw new \Exception('Tidak dapat membatalkan pesanan yang telah dibatalkan.');
+                throw new Exception('Tidak dapat membatalkan pesanan yang telah dibatalkan.');
             }
 
             $order->update([
@@ -116,13 +124,13 @@ class OrderController extends Controller
             ]);
 
             Order::PDO()->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Order::PDO()->rollBack();
 
-            return json(['message' => $e->getMessage()], 200);
+            return json(['message' => $e->getMessage()]);
         }
 
-        return json(['status' => true, 'message' => 'OK'], 200);
+        return json(['status' => true, 'message' => 'OK']);
     }
 
     public function recap()
@@ -130,24 +138,27 @@ class OrderController extends Controller
         return view('admin.orders.recap')->output();
     }
 
+    /**
+     * @throws Exception
+     */
     public function recapData(Request $request)
     {
-        $filter = $request->filter ? $request->filter : 'daily';
-        $startDate = $request->start_date ? $request->start_date : new \DateTime('-1 month');
-        $endDate = $request->end_date ? $request->end_date : new \DateTime('+1 month');
+        $filter = $request->filter ?: 'daily';
+        $startDate = $request->start_date ?: new DateTime('-1 month');
+        $endDate = $request->end_date ?: new DateTime('+1 month');
         $dateFormat = 'Y-m-d';
 
-        if ($startDate instanceof \DateTime && $endDate instanceof \DateTime) {
+        if ($startDate instanceof DateTime && $endDate instanceof DateTime) {
             $betweenDate = $startDate > $endDate
-            ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
-            : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
+                ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
+                : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
         } elseif (strtotime($startDate) !== false && strtotime($endDate) !== false) {
             $startDate = date_create()->setTimestamp(strtotime($startDate));
             $endDate = date_create()->setTimestamp(strtotime($endDate));
 
             $betweenDate = $startDate > $endDate
-            ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
-            : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
+                ? [$endDate->format($dateFormat), $startDate->format($dateFormat)]
+                : [$startDate->format($dateFormat), $endDate->format($dateFormat)];
         } else {
             return json(['message' => 'Bad Request!'], 400);
         }
@@ -169,7 +180,7 @@ class OrderController extends Controller
 
         $data = Order::raw(implode(' ', $query), $betweenDate);
 
-        return json(compact('data'), 200);
+        return json(compact('data'));
     }
 
     public function api(Request $request)
@@ -179,7 +190,7 @@ class OrderController extends Controller
         }
 
         return json([
-            'data' => Order::raw("SELECT o.id, i.no as invoice_no, o.status as order_status, p.status as payment_status, DATE_FORMAT(o.created_at, '%d/%m/%Y %H:%i %p') as created_at, DATE_FORMAT(i.due_date, '%d/%m/%Y') as due_date FROM orders o JOIN invoices i ON i.order_id = o.id JOIN payments p ON p.order_id = o.id ORDER BY o.created_at DESC", null, \PDO::FETCH_ASSOC),
+            'data' => Order::raw("SELECT o.id, i.no as invoice_no, o.status as order_status, p.status as payment_status, DATE_FORMAT(o.created_at, '%d/%m/%Y %H:%i %p') as created_at, DATE_FORMAT(i.due_date, '%d/%m/%Y') as due_date FROM orders o JOIN invoices i ON i.order_id = o.id JOIN payments p ON p.order_id = o.id ORDER BY o.created_at DESC", [], PDO::FETCH_ASSOC),
         ]);
     }
 }

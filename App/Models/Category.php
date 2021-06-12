@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Core\Url;
 use App\Models\BaseModel as Model;
 
 class Category extends Model
@@ -21,6 +22,6 @@ class Category extends Model
 
     public function getAssetImage()
     {
-        return startsWith($this->attributes['image'], 'http') ? $this->attributes['image'] : \App\Core\Url::asset($this->attributes['image']);
+        return startsWith($this->attributes['image'], 'http') ? $this->attributes['image'] : Url::asset($this->attributes['image']);
     }
 }

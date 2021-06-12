@@ -7,9 +7,15 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
+use Exception;
+use ReflectionException;
 
 class DashboardController extends Controller
 {
+    /**
+     * @throws ReflectionException
+     * @throws Exception
+     */
     public function index()
     {
         $totalOrders = Order::rawFirst('SELECT count(*) as total FROM orders')->total;

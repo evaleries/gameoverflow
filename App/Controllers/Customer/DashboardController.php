@@ -14,6 +14,10 @@ use App\Models\ProductCode;
 
 class DashboardController extends Controller
 {
+    /**
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
     public function index()
     {
         $orders = Order::morphManyRaw('SELECT o.*, i.no, i.due_date, i.title, p.status as payment_status FROM orders o JOIN invoices i ON o.id = i.order_id JOIN payments p ON p.order_id = o.id WHERE o.user_id = :user ORDER BY o.created_at DESC', ['user' => auth()->id]);
@@ -24,6 +28,10 @@ class DashboardController extends Controller
         return view('customer.dashboard', compact('totalProductInStore', 'totalGameOwned', 'orders', 'myGames'))->output();
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \Exception
+     */
     public function invoice(Request $request)
     {
         $request->validate(['no' => 'required']);

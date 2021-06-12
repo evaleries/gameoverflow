@@ -4,54 +4,87 @@ namespace App\Models;
 
 use App\Core\DB;
 use App\Core\Route;
+use BadMethodCallException;
+use DateTime;
 use Exception;
+use InvalidArgumentException;
 use PDO;
+use PDOException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionProperty;
+
 
 /**
- * Class BaseModel.
+ * Class BaseModel
+ * @package App\Models
  */
 class BaseModel implements CrudContracts
 {
+    /**
+     * @var DB
+     */
+    protected static $db;
+    /**
+     * @var
+     */
     protected $primaryKey;
-
+    /**
+     * @var string
+     */
     protected $primaryType = 'int';
-
+    /**
+     * @var array
+     */
     protected $foreignAttributes = [];
-
+    /**
+     * @var array
+     */
     protected $attributes = [];
-
+    /**
+     * @var array
+     */
     protected $fillable = [];
-
+    /**
+     * @var array
+     */
     protected $hidden = [];
-
+    /**
+     * @var array
+     */
     protected $appends = [];
-
+    /**
+     * @var string[]
+     */
     protected $dates = [
         'created_at',
         'updated_at',
     ];
-
     /**
      * @var string
      */
     protected $table;
 
     /**
-     * @var DB
+     * @var bool
      */
-    protected static $db;
+    private $isDirty = false;
 
+    /**
+     * BaseModel constructor.
+     */
     public function __construct()
     {
         if (!self::$db instanceof DB) {
-            self::$db = service(\App\Core\DB::class);
+            self::$db = service(DB::class);
         }
     }
 
     /**
-     * @return \PDO
+     * @return PDO
      */
-    public static function PDO()
+    public static function PDO(): PDO
     {
         return self::$db->PDO();
     }
@@ -65,66 +98,50 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getPrimaryKey()
+    public static function debug(): bool
     {
-        return ($this->primaryType === 'int') ? intval($this->primaryKey) : $this->primaryKey;
+        return self::$db->debug();
     }
 
     /**
-     * @param $key
+     * @param $query
+     * @param array $data
+     * @param int $resultType
+     *
+     * @return array|object
+     * @throws Exception
+     *
      */
-    private function setPrimaryKey($key)
+    public static function morphRaw($query, array $data = [], int $resultType = 2)
     {
-        if (!$key) {
-            throw new \InvalidArgumentException('Invalid parameter for primaryKey');
+        try {
+            $result = self::rawFirst($query, $data, $resultType);
+            if (!$result) {
+                return [];
+            }
+
+            return self::morph($result);
+        } catch (Exception $e) {
+            Route::error(404, $e->getMessage());
         }
-        $this->primaryKey = $key;
+
+        return [];
     }
 
     /**
-     * @return string
-     */
-    public function getKey()
-    {
-        return 'id';
-    }
-
-    /**
-     * @param $required
-     * @param $data
+     * @param $query
+     * @param array $data
+     * @param int $resultType
      *
      * @return mixed
-     */
-    protected static function prepareFillable($required, $data)
-    {
-        foreach ($data as $key => $val) {
-            if (!in_array($key, $required)) {
-                unset($data[$key]);
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param $data
+     * @throws Exception
      *
-     * @return array|string
      */
-    protected static function transformParam($data)
+    public static function rawFirst($query, array $data = [], int $resultType = 5)
     {
-        if (is_string($data)) {
-            return startsWith($data, '%') ? '%:'.str_replace('%', '', $data).'%' : ':'.$data;
-        }
-
-        foreach (array_keys($data) as $key) {
-            $data[] = startsWith($key, '%') ? '%:'.str_replace('%', '', $key).'%' : ':'.$key;
-            unset($data[$key]);
-        }
-
-        return $data;
+        return self::$db->query($query)->execute($data)->first($resultType);
     }
 
     /**
@@ -135,8 +152,9 @@ class BaseModel implements CrudContracts
      * @param array $object
      *
      * @return object
+     * @throws ReflectionException
      */
-    public static function morph($object)
+    public static function morph(array $object): object
     {
         $class = self::reflect();
         $instance = $class->newInstance();
@@ -169,26 +187,27 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @return \ReflectionClass
+     * @return ReflectionClass
+     * @throws ReflectionException
      */
-    private static function reflect()
+    private static function reflect(): ReflectionClass
     {
         try {
-            $class = new \ReflectionClass(get_called_class());
-        } catch (\ReflectionException $e) {
-            exit($e->getMessage());
+            $class = new ReflectionClass(get_called_class());
+        } catch (ReflectionException $e) {
+            throw $e;
         } finally {
             return $class;
         }
     }
 
     /**
-     * @param \ReflectionClass $model
+     * @param ReflectionClass $model
      * @param $property
      *
-     * @return \ReflectionProperty|bool
+     * @return ReflectionProperty|bool
      */
-    private static function propAccessible(\ReflectionClass $model, $property)
+    private static function propAccessible(ReflectionClass $model, $property)
     {
         if (!$model->hasProperty($property)) {
             return false;
@@ -199,32 +218,20 @@ class BaseModel implements CrudContracts
         try {
             $prop = $model->getProperty($property);
             $prop->setAccessible(true);
-        } catch (\ReflectionException $e) {
-            throw new \BadMethodCallException("[BaseModel] {$e->getMessage()}", 50);
+        } catch (Exception $e) {
+            throw new BadMethodCallException("[BaseModel] {$e->getMessage()}", 50);
         } finally {
             return $prop;
         }
     }
 
     /**
-     * @param \ReflectionClass $model
-     * @param object           $instance
-     * @param $prop
-     *
-     * @return mixed
-     */
-    private static function resolveProp(\ReflectionClass $model, $instance, $prop)
-    {
-        return self::propAccessible($model, $prop)->getValue($instance);
-    }
-
-    /**
-     * @param \ReflectionClass $model
+     * @param ReflectionClass $model
      * @param $method
      *
-     * @return bool|\ReflectionMethod
+     * @return bool|ReflectionMethod
      */
-    private static function methodAccessible(\ReflectionClass $model, $method)
+    private static function methodAccessible(ReflectionClass $model, $method)
     {
         if (!$model->hasMethod($method)) {
             return false;
@@ -237,79 +244,43 @@ class BaseModel implements CrudContracts
             if (!$met->isPublic()) {
                 $met->setAccessible(true);
             }
-        } catch (\ReflectionException $e) {
-            throw new \BadMethodCallException("[BaseModel] {$e->getMessage()}");
+        } catch (Exception $e) {
+            throw new BadMethodCallException("[BaseModel] {$e->getMessage()}");
         } finally {
             return $met;
         }
     }
 
     /**
-     * @return bool
-     */
-    public static function debug()
-    {
-        return self::$db->debug();
-    }
-
-    /**
-     * @param $query
-     * @param array $data
-     * @param int   $resultType
-     *
-     * @throws \Exception
-     *
-     * @return array
-     */
-    public static function raw($query, $data = [], $resultType = 5)
-    {
-        return self::$db->query($query)->execute($data)->all($resultType);
-    }
-
-    /**
-     * @param $query
-     * @param array $data
-     * @param int   $resultType
-     *
-     * @throws \Exception
+     * @param $required
+     * @param $data
      *
      * @return mixed
      */
-    public static function rawFirst($query, $data = [], $resultType = 5)
+    protected static function prepareFillable($required, $data)
     {
-        return self::$db->query($query)->execute($data)->first($resultType);
+        foreach ($data as $key => $val) {
+            if (!in_array($key, $required)) {
+                unset($data[$key]);
+            }
+        }
+
+        return $data;
     }
 
     /**
      * @param $query
      * @param array $data
-     * @param int   $resultType
-     *
+     * @param int $resultType
+     * @return array
+     * @throws ReflectionException
      * @throws Exception
-     *
-     * @return object|null
      */
-    public static function morphRaw($query, $data = [], $resultType = 2)
-    {
-        try {
-            $result = self::rawFirst($query, $data, $resultType);
-            if (!$result) {
-                return [];
-                //    throw new Exception("Resource not found", 404);
-            }
-
-            return self::morph($result);
-        } catch (Exception $e) {
-            Route::error(404, $e->getMessage());
-        }
-    }
-
-    public static function morphManyRaw($query, $data = [], $resultType = 2)
+    public static function morphManyRaw($query, array $data = [], int $resultType = 2): array
     {
         $result = self::raw($query, $data, $resultType);
         if (!$result) {
             return [];
-//            throw new Exception("Resource not found", 404);
         }
 
         $instances = [];
@@ -321,15 +292,86 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @param int  $limit
-     * @param int  $offset
-     * @param bool $morph
-     *
-     * @throws Exception
+     * @param $query
+     * @param array|null $data
+     * @param int $resultType
      *
      * @return array
+     * @throws Exception
+     *
      */
-    public static function all($limit = 100, $offset = 0, $morph = true)
+    public static function raw($query, array $data = [], int $resultType = 5): array
+    {
+        return self::$db->query($query)->execute($data)->all($resultType);
+    }
+
+    /**
+     * @see https://www.malasngoding.com/membuat-paging-dengan-php-dan-mysql/
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param array $options
+     * @return object
+     * @throws ReflectionException
+     * @throws Exception
+     */
+    public static function paginate(int $page = 1, int $perPage = 10, array $options = []): object
+    {
+        $class = self::reflect();
+        $instance = $class->newInstance();
+
+        $page = intval($page);
+        $perPage = intval($perPage);
+        $start = ($page >= 1) ? ($page * $perPage) - $perPage : 0;
+
+        $query = !empty($options['total_query'])
+            ? $options['total_query']
+            : 'SELECT * FROM ' . self::resolveProp($class, $instance, 'table');
+
+        $data = $options['data'] ?? self::all($perPage, $start);
+
+        $total = (!empty($options['param_query']))
+            ? intval(self::$db->query($query)->execute($options['param_query'])->count())
+            : intval(self::$db->query($query)->execute()->count());
+
+        if (!$total || $data === false) {
+            throw new Exception(sprintf('[Pagination - %s] invalid total OR data.', $class->getShortName()));
+        }
+
+        $pages = ceil($total / $perPage);
+
+        return (object)[
+            'data' => $data,
+            'pages' => $pages,
+            'hasNext' => $page < $pages && $page >= 1,
+            'hasPrev' => $page >= $pages && $page >= 1,
+            'nextPage' => $page + 1,
+            'prevPage' => $page - 1,
+        ];
+    }
+
+    /**
+     * @param ReflectionClass $model
+     * @param object $instance
+     * @param $prop
+     *
+     * @return mixed
+     */
+    private static function resolveProp(ReflectionClass $model, object $instance, $prop)
+    {
+        return self::propAccessible($model, $prop)->getValue($instance);
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @param bool $morph
+     *
+     * @return array
+     * @throws Exception
+     *
+     */
+    public static function all(int $limit = 100, int $offset = 0, bool $morph = true): array
     {
         $class = self::reflect();
         $instance = $class->newInstance();
@@ -359,80 +401,34 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @see https://www.malasngoding.com/membuat-paging-dengan-php-dan-mysql/
-     *
-     * @param int   $page
-     * @param int   $perPage
      * @param array $data
      *
+     * @return bool|object
      * @throws Exception
      *
-     * @return object
      */
-    public static function paginate($page = 1, $perPage = 10, $options = [])
+    public static function create(array $data = [])
     {
         $class = self::reflect();
         $instance = $class->newInstance();
+        $data = !empty($data) ? $data : $instance->attributes;
+        $prepareFillable = self::prepareFillable($instance->fillable, $data);
 
-        $page = intval($page);
-        $perPage = intval($perPage);
-        $start = ($page >= 1) ? ($page * $perPage) - $perPage : 0;
-
-        $query = !empty($options['total_query'])
-                ? $options['total_query']
-                : 'SELECT * FROM '.self::resolveProp($class, $instance, 'table');
-
-        $data = isset($options['data'])
-                ? $options['data']
-                : self::all($perPage, $start);
-
-        $total = (!empty($options['param_query']))
-                ? intval(self::$db->query($query)->execute($options['param_query'])->count())
-                : intval(self::$db->query($query)->execute()->count());
-
-        if (!$total || $data === false) {
-            throw new Exception(sprintf('[Pagination - %s] invalid total OR data.', $class->getShortName()));
-        }
-
-        $pages = ceil($total / $perPage);
-
-        return (object) [
-            'data'     => $data,
-            'pages'    => $pages,
-            'hasNext'  => $page < $pages && $page >= 1,
-            'hasPrev'  => $page >= $pages && $page >= 1,
-            'nextPage' => $page + 1,
-            'prevPage' => $page - 1,
-        ];
-    }
-
-    /**
-     * @param array $data
-     *
-     * @throws Exception
-     *
-     * @return bool|object
-     */
-    public function create($data = [])
-    {
-        $data = !empty($data) ? $data : $this->attributes;
-        $prepareFillable = self::prepareFillable($this->fillable, $data);
-
-        if (in_array('created_at', $this->attributes)) {
+        if (in_array('created_at', $instance->attributes)) {
             $data['created_at'] = now();
         }
 
         $query = sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
-            $this->table,
+            $instance->table,
             implode(', ', array_keys($prepareFillable)),
             implode(', ', self::transformParam($prepareFillable))
         );
 
         try {
             self::$db->query($query)->execute($data);
-            $this->setPrimaryKey(self::$db->PDO()->lastInsertId());
-        } catch (\PDOException $e) {
+            $instance->setPrimaryKey(self::$db->PDO()->lastInsertId());
+        } catch (PDOException $e) {
             if ($e->getCode() == 1062) {
                 return false;
             } else {
@@ -440,99 +436,77 @@ class BaseModel implements CrudContracts
             }
         }
 
-        $this->attributes = array_replace($this->attributes, $data);
+        $instance->attributes = array_replace($instance->attributes, $data);
 
-        return (self::$db->PDO()->lastInsertId() !== false) ? $this : false;
+        return (self::$db->PDO()->lastInsertId() !== false) ? $instance : false;
     }
 
     /**
-     * Update data yang sudah ada.
-     *
-     * @param array $data
-     *
-     * @throws \Exception
-     *
-     * @return BaseModel|bool
+     * @throws Exception
      */
-    public function update($data = [])
+    public function save()
     {
-        $data = !empty($data) ? $data : $this->attributes;
-
-        if (in_array('updated_at', $this->attributes)) {
-            $data['updated_at'] = now();
-        }
-
-        if (empty($this->primaryKey)) {
-            throw new \Exception('['.get_called_class().'] Mencoba mengupdate data tanpa primary key!');
-        }
-
-        $preparedFillable = self::prepareFillable($this->fillable, $data);
-        $transformedParam = self::transformParam($preparedFillable);
-
-        $sets = [];
-        foreach (array_combine(array_keys($preparedFillable), $transformedParam) as $key => $val) {
-            array_push($sets, $key.' = '.$val);
-        }
-
-        $query = sprintf(
-            'UPDATE %s SET %s WHERE %s = %s',
-            $this->table,
-            implode(', ', $sets),
-            $this->getKey(),
-            $this->getPrimaryKey()
-        );
-
-        $result = [];
-
-        try {
-            $result = self::$db->query($query)->execute($data);
-        } catch (\PDOException $e) {
-            if ($e->getCode() == 1062) {
-                return false;
-            } else {
-                throw $e;
-            }
-        }
-
-        $this->attributes = array_replace($this->attributes, $data);
-
-        return $this;
+        return $this->isDirty ? self::create($this->attributes) : false;
     }
 
     /**
-     * @throws \Exception
+     * @param $data
      *
-     * @return BaseModel|bool
+     * @return array|string
      */
-    public function delete()
+    protected static function transformParam($data)
     {
-        if (empty($this->primaryKey)) {
-            return false;
-        }
-        $query = sprintf('DELETE FROM %s WHERE %s = %s', $this->table, $this->getKey(), $this->primaryKey);
-
-        try {
-            self::$db->query($query)->execute();
-        } catch (\PDOException $e) {
-            if ($e->getCode() == 23000) {
-                return false;
-            } else {
-                throw $e;
-            }
+        if (is_string($data)) {
+            return startsWith($data, '%') ? '%:' . str_replace('%', '', $data) . '%' : ':' . $data;
         }
 
-        return (!empty($data)) ? self::$db->rowCount() : $this;
+        foreach (array_keys($data) as $key) {
+            $data[] = startsWith($key, '%') ? '%:' . str_replace('%', '', $key) . '%' : ':' . $key;
+            unset($data[$key]);
+        }
+
+        return $data;
     }
 
     /**
-     * @param array  $options
+     * @param array $options
      * @param string $operator
      *
-     * @throws \Exception
+     * @return array|mixed|void
+     * @throws Exception
+     *
+     */
+    public static function firstOrFail(array $options = [], string $operator = 'AND')
+    {
+        $res = self::first($options, $operator);
+
+        return $res ?: Route::error(404, 'Model not found');
+    }
+
+    /**
+     * @param array $options
+     * @param string $operator
+     *
+     * @return array|mixed
+     * @throws Exception
+     *
+     */
+    public static function first(array $options = [], string $operator = 'AND')
+    {
+        $res = self::find($options, $operator);
+
+        return (is_countable($res) && count($res) > 0) ? $res[0] : $res;
+    }
+
+    /**
+     * @param array $options
+     * @param string $operator
      *
      * @return array
+     * @throws Exception
+     *
      */
-    public static function find($options = [], $operator = 'AND')
+    public static function find(array $options = [], string $operator = 'AND'): array
     {
         $class = self::reflect();
         $instance = $class->newInstance();
@@ -544,10 +518,10 @@ class BaseModel implements CrudContracts
             foreach (array_combine(array_keys($options), self::transformParam($options)) as $key => &$val) {
                 if (startsWith(trim($key), '%')) {
                     $cleanKey = str_replace('%', '', $key);
-                    array_push($whereClause, $cleanKey.' LIKE ?');
+                    array_push($whereClause, $cleanKey . ' LIKE ?');
                     $data[] = $options[$key];
                 } else {
-                    array_push($whereClause, $key.' = '.$val);
+                    array_push($whereClause, $key . ' = ' . $val);
                     $data[$key] = $options[$key];
                 }
             }
@@ -556,7 +530,7 @@ class BaseModel implements CrudContracts
         $query = sprintf(
             'SELECT * FROM %s WHERE (%s)',
             self::resolveProp($class, $instance, 'table'),
-            empty($options) ? 1 : implode(' '.$operator.' ', $whereClause)
+            empty($options) ? 1 : implode(' ' . $operator . ' ', $whereClause)
         );
 
         $raw = self::$db->query($query)->execute($data)->all(PDO::FETCH_ASSOC);
@@ -568,45 +542,106 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @param array  $options
-     * @param string $operator
+     * Update data yang sudah ada.
      *
-     * @throws \Exception
+     * @param array $data
      *
-     * @return array|mixed
+     * @return BaseModel|bool
+     * @throws Exception
+     *
      */
-    public static function first($options = [], $operator = 'AND')
+    public function update(array $data = [])
     {
-        $res = self::find($options, $operator);
+        if ($this->isDirty) {
+            $data = array_merge($data, $this->attributes);
+        }
 
-        return (is_countable($res) && count($res) > 0) ? $res[0] : $res;
+        if (in_array('updated_at', $this->attributes)) {
+            $data['updated_at'] = now();
+        }
+
+        if (empty($this->primaryKey)) {
+            throw new Exception('[' . get_called_class() . '] Mencoba mengupdate data tanpa primary key!');
+        }
+
+        $preparedFillable = self::prepareFillable($this->fillable, $data);
+        $transformedParam = self::transformParam($preparedFillable);
+
+        $sets = [];
+        foreach (array_combine(array_keys($preparedFillable), $transformedParam) as $key => $val) {
+            array_push($sets, $key . ' = ' . $val);
+        }
+
+        $query = sprintf(
+            'UPDATE %s SET %s WHERE %s = %s',
+            $this->table,
+            implode(', ', $sets),
+            $this->getKey(),
+            $this->getPrimaryKey()
+        );
+
+        try {
+            self::$db->query($query)->execute($data);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 1062) {
+                return false;
+            } else {
+                throw $e;
+            }
+        }
+
+        $this->attributes = array_replace($this->attributes, $data);
+        $this->isDirty = false;
+
+        return $this;
     }
 
     /**
-     * @param array  $options
-     * @param string $operator
-     *
-     * @throws \Exception
-     *
-     * @return array|mixed|void
+     * @return string
      */
-    public static function firstOrFail($options = [], $operator = 'AND')
+    public function getKey(): string
     {
-        $res = self::first($options, $operator);
-
-        return !$res ? Route::error(404, 'Model not found') : $res;
+        return 'id';
     }
 
-    public function __set($name, $value)
+    /**
+     * @return int
+     */
+    public function getPrimaryKey(): int
     {
-        $setters = 'set'.ucwords($name);
-        if (method_exists($this, $setters)) {
-            call_user_func([$this, $setters], $value);
-        } else {
-            $this->attributes[$name] = $value;
+        return ($this->primaryType === 'int') ? intval($this->primaryKey) : $this->primaryKey;
+    }
+
+    /**
+     * @return BaseModel|bool
+     * @throws Exception
+     *
+     */
+    public function delete()
+    {
+        if (empty($this->primaryKey)) {
+            return false;
         }
+        $query = sprintf('DELETE FROM %s WHERE %s = %s', $this->table, $this->getKey(), $this->primaryKey);
+
+        try {
+            self::$db->query($query)->execute();
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                return false;
+            } else {
+                throw $e;
+            }
+        }
+
+        return (!empty($data)) ? self::$db->rowCount() : $this;
     }
 
+    /**
+     * @param $name
+     * @return bool|int|mixed|string|null
+     * @throws Exception
+     */
     public function __get($name)
     {
         $getter = $this->getFunctionName($name, 'get');
@@ -632,6 +667,42 @@ class BaseModel implements CrudContracts
     }
 
     /**
+     * @param $name
+     * @param $value
+     */
+    public function __set($name, $value)
+    {
+        $setters = 'set' . ucwords($name);
+        if (method_exists($this, $setters)) {
+            call_user_func([$this, $setters], $value);
+        } else {
+            $this->attributes[$name] = $value;
+        }
+
+        $this->isDirty = true;
+    }
+
+    /**
+     * @param $name
+     * @param string $prefix
+     *
+     * @return string
+     */
+    protected function getFunctionName($name, string $prefix = 'get'): string
+    {
+        return $prefix . ucwords(str_replace('_', '', $name));
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->attributes[$name]);
+    }
+
+    /**
      * @param $instance
      * @param $method
      *
@@ -643,14 +714,92 @@ class BaseModel implements CrudContracts
     }
 
     /**
-     * @param $name
-     * @param string $prefix
+     * @param $date
+     * @param string $format
      *
      * @return string
+     * @throws Exception
+     *
      */
-    protected function getFunctionName($name, $prefix = 'get')
+    protected function getDate($date, string $format = 'j F Y'): string
     {
-        return $prefix.ucwords(str_replace('_', '', $name));
+        try {
+            return (new DateTime($date))->format($format);
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     * @return false|mixed|null
+     */
+    public function __call($name, $arguments)
+    {
+        if (self::$db instanceof PDO && method_exists(self::$db, $name)) {
+            return call_user_func_array([self::$db, $name], $arguments);
+        }
+
+        $getter = $this->getFunctionName($name, 'get');
+        if (method_exists($this, $getter)) {
+            return call_user_func([$this, $getter]);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function __toString()
+    {
+        ob_start();
+
+        var_dump($this->exposeAttribute());
+        $content = ob_get_contents();
+
+        ob_end_clean();
+
+        return $content;
+    }
+
+    /**
+     * Export attribute.
+     *
+     * @return array
+     */
+    public function exposeAttribute(): array
+    {
+        $attr = [];
+
+        if ($this->primaryKey !== null) {
+            $attr[$this->getKey()] = $this->getPrimaryKey();
+        }
+
+        foreach ($this->attributes as $key => $val) {
+            if (!in_array($key, $this->hidden)) {
+                $getters = 'get' . ucwords($key);
+                if (method_exists($this, $getters)) {
+                    $attr[$key] = call_user_func([$this, $getters]);
+                    continue;
+                }
+
+                $attr[$key] = $val;
+            }
+        }
+
+        foreach ($this->appends as $method) {
+            if (method_exists($this, $method) && !isset($attr[$method])) {
+                $attr[$method] = call_user_func([$this, $method]);
+            }
+        }
+
+        if (!empty($this->foreignAttributes)) {
+            $attr = array_merge($attr, $this->foreignAttributes);
+        }
+
+        return $attr;
     }
 
     /**
@@ -675,89 +824,14 @@ class BaseModel implements CrudContracts
         return $this->callMethod($instance, $this->getFunctionName($name, 'set'));
     }
 
-    public function __isset($name)
-    {
-        return isset($this->attributes[$name]);
-    }
-
-    public function __call($name, $arguments)
-    {
-        if (self::$db instanceof \PDO && method_exists(self::$db, $name)) {
-            return call_user_func_array([self::$db, $name], $arguments);
-        }
-
-        $getter = $this->getFunctionName($name, 'get');
-        if (method_exists($this, $getter)) {
-            return call_user_func([$this, $getter]);
-        }
-
-        return null;
-    }
-
     /**
-     * @param $date
-     * @param string $format
-     *
-     * @throws \Exception
-     *
-     * @return string
+     * @param $key
      */
-    protected function getDate($date, $format = 'j F Y')
+    private function setPrimaryKey($key)
     {
-        try {
-            return (new \DateTime($date))->format($format);
-        } catch (\Exception $e) {
-            throw new \Exception($e);
+        if (!$key) {
+            throw new InvalidArgumentException('Invalid parameter for primaryKey');
         }
-    }
-
-    /**
-     * Export attribute.
-     *
-     * @return array
-     */
-    public function exposeAttribute()
-    {
-        $attr = [];
-
-        if ($this->primaryKey !== null) {
-            $attr[$this->getKey()] = $this->getPrimaryKey();
-        }
-
-        foreach ($this->attributes as $key => $val) {
-            if (!in_array($key, $this->hidden)) {
-                $getters = 'get'.ucwords($key);
-                if (method_exists($this, $getters)) {
-                    $attr[$key] = call_user_func([$this, $getters]);
-                    continue;
-                }
-
-                $attr[$key] = $val;
-            }
-        }
-
-        foreach ($this->appends as $method) {
-            if (method_exists($this, $method) && !isset($attr[$method])) {
-                $attr[$method] = call_user_func([$this, $method]);
-            }
-        }
-
-        if (!empty($this->foreignAttributes)) {
-            $attr = array_merge($attr, $this->foreignAttributes);
-        }
-
-        return $attr;
-    }
-
-    public function __toString()
-    {
-        ob_start();
-
-        var_dump($this->exposeAttribute());
-        $content = ob_get_contents();
-
-        ob_end_clean();
-
-        return $content;
+        $this->primaryKey = $key;
     }
 }

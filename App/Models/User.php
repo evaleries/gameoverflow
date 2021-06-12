@@ -34,13 +34,13 @@ class User extends Model
 
     protected $table = 'users';
 
-    public function isAdmin()
-    {
-        return $this->attributes['role'] == User::ADMIN;
-    }
-
     public function getRoleName()
     {
         return $this->isAdmin() ? 'ADMIN' : 'USER';
+    }
+
+    public function isAdmin()
+    {
+        return $this->attributes['role'] == User::ADMIN;
     }
 }
