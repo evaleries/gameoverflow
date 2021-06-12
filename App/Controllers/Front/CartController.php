@@ -5,7 +5,6 @@ namespace App\Controllers\Front;
 use App\Controllers\Controller;
 use App\Core\Request;
 use App\Core\Route;
-use App\Core\Session;
 use App\Models\Product;
 
 class CartController extends Controller

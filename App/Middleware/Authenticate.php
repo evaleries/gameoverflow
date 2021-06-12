@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Middleware;
-
 
 use App\Core\Middleware\Middleware;
 use App\Core\Request;
@@ -15,6 +13,7 @@ class Authenticate extends Middleware
      *
      * @param Request $request
      * @param Closure $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

@@ -141,6 +141,7 @@ function route($to = '', $param = null, $withCurrentQuery = false): string
 function redirect($to = '/')
 {
     \App\Core\Route::redirect($to);
+
     return true;
 }
 
