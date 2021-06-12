@@ -64,10 +64,11 @@ class Route
     }
 
     /**
-     * @param int $code
+     * @param int|string $code
      * @param null $message
+     * @return null
      */
-    public static function error(int $code = 400, $message = null)
+    public static function error($code = 400, $message = null)
     {
         http_response_code($code);
         if (View::isExist('errors.'.$code)) {
@@ -76,7 +77,7 @@ class Route
             view('errors.error', compact('code', 'message'))->output();
         }
 
-        exit();
+        return null;
     }
 
     /**
@@ -110,6 +111,7 @@ class Route
 
     /**
      * @param string $to
+     * @return bool
      */
     public static function redirect(string $to = '/')
     {
@@ -117,15 +119,20 @@ class Route
         exit();
     }
 
-    public static function back($fallback = '/')
+    public static function getReferer() {
+        return Url::referer() ?: false;
+    }
+
+    public static function back($fallback = '/'): bool
     {
-        $referer = Url::referer();
+        $referer = self::getReferer();
         if (startsWith($referer, Url::base())) {
             header('Location: '.$referer);
             exit();
         }
 
         self::redirect($fallback);
+        exit();
     }
 
     /**
