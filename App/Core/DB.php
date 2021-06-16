@@ -103,7 +103,7 @@ class DB
      *
      * @return $this
      */
-    public function query($query)
+    public function query($query): DB
     {
         $this->prepare($query);
 
@@ -131,22 +131,33 @@ class DB
     public function bindParam($key, $value, $type = null)
     {
         if ($type === null) {
-            if (is_int($type)) {
-                $this->statement->bindParam($key, $value, PDO::PARAM_INT);
-            } elseif (is_bool($type)) {
-                $this->statement->bindParam($key, $value, PDO::PARAM_BOOL);
-            } elseif (is_null($type)) {
-                $this->statement->bindParam($key, $value, PDO::PARAM_NULL);
-            } elseif (is_string($type)) {
-                $this->statement->bindParam($key, $value, PDO::PARAM_STR);
+            switch ($value) {
+                case is_int($value):
+                    $this->statement->bindParam($key, $value, PDO::PARAM_INT);
+                    break;
+
+                case is_bool($value):
+                    $this->statement->bindParam($key, $value, PDO::PARAM_BOOL);
+                    break;
+
+                case is_null($value):
+                    $this->statement->bindParam($key, $value, PDO::PARAM_NULL);
+                    break;
+
+                case is_string($value):
+                default:
+                    $this->statement->bindParam($key, $value);
+                    break;
             }
         }
+
+        $this->statement->bindParam($key, $value, $type);
     }
 
     /**
      * @param array $params
      */
-    private function bindParams($params = [])
+    private function bindParams(array $params = [])
     {
         $params = (!empty($params) && is_array($params)) ? $params : $this->attributes;
         foreach ($params as $param => &$val) {
@@ -159,7 +170,7 @@ class DB
      *
      * @return $this
      */
-    public function execute($data = [])
+    public function execute(array $data = []): DB
     {
         if (!empty($data)) {
             $this->statement->execute($data);
@@ -199,7 +210,7 @@ class DB
      *
      * @return array
      */
-    public function all($type = null)
+    public function all($type = null): array
     {
         $this->execute();
         $type = !empty($type) ? $type : PDO::FETCH_OBJ;
@@ -210,7 +221,7 @@ class DB
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->statement->rowCount();
     }
@@ -220,7 +231,7 @@ class DB
      *
      * @return mixed
      */
-    public function lastInsertId($name = '')
+    public function lastInsertId(string $name = '')
     {
         return $this->db->lastInsertId($name);
     }
@@ -251,6 +262,9 @@ class DB
         return null;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __destruct()
     {
         if ($this->error !== null) {
